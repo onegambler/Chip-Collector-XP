@@ -7,6 +7,15 @@ drop index if exists ix_location_country_id;
 alter table poker_chip drop constraint if exists fk_poker_chip_casino_id;
 drop index if exists ix_poker_chip_casino_id;
 
+alter table poker_chip drop constraint if exists fk_poker_chip_front_image_id;
+drop index if exists ix_poker_chip_front_image_id;
+
+alter table poker_chip drop constraint if exists fk_poker_chip_back_image_id;
+drop index if exists ix_poker_chip_back_image_id;
+
+drop table if exists poker_chip_images;
+drop sequence if exists POKER_CHIP_IMAGES_seq;
+
 drop table if exists casino;
 drop sequence if exists CASINO_seq;
 

@@ -28,6 +28,8 @@
         <miglayout.version>5.0</miglayout.version>
         <taskdialog.version>1.0.0</taskdialog.version>
         <h2.version>1.4.186</h2.version>
+
+        <build.helper.plugin.version>1.9.1</build.helper.plugin.version>
     </properties>
 
     <dependencies>
@@ -87,4 +89,47 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test-integration/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build.helper.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/src/test-integration/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/test-integration/resources</directory>
+                                    <targetPath>${project.basedir}/target/test-classes/resources</targetPath>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -1,98 +1,83 @@
 package com.chipcollector.domain;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.awt.image.BufferedImage;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.NONE;
 
 @Entity
-@Table(name = "POKER_CHIP")
 @Builder
+@Getter
+@Table(name = "POKER_CHIP")
 public class PokerChip {
 
     @Id
-    @Getter
     private int id;
-    @Getter
     @ManyToOne(optional = false, cascade = {PERSIST, MERGE})
     private Casino casino;
-    @Getter
     @Column(length = 50)
     private String denom;
-    @Getter
     @Column(length = 4)
     private String year;
-    @Getter
     @Column(length = 50)
     private String color;
-    @Getter
     @Column(length = 50)
     private String inserts;
-    @Getter
     @Column(length = 50)
     private String mold;
-    @Getter
     @Column(unique = true, length = 10)
     private String tcrID;
-    @Getter
     @Column(scale = 3)
     private int issue;
-    @Getter
     @Column(length = 50)
     private String inlay;
-    @Getter
     @Column(length = 4)
     private String rarity;
-    @Getter
     @Column(length = 15)
     private String condition;
-    @Getter
     @Column(length = 25)
     private String category;
-    @Getter
     @Column(name = "ACQUISITION_DATE")
     private LocalDate acquisitionDate;
-    @Getter
     @Column(length = 4000)
     private String notes;
-    @Getter
     private MoneyAmount value;
-    @Getter
     private MoneyAmount amountPaid;
-    @Getter
+
+    @Getter(NONE)
+    @ManyToOne(cascade = {MERGE, PERSIST, REFRESH}, fetch = LAZY)
+    @JoinColumn(name = "FRONT_IMAGE_ID")
+    private BlobImage frontImage;
+
+    @Getter(NONE)
+    @ManyToOne(cascade = {MERGE, PERSIST, REFRESH}, fetch = LAZY)
+    @JoinColumn(name = "BACK_IMAGE_ID")
+    private BlobImage backImage;
+
     private boolean obsolete;
 
-    @Transient
-    private ImagesProxy images;
-
-    @Getter
     @Setter
     @Transient
     private boolean frontImageChanged;
-    @Getter
+
     @Setter
     @Transient
     private boolean backImageChanged;
+
     @Transient
+    @Getter(NONE)
     private boolean dirty;
     @Transient
+    @Getter(NONE)
     private int tableIndex = -1;
-
-    public BufferedImage[] getImages() throws Exception {
-        if (images != null) {
-            return images.getImages();
-        }
-
-        return null;
-    }
 
     public void setCasino(Casino casino) {
         this.casino = updateDirty(this.casino, casino);
@@ -162,17 +147,16 @@ public class PokerChip {
         this.amountPaid = updateDirty(this.amountPaid, amountPaid);
     }
 
-    public void setImages(BufferedImage frontImage, BufferedImage backImage) {
-        images.setImages(frontImage, backImage);
-        this.dirty = true;
-    }
-
-    public void setImagesLoader(ImagesProxy images) {
-        this.images = updateDirty(this.images, images);
-    }
-
     public void setObsolete(boolean obsolete) {
         this.obsolete = updateDirty(this.obsolete, obsolete);
+    }
+
+    public void setFrontImage(BlobImage image) {
+        this.frontImage = updateDirty(this.frontImage, image);
+    }
+
+    public void setBackImage(BlobImage image) {
+        this.backImage = updateDirty(this.backImage, image);
     }
 
     public void resetDirty() {
@@ -181,10 +165,16 @@ public class PokerChip {
         backImageChanged = false;
     }
 
+    public Optional<BlobImage> getFrontImage() {
+        return Optional.ofNullable(frontImage);
+    }
+
+    public Optional<BlobImage> getBackImage() {
+        return Optional.ofNullable(backImage);
+    }
+
     private <T> T updateDirty(T oldValue, T newValue) {
-
         dirty = nonNull(oldValue) ? oldValue.equals(newValue) : nonNull(newValue);
-
         return newValue;
     }
 
@@ -195,6 +185,13 @@ public class PokerChip {
 
     public void setTableIndex(int tableIndex) {
         this.tableIndex = tableIndex;
+    }
+
+    public boolean areFrontAndBackImageSame() {
+        if(frontImage != null) {
+            return frontImage.equals(backImage);
+        }
+        return false;
     }
 
     public static String[] CHIP_CONDITIONS = new String[]{"Uncirculated", "Slightly Used", "Average", "Well Used", "Poor", "Cancelled"};

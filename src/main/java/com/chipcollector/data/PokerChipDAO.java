@@ -36,4 +36,26 @@ public class PokerChipDAO {
     public void savePokerChip(PokerChip pokerChip) {
         ebeanServer.save(pokerChip);
     }
+
+    public void deletePokerChip(PokerChip pokerChip) {
+        ebeanServer.beginTransaction();
+        pokerChip.getFrontImage().ifPresent(this::deleteImage);
+        pokerChip.getBackImage().ifPresent(this::deleteImage);
+        ebeanServer.delete(pokerChip);
+        ebeanServer.endTransaction();
+    }
+
+    private void deleteImage(BlobImage image) {
+        ebeanServer.refresh(image);
+        image.decreaseUsage();
+        if (image.getUsages() == 0) {
+            ebeanServer.delete(image);
+        } else {
+            ebeanServer.update(image);
+        }
+    }
+
+    public PokerChip getPokerChip(long chipId) {
+        return ebeanServer.find(PokerChip.class, chipId);
+    }
 }
