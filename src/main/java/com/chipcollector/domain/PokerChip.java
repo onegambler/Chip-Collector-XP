@@ -22,6 +22,7 @@ public class PokerChip {
     @Id
     private int id;
     @ManyToOne(optional = false, cascade = {PERSIST, MERGE})
+    @JoinColumn(name = "CASINO")
     private Casino casino;
     @Column(length = 50)
     private String denom;
@@ -53,12 +54,12 @@ public class PokerChip {
     private MoneyAmount amountPaid;
 
     @Getter(NONE)
-    @ManyToOne(cascade = {MERGE, PERSIST, REFRESH}, fetch = LAZY)
+    @ManyToOne(cascade = {PERSIST, REFRESH})
     @JoinColumn(name = "FRONT_IMAGE_ID")
     private BlobImage frontImage;
 
     @Getter(NONE)
-    @ManyToOne(cascade = {MERGE, PERSIST, REFRESH}, fetch = LAZY)
+    @ManyToOne(cascade = {PERSIST, REFRESH})
     @JoinColumn(name = "BACK_IMAGE_ID")
     private BlobImage backImage;
 
@@ -188,7 +189,7 @@ public class PokerChip {
     }
 
     public boolean areFrontAndBackImageSame() {
-        if(frontImage != null) {
+        if (frontImage != null) {
             return frontImage.equals(backImage);
         }
         return false;

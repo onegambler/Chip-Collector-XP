@@ -4,14 +4,13 @@ import com.google.common.base.Throwables;
 import lombok.Getter;
 
 import javax.imageio.ImageIO;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "POKER_CHIP_IMAGES")
@@ -22,6 +21,7 @@ public class BlobImage {
     private long id;
 
     @Lob
+    @Basic(fetch = LAZY)
     private byte[] imageByteArray;
 
     @Getter

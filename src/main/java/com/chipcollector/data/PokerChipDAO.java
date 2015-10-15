@@ -1,6 +1,7 @@
 package com.chipcollector.data;
 
 import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.Transaction;
 import com.chipcollector.domain.*;
 
 import java.util.List;
@@ -39,20 +40,19 @@ public class PokerChipDAO {
 
     public void deletePokerChip(PokerChip pokerChip) {
         ebeanServer.beginTransaction();
-        pokerChip.getFrontImage().ifPresent(this::deleteImage);
-        pokerChip.getBackImage().ifPresent(this::deleteImage);
-        ebeanServer.delete(pokerChip);
-        ebeanServer.endTransaction();
+        try {
+            ebeanServer.delete(pokerChip);
+            pokerChip.getBackImage().ifPresent(this::deleteImage);
+            pokerChip.getFrontImage().ifPresent(this::deleteImage);
+            ebeanServer.commitTransaction();
+        } finally {
+            ebeanServer.endTransaction();
+
+        }
     }
 
     private void deleteImage(BlobImage image) {
-        ebeanServer.refresh(image);
-        image.decreaseUsage();
-        if (image.getUsages() == 0) {
-            ebeanServer.delete(image);
-        } else {
-            ebeanServer.update(image);
-        }
+        ebeanServer.delete(BlobImage.class, image.getId());
     }
 
     public PokerChip getPokerChip(long chipId) {

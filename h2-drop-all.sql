@@ -4,8 +4,8 @@ drop index if exists ix_casino_location_id;
 alter table location drop constraint if exists fk_location_country_id;
 drop index if exists ix_location_country_id;
 
-alter table poker_chip drop constraint if exists fk_poker_chip_casino_id;
-drop index if exists ix_poker_chip_casino_id;
+alter table poker_chip drop constraint if exists fk_poker_chip_casino;
+drop index if exists ix_poker_chip_casino;
 
 alter table poker_chip drop constraint if exists fk_poker_chip_front_image_id;
 drop index if exists ix_poker_chip_front_image_id;

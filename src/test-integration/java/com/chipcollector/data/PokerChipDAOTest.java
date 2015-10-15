@@ -5,7 +5,6 @@ import com.avaje.ebean.EbeanServer;
 import com.chipcollector.domain.*;
 import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.google.common.io.Resources;
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -79,34 +78,22 @@ public class PokerChipDAOTest {
         image.setImage(ImageIO.read(new File(Resources.getResource("images/java_logo.png").toURI())), "png");
         PokerChip chip = getTestPokerChipBuilder()
                 .frontImage(image)
+                .backImage(image)
                 .build();
 
         pokerChipDAO.savePokerChip(chip);
 
-        List<PokerChip> allPokerChips = pokerChipDAO.getAllPokerChips();
-        assertThat(allPokerChips)
-                .hasSize(1);
+        PokerChip savedPokerChip = Ebean.find(PokerChip.class).findUnique();
+        assertThat(savedPokerChip).isNotNull();
 
-        PokerChip pokerChip = allPokerChips.stream().findFirst().get();
-        assertThat(pokerChip.getFrontImage()).isPresent();
-        assertThat(pokerChip.getFrontImage().get().getImage()).isNotNull();
+        BlobImage savedImage = Ebean.find(BlobImage.class).findUnique();
+        assertThat(savedImage).isEqualTo(image);
 
-        PokerChip anotherChip = getTestPokerChipBuilder()
-                .frontImage(pokerChip.getFrontImage().get())
-                .build();
+        pokerChipDAO.deletePokerChip(savedPokerChip);
 
-        pokerChipDAO.savePokerChip(anotherChip);
+        savedImage = Ebean.find(BlobImage.class).findUnique();
 
-        pokerChipDAO.deletePokerChip(pokerChip);
-
-        anotherChip = pokerChipDAO.getPokerChip(anotherChip.getId());
-
-        assertThat(anotherChip.getFrontImage()).isPresent();
-        assertThat(anotherChip.getFrontImage().get().getId()).isNotNull();
-
-        pokerChipDAO.deletePokerChip(anotherChip);
-
-
+        assertThat(savedImage).isNull();
     }
 
     private PokerChipBuilder getTestPokerChipBuilder() {

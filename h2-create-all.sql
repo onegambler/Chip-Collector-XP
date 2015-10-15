@@ -1,6 +1,7 @@
 create table poker_chip_images (
   id                            bigint not null,
   image_byte_array              blob,
+  usages                        integer,
   constraint pk_poker_chip_images primary key (id)
 );
 create sequence POKER_CHIP_IMAGES_seq;
@@ -37,7 +38,7 @@ create sequence LOCATION_seq;
 
 create table poker_chip (
   id                            integer not null,
-  casino_id                     bigint not null,
+  casino                        bigint not null,
   denom                         varchar(50),
   year                          varchar(4),
   color                         varchar(50),
@@ -65,8 +66,8 @@ create index ix_casino_location_id on casino (location_id);
 alter table location add constraint fk_location_country_id foreign key (country_id) references country (id) on delete restrict on update restrict;
 create index ix_location_country_id on location (country_id);
 
-alter table poker_chip add constraint fk_poker_chip_casino_id foreign key (casino_id) references casino (id) on delete restrict on update restrict;
-create index ix_poker_chip_casino_id on poker_chip (casino_id);
+alter table poker_chip add constraint fk_poker_chip_casino foreign key (casino) references casino (id) on delete restrict on update restrict;
+create index ix_poker_chip_casino on poker_chip (casino);
 
 alter table poker_chip add constraint fk_poker_chip_front_image_id foreign key (front_image_id) references poker_chip_images (id) on delete restrict on update restrict;
 create index ix_poker_chip_front_image_id on poker_chip (front_image_id);
