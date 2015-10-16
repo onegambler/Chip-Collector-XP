@@ -2,7 +2,6 @@ package com.chipcollector.domain;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,7 +9,6 @@ import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.NONE;
 
 @Entity
@@ -21,7 +19,7 @@ public class PokerChip {
 
     @Id
     private int id;
-    @ManyToOne(optional = false, cascade = {PERSIST, MERGE})
+    @ManyToOne(optional = false, cascade = ALL)
     @JoinColumn(name = "CASINO")
     private Casino casino;
     @Column(length = 50)
@@ -54,24 +52,19 @@ public class PokerChip {
     private MoneyAmount amountPaid;
 
     @Getter(NONE)
-    @ManyToOne(cascade = {PERSIST, REFRESH})
+    @ManyToOne(cascade = {PERSIST, REFRESH, MERGE})
     @JoinColumn(name = "FRONT_IMAGE_ID")
     private BlobImage frontImage;
 
     @Getter(NONE)
-    @ManyToOne(cascade = {PERSIST, REFRESH})
+    @ManyToOne(cascade = {PERSIST, REFRESH, MERGE})
     @JoinColumn(name = "BACK_IMAGE_ID")
     private BlobImage backImage;
 
     private boolean obsolete;
 
-    @Setter
     @Transient
-    private boolean frontImageChanged;
-
-    @Setter
-    @Transient
-    private boolean backImageChanged;
+    private boolean imagesChanged;
 
     @Transient
     @Getter(NONE)
@@ -154,16 +147,17 @@ public class PokerChip {
 
     public void setFrontImage(BlobImage image) {
         this.frontImage = updateDirty(this.frontImage, image);
+        imagesChanged = true;
     }
 
     public void setBackImage(BlobImage image) {
         this.backImage = updateDirty(this.backImage, image);
+        imagesChanged = true;
     }
 
     public void resetDirty() {
         dirty = false;
-        frontImageChanged = false;
-        backImageChanged = false;
+        imagesChanged = false;
     }
 
     public Optional<BlobImage> getFrontImage() {
@@ -186,13 +180,6 @@ public class PokerChip {
 
     public void setTableIndex(int tableIndex) {
         this.tableIndex = tableIndex;
-    }
-
-    public boolean areFrontAndBackImageSame() {
-        if (frontImage != null) {
-            return frontImage.equals(backImage);
-        }
-        return false;
     }
 
     public static String[] CHIP_CONDITIONS = new String[]{"Uncirculated", "Slightly Used", "Average", "Well Used", "Poor", "Cancelled"};

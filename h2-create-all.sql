@@ -1,7 +1,6 @@
 create table poker_chip_images (
   id                            bigint not null,
   image_byte_array              blob,
-  usages                        integer,
   constraint pk_poker_chip_images primary key (id)
 );
 create sequence POKER_CHIP_IMAGES_seq;

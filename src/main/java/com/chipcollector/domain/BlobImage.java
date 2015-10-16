@@ -21,11 +21,8 @@ public class BlobImage {
     private long id;
 
     @Lob
-    @Basic(fetch = LAZY)
+    @Basic(optional = false, fetch = LAZY)
     private byte[] imageByteArray;
-
-    @Getter
-    private int usages;
 
     public void setImage(BufferedImage image, String imageFormat) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -43,10 +40,6 @@ public class BlobImage {
         } catch (IOException e) {
             throw Throwables.propagate(e);
         }
-    }
-
-    public void decreaseUsage() {
-        usages--;
     }
 
     @Override

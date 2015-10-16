@@ -5,16 +5,16 @@ import com.avaje.ebean.EbeanServer;
 import com.chipcollector.domain.*;
 import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.google.common.io.Resources;
-import org.junit.BeforeClass;
+import org.junit.After;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,12 +24,7 @@ public class PokerChipDAOTest {
 
     private final PokerChipDAO pokerChipDAO = new PokerChipDAO(defaultServer);
 
-    private final Random random = new SecureRandom();
-
-    @BeforeClass
-    public static void setUp() {
-        Ebean.register(defaultServer, true);
-    }
+    private int tcrIdSequence = 0;
 
     @Test
     public void testSavePokerChip() {
@@ -67,9 +62,22 @@ public class PokerChipDAOTest {
         assertThat(casino.getId()).isNotNull();
 
         pokerChipDAO.deletePokerChip(chip_1);
+
+        allPokerChips = pokerChipDAO.getAllPokerChips();
+
+        assertThat(allPokerChips).hasSize(1).containsOnly(chip_2);
+
+        assertThat(allPokerChips.get(0).getCasino()).isEqualTo(casino);
+
         pokerChipDAO.deletePokerChip(chip_2);
 
-        assertThat(pokerChipDAO.getAllPokerChips()).isEmpty();
+        allPokerChips = pokerChipDAO.getAllPokerChips();
+
+        assertThat(allPokerChips).isEmpty();
+
+        assertThat(pokerChipDAO.getAllCasinos()).isEmpty();
+
+
     }
 
     @Test
@@ -96,6 +104,48 @@ public class PokerChipDAOTest {
         assertThat(savedImage).isNull();
     }
 
+    @Test
+    public void testPokerChipUpdate() throws Exception {
+        BlobImage image_1 = new BlobImage();
+        image_1.setImage(ImageIO.read(new File(Resources.getResource("images/java_logo.png").toURI())), "png");
+        PokerChip chip = getTestPokerChipBuilder()
+                .frontImage(image_1)
+                .backImage(image_1)
+                .build();
+
+        pokerChipDAO.savePokerChip(chip);
+
+        BlobImage image_2 = new BlobImage();
+
+        chip.setBackImage(image_2);
+
+        pokerChipDAO.updatePokerChip(chip);
+
+        List<BlobImage> savedImageList = Ebean.find(BlobImage.class).findList();
+        assertThat(savedImageList).hasSize(2);
+
+        assertThat(chip.getFrontImage()).isPresent()
+                .contains(image_1);
+
+        assertThat(chip.getBackImage()).isPresent()
+                .contains(image_2);
+
+        chip.setFrontImage(image_2);
+
+        pokerChipDAO.updatePokerChip(chip);
+
+        BlobImage savedImage = Ebean.find(BlobImage.class).findUnique();
+        assertThat(savedImage).isNotNull();
+
+        pokerChipDAO.deletePokerChip(chip);
+
+        assertThat(pokerChipDAO.getAllPokerChips()).isEmpty();
+
+        savedImage = Ebean.find(BlobImage.class).findUnique();
+        assertThat(savedImage).isNull();
+
+    }
+
     private PokerChipBuilder getTestPokerChipBuilder() {
         return getTestPokerChipBuilder(null);
     }
@@ -107,8 +157,14 @@ public class PokerChipDAOTest {
         return PokerChip.builder()
                 .acquisitionDate(LocalDate.now())
                 .amountPaid(new MoneyAmount(MoneyAmount.Currency.DOLLAR, 3d))
-                .tcrID("tcr_" + random.nextInt(1000))
+                .tcrID("tcr_" + tcrIdSequence++)
                 .casino(casino);
+    }
+
+    @After
+    public void afterTest() {
+        defaultServer.createQuery(PokerChip.class).delete();
+        defaultServer.createQuery(BlobImage.class).delete();
     }
 
 }
