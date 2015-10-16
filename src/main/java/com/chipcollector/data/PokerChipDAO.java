@@ -1,6 +1,7 @@
 package com.chipcollector.data;
 
 import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.event.BeanPersistListener;
 import com.chipcollector.domain.*;
 
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class PokerChipDAO {
 
     public void savePokerChip(PokerChip pokerChip) {
         ebeanServer.save(pokerChip);
+        pokerChip.resetDirty();
     }
 
     public void updatePokerChip(PokerChip pokerChip) {
@@ -50,6 +52,8 @@ public class PokerChipDAO {
         if (oldBackImageId > -1 && oldFrontImageId != oldBackImageId && !validIds.contains(oldBackImageId)) {
             deleteImage(oldBackImageId);
         }
+
+        pokerChip.resetDirty();
     }
 
     public void deletePokerChip(PokerChip pokerChip) {
