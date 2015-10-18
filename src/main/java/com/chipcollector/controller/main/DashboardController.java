@@ -1,34 +1,29 @@
 package com.chipcollector.controller.main;
 
 import com.chipcollector.data.PokerChipDAO;
-import com.chipcollector.domain.*;
+import com.chipcollector.domain.PokerChip;
 import com.chipcollector.model.main.PokerChipBean;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
+    private static final int PAGE_SIZE = 200;
+
     private ResourceBundle resources;
     private PokerChipDAO pokerChipDAO;
 
-    private static final int PAGE_SIZE = 100;
 
-    @FXML
     private TableView<PokerChipBean> pokerChipsTable;
 
     @FXML
@@ -45,20 +40,18 @@ public class DashboardController implements Initializable {
         pagination.setPageFactory(this::createPage);
         int numPages = (int) Math.ceil(pokerChipDAO.getPokerChipCount() / PAGE_SIZE);
         pagination.setPageCount(numPages);
+        pokerChipsTable = createTable();
+        pokerChipsTable.setItems(FXCollections.observableArrayList());
     }
 
     public Node createPage(int pageIndex) {
-
-        TableView<PokerChipBean> pokerChipsTable = createTable();
-        ObservableList<PokerChipBean> observablePokerChipList = FXCollections.observableArrayList();
-
-        pokerChipDAO.getPagedPokerChips(pageIndex, PAGE_SIZE)
-                .stream()
+        pokerChipsTable.getItems().clear();
+        List<PokerChip> pagedPokerChips = pokerChipDAO.getPagedPokerChips(pageIndex, PAGE_SIZE);
+        pagedPokerChips.stream()
                 .map(PokerChipBean::new)
-                .forEach(observablePokerChipList::add);
+                .forEach(pokerChipsTable.getItems()::add);
 
-        pokerChipsTable.setItems(observablePokerChipList);
-        return new BorderPane(pokerChipsTable);
+        return pokerChipsTable;
     }
 
     //TODO: cambiare
@@ -67,8 +60,7 @@ public class DashboardController implements Initializable {
         if (pokerChipsTable == null) {
             try {
                 URL url = new File("C:\\Users\\PC\\IdeaProjects\\Chip Collector XP\\src\\main\\java\\com\\chipcollector\\view\\main\\TableView.fxml").toURI().toURL();
-                pokerChipsTable = new FXMLLoader(url).load();
-                System.out.println();
+                pokerChipsTable = new FXMLLoader(url, resources).load();
             } catch (Exception e) {
                 e.printStackTrace();
             }

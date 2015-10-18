@@ -1,15 +1,9 @@
 package com.chipcollector.domain;
 
-import com.google.common.base.Throwables;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.imageio.ImageIO;
 import javax.persistence.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -22,9 +16,17 @@ public class BlobImage {
     private long id;
 
     @Lob
-    @Getter @Setter
+    @Getter
+    @Setter
     @Basic(optional = false, fetch = LAZY)
+    @Column(nullable = false, name = "IMAGE")
     private byte[] image;
+
+    @Lob
+    @Getter
+    @Setter
+    @Column(nullable = false, name = "THUMBNAIL")
+    private byte[] thumbnail;
 
     @Override
     public boolean equals(Object o) {
@@ -36,6 +38,7 @@ public class BlobImage {
         return id == blobImage.id;
 
     }
+
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));

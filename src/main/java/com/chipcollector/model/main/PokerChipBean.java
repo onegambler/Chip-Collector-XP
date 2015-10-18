@@ -6,8 +6,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -37,12 +39,12 @@ public class PokerChipBean {
         this.year = new SimpleStringProperty(pokerChip.getYear());
         this.tcrId = new SimpleStringProperty(pokerChip.getTcrID());
         if (pokerChip.getFrontImage().isPresent()) {
-            Image image = getImageFromByteArray(pokerChip.getFrontImage().map(BlobImage::getImage).get());
+            Image image = getImageFromByteArray(pokerChip.getFrontImage().map(BlobImage::getThumbnail).get());
             this.frontImage = new ImageView(image);
         }
 
         if (pokerChip.getBackImage().isPresent()) {
-            Image image = getImageFromByteArray(pokerChip.getBackImage().map(BlobImage::getImage).get());
+            Image image = getImageFromByteArray(pokerChip.getBackImage().map(BlobImage::getThumbnail).get());
             this.backImage = new ImageView(image);
         }
     }
@@ -50,7 +52,8 @@ public class PokerChipBean {
     @NotNull
     private Image getImageFromByteArray(byte[] imageByteArray) {
         InputStream byteArrayInputStream = new ByteArrayInputStream(imageByteArray);
-        return new Image(byteArrayInputStream, IMAGE_THUMBNAIL_SIZE, IMAGE_THUMBNAIL_SIZE, true, true);
+        //return new Image(byteArrayInputStream, IMAGE_THUMBNAIL_SIZE, IMAGE_THUMBNAIL_SIZE, true, true);
+        return new Image(byteArrayInputStream);
     }
 
     public String getCasinoName() {

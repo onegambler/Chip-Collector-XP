@@ -39,6 +39,7 @@ public class ChipCollectorXPApplication extends Application {
 
         final EbeanServer ebeanServer = Ebean.getDefaultServer();
         final PokerChipDAO pokerChipDAO = new PokerChipDAO(ebeanServer);
+        //createDB(pokerChipDAO);
         DashboardController controller = new DashboardController(pokerChipDAO);
 
         loader.setController(controller);
@@ -80,7 +81,8 @@ public class ChipCollectorXPApplication extends Application {
         BlobImage image_1 = null;
         try {
             image_1 = new BlobImage();
-            image_1.setImage(Files.readAllBytes(Paths.get("C:\\Users\\PC\\Desktop\\019402.jpg")));
+            image_1.setThumbnail(Files.readAllBytes(Paths.get("C:\\Users\\PC\\Desktop\\019402.jpg")));
+            image_1.setImage(Files.readAllBytes(Paths.get("C:\\Users\\PC\\Desktop\\019402.bak.jpg")));
         } catch (Exception e) {
             e.printStackTrace();
         }
