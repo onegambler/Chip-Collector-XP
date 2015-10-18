@@ -28,5 +28,8 @@
     <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.h2database:h2:1.4.186" level="project" />
+    <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:8.40.9" level="project" />
+    <orderEntry type="library" name="Maven: org.controlsfx:openjfx-dialogs:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.8.11.2" level="project" />
   </component>
 </module>

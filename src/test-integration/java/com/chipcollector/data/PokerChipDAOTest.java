@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -74,16 +76,12 @@ public class PokerChipDAOTest {
         allPokerChips = pokerChipDAO.getAllPokerChips();
 
         assertThat(allPokerChips).isEmpty();
-
-        assertThat(pokerChipDAO.getAllCasinos()).isEmpty();
-
-
     }
 
     @Test
     public void testSavePokerChipWithImage() throws Exception {
         BlobImage image = new BlobImage();
-        image.setImage(ImageIO.read(new File(Resources.getResource("images/java_logo.png").toURI())), "png");
+        image.setImage(Files.readAllBytes(Paths.get(Resources.getResource("images/java_logo.png").toURI())));
         PokerChip chip = getTestPokerChipBuilder()
                 .frontImage(image)
                 .backImage(image)
@@ -107,7 +105,7 @@ public class PokerChipDAOTest {
     @Test
     public void testPokerChipUpdate() throws Exception {
         BlobImage image_1 = new BlobImage();
-        image_1.setImage(ImageIO.read(new File(Resources.getResource("images/java_logo.png").toURI())), "png");
+        image_1.setImage(Files.readAllBytes(Paths.get(Resources.getResource("images/java_logo.png").toURI())));
         PokerChip chip = getTestPokerChipBuilder()
                 .frontImage(image_1)
                 .backImage(image_1)
@@ -163,8 +161,16 @@ public class PokerChipDAOTest {
 
     @After
     public void afterTest() {
-        defaultServer.createQuery(PokerChip.class).delete();
-        defaultServer.createQuery(BlobImage.class).delete();
+        try {
+            defaultServer.beginTransaction();
+
+            defaultServer.createQuery(PokerChip.class).delete();
+            defaultServer.createQuery(BlobImage.class).delete();
+            defaultServer.createQuery(Casino.class).delete();
+            defaultServer.commitTransaction();
+        } finally {
+            defaultServer.endTransaction();
+        }
     }
 
 }

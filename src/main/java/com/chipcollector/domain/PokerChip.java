@@ -14,13 +14,13 @@ import static lombok.AccessLevel.NONE;
 @Entity
 @Builder
 @Getter
-@Table(name = "POKER_CHIP")
+@Table(name = "POKER_CHIPS")
 public class PokerChip {
 
     @Id
     private int id;
-    @ManyToOne(optional = false, cascade = ALL)
-    @JoinColumn(name = "CASINO")
+    @ManyToOne(optional = false, cascade = {PERSIST, REFRESH, MERGE})
+    @JoinColumn(name = "CASINO_ID")
     private Casino casino;
     @Column(length = 50)
     private String denom;

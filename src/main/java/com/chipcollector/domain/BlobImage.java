@@ -2,6 +2,7 @@ package com.chipcollector.domain;
 
 import com.google.common.base.Throwables;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.imageio.ImageIO;
 import javax.persistence.*;
@@ -21,26 +22,9 @@ public class BlobImage {
     private long id;
 
     @Lob
+    @Getter @Setter
     @Basic(optional = false, fetch = LAZY)
-    private byte[] imageByteArray;
-
-    public void setImage(BufferedImage image, String imageFormat) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            ImageIO.write(image, imageFormat, outputStream);
-            outputStream.flush();
-            imageByteArray = outputStream.toByteArray();
-        } catch (IOException e) {
-            throw Throwables.propagate(e);
-        }
-    }
-
-    public BufferedImage getImage() {
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByteArray)) {
-            return ImageIO.read(inputStream);
-        } catch (IOException e) {
-            throw Throwables.propagate(e);
-        }
-    }
+    private byte[] image;
 
     @Override
     public boolean equals(Object o) {
