@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -25,6 +26,7 @@ public class BlobImage {
     @Lob
     @Getter
     @Setter
+    @Basic(optional = false, fetch = EAGER)
     @Column(nullable = false, name = "THUMBNAIL")
     private byte[] thumbnail;
 
