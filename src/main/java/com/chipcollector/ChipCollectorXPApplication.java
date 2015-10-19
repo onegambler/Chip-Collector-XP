@@ -35,7 +35,7 @@ public class ChipCollectorXPApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        ResourceBundle bundle = ResourceBundle.getBundle("DisplayValues", Locale.ENGLISH);
+        ResourceBundle bundle = ResourceBundle.getBundle("DisplayStrings", Locale.ENGLISH);
         FXMLLoader loader = new FXMLLoader(Resources.getResource(DASHBOARD_FX_FILE_LOCATION), bundle);
 
         final EbeanServer ebeanServer = Ebean.getDefaultServer();
