@@ -1,6 +1,7 @@
 package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.data.PokerChipDAO;
+import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.google.common.base.Throwables;
@@ -12,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +31,9 @@ public class DashboardController implements Initializable {
     @FXML
     private Pagination pagination;
 
+    @FXML
+    private TreeView<Casino> casinoTreeView;
+
     public DashboardController(PokerChipDAO pokerChipDAO) {
         this.pokerChipDAO = pokerChipDAO;
     }
@@ -36,6 +42,16 @@ public class DashboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         setUpTablePagination();
         setUpPokerChipTable(resources);
+        setUpCasinoTreeView();
+    }
+
+    private void setUpCasinoTreeView() {
+        List<Casino> allCasinos = pokerChipDAO.getAllCasinos();
+
+        TreeItem<Casino> collect = new TreeItem<>(allCasinos.get(0));
+        collect.getChildren().add(new TreeItem<>(allCasinos.get(0)));
+        casinoTreeView.setRoot(collect);
+
     }
 
     private void setUpTablePagination() {

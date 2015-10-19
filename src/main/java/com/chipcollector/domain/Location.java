@@ -3,6 +3,7 @@ package com.chipcollector.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.Builder;
 
 import javax.persistence.*;
