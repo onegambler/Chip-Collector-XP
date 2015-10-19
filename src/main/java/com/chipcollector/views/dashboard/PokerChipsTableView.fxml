@@ -1,65 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.cell.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-
 <TableView xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <columns>
         <TableColumn maxWidth="80.0" minWidth="80.0" text="Front">
             <cellValueFactory>
-                <PropertyValueFactory property="frontImage" />
+                <PropertyValueFactory property="frontImage"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn maxWidth="80.0" minWidth="80.0" text="Back">
             <cellValueFactory>
-                <PropertyValueFactory property="backImage" />
+                <PropertyValueFactory property="backImage"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="Casino">
             <cellValueFactory>
-                <PropertyValueFactory property="casinoName" />
+                <PropertyValueFactory property="casinoName"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="City">
             <cellValueFactory>
-                <PropertyValueFactory property="cityName" />
+                <PropertyValueFactory property="cityName"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="Denom">
             <cellValueFactory>
-                <PropertyValueFactory property="denom" />
+                <PropertyValueFactory property="denom"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="Mold">
             <cellValueFactory>
-                <PropertyValueFactory property="mold" />
+                <PropertyValueFactory property="mold"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="Color">
             <cellValueFactory>
-                <PropertyValueFactory property="color" />
+                <PropertyValueFactory property="color"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="Inlay">
             <cellValueFactory>
-                <PropertyValueFactory property="inlay" />
+                <PropertyValueFactory property="inlay"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="Inserts">
             <cellValueFactory>
-                <PropertyValueFactory property="inserts" />
+                <PropertyValueFactory property="inserts"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="Year">
             <cellValueFactory>
-                <PropertyValueFactory property="year" />
+                <PropertyValueFactory property="year"/>
             </cellValueFactory>
         </TableColumn>
         <TableColumn prefWidth="75.0" text="TCR ID">
             <cellValueFactory>
-                <PropertyValueFactory property="tcrId" />
+                <PropertyValueFactory property="tcrId"/>
             </cellValueFactory>
         </TableColumn>
     </columns>

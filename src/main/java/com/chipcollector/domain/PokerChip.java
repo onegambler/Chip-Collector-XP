@@ -1,6 +1,6 @@
 package com.chipcollector.domain;
 
-import lombok.Builder;
+import lombok.experimental.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -48,6 +48,7 @@ public class PokerChip {
     private LocalDate acquisitionDate;
     @Column(length = 4000)
     private String notes;
+
     private MoneyAmount value;
     private MoneyAmount amountPaid;
 
@@ -69,9 +70,6 @@ public class PokerChip {
     @Transient
     @Getter(NONE)
     private boolean dirty;
-    @Transient
-    @Getter(NONE)
-    private int tableIndex = -1;
 
     public void setCasino(Casino casino) {
         this.casino = updateDirty(this.casino, casino);
@@ -176,10 +174,6 @@ public class PokerChip {
     @Override
     public String toString() {
         return this.tcrID;
-    }
-
-    public void setTableIndex(int tableIndex) {
-        this.tableIndex = tableIndex;
     }
 
     public static String[] CHIP_CONDITIONS = new String[]{"Uncirculated", "Slightly Used", "Average", "Well Used", "Poor", "Cancelled"};

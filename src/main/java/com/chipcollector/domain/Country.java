@@ -16,7 +16,7 @@ import static lombok.AccessLevel.NONE;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "COUNTRY")
+@Table(name = "COUNTRIES")
 public class Country {
 
     @Id

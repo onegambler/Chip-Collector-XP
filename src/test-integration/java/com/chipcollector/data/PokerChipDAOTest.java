@@ -6,6 +6,7 @@ import com.chipcollector.domain.*;
 import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.google.common.io.Resources;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class PokerChipDAOTest {
 
     private static final EbeanServer defaultServer = Ebean.getDefaultServer();

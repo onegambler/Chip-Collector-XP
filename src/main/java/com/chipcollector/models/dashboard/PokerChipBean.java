@@ -1,4 +1,4 @@
-package com.chipcollector.model.main;
+package com.chipcollector.models.dashboard;
 
 import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.PokerChip;
@@ -6,10 +6,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NotNull;
 
-import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -52,7 +50,6 @@ public class PokerChipBean {
     @NotNull
     private Image getImageFromByteArray(byte[] imageByteArray) {
         InputStream byteArrayInputStream = new ByteArrayInputStream(imageByteArray);
-        //return new Image(byteArrayInputStream, IMAGE_THUMBNAIL_SIZE, IMAGE_THUMBNAIL_SIZE, true, true);
         return new Image(byteArrayInputStream);
     }
 

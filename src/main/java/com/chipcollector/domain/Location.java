@@ -1,9 +1,9 @@
 package com.chipcollector.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Builder;
 
 import javax.persistence.*;
 
@@ -13,9 +13,9 @@ import static javax.persistence.FetchType.LAZY;
 @Data
 @Entity
 @Builder
-@Table(name = "LOCATION")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "LOCATIONS")
 public class Location {
 
     @Id

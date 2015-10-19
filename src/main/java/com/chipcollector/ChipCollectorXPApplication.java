@@ -2,29 +2,32 @@ package com.chipcollector;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
-import com.chipcollector.controller.main.DashboardController;
+import com.chipcollector.controllers.dashboard.DashboardController;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
+import com.chipcollector.util.ImageConverter;
 import com.google.common.io.Resources;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static org.imgscalr.Scalr.THRESHOLD_QUALITY_BALANCED;
+
 public class ChipCollectorXPApplication extends Application {
+
 
     public static void main(String[] args) {
         launch(args);
@@ -33,9 +36,7 @@ public class ChipCollectorXPApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         ResourceBundle bundle = ResourceBundle.getBundle("DisplayValues", Locale.ENGLISH);
-        //TODO: relative
-        URL url = new File("C:\\Users\\PC\\IdeaProjects\\Chip Collector XP\\src\\main\\java\\com\\chipcollector\\view\\main\\DashBoard.fxml").toURI().toURL();
-        FXMLLoader loader = new FXMLLoader(url, bundle);
+        FXMLLoader loader = new FXMLLoader(Resources.getResource(DASHBOARD_FX_FILE_LOCATION), bundle);
 
         final EbeanServer ebeanServer = Ebean.getDefaultServer();
         final PokerChipDAO pokerChipDAO = new PokerChipDAO(ebeanServer);
@@ -44,7 +45,7 @@ public class ChipCollectorXPApplication extends Application {
 
         loader.setController(controller);
         Parent root = loader.load();
-        Scene scene = new Scene(root, 300, 275);
+        Scene scene = new Scene(root, 400, 600);
 
         primaryStage.setTitle("Chip Collector XP");
         primaryStage.setScene(scene);
@@ -81,8 +82,10 @@ public class ChipCollectorXPApplication extends Application {
         BlobImage image_1 = null;
         try {
             image_1 = new BlobImage();
-            image_1.setThumbnail(Files.readAllBytes(Paths.get("C:\\Users\\PC\\Desktop\\019402.jpg")));
-            image_1.setImage(Files.readAllBytes(Paths.get("C:\\Users\\PC\\Desktop\\019402.bak.jpg")));
+            Path imagePath = Paths.get("C:\\Users\\roberto.magale\\IdeaProjects\\ChipCollectorXP\\src\\test-integration\\resources\\images\\java_logo.png");
+            BufferedImage resizedImage = Scalr.resize(ImageIO.read(imagePath.toUri().toURL()), THUMBNAIL_IMAGE_SIZE, THRESHOLD_QUALITY_BALANCED);
+            image_1.setThumbnail(ImageConverter.bufferedImageToRawBytes(resizedImage, "png"));
+            image_1.setImage(Files.readAllBytes(imagePath));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,4 +103,7 @@ public class ChipCollectorXPApplication extends Application {
                 .tcrID("rober_" + idx)
                 .casino(casino).build();
     }
+
+    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/Dashboard.fxml";
+    public static final int THUMBNAIL_IMAGE_SIZE = 60;
 }

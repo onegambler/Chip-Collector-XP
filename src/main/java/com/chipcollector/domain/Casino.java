@@ -1,7 +1,7 @@
 package com.chipcollector.domain;
 
-import com.chipcollector.common.utils.I18NMessages;
-import lombok.Builder;
+import com.chipcollector.util.MessagesHelper;
+import lombok.experimental.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 @Data
 @Entity
 @Builder
-@Table(name = "CASINO")
+@Table(name = "CASINOS")
 public class Casino {
 
     @Id
@@ -51,7 +51,7 @@ public class Casino {
         return getLocation()
                 .map(Location::getCountry)
                 .map(Country::getName)
-                .orElse(I18NMessages.getString(UNKNOWN_COUNTRY_KEY));
+                .orElse(MessagesHelper.getString(UNKNOWN_COUNTRY_KEY));
     }
 
     public String getState() {
@@ -67,5 +67,5 @@ public class Casino {
         return name;
     }
 
-    public static String UNKNOWN_COUNTRY_KEY = "UNKNOWN";
+    public static String UNKNOWN_COUNTRY_KEY = "country.unknown";
 }
