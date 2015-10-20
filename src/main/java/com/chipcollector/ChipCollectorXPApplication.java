@@ -3,6 +3,7 @@ package com.chipcollector;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
 import com.chipcollector.controllers.dashboard.DashboardController;
+import com.chipcollector.data.Collection;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
 import com.chipcollector.util.ImageConverter;
@@ -39,14 +40,17 @@ public class ChipCollectorXPApplication extends Application {
         FXMLLoader loader = new FXMLLoader(Resources.getResource(DASHBOARD_FX_FILE_LOCATION), bundle);
 
         final EbeanServer ebeanServer = Ebean.getDefaultServer();
-        final PokerChipDAO pokerChipDAO = new PokerChipDAO(ebeanServer);
+        PokerChipDAO pokerChipDAO = new PokerChipDAO(ebeanServer);
+        final Collection collection = new Collection(pokerChipDAO);
         //createDB(pokerChipDAO);
-        DashboardController controller = new DashboardController(pokerChipDAO);
 
-        loader.setController(controller);
         Parent root = loader.load();
-        Scene scene = new Scene(root, 400, 600);
 
+        DashboardController controller = loader.<DashboardController>getController();
+        controller.setCollection(collection);
+        controller.loadComponentsData();
+
+        Scene scene = new Scene(root, 400, 600);
         primaryStage.setTitle("Chip Collector XP");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -82,7 +86,7 @@ public class ChipCollectorXPApplication extends Application {
         BlobImage image_1 = null;
         try {
             image_1 = new BlobImage();
-            Path imagePath = Paths.get("C:\\Users\\PC\\IdeaProjects\\Chip Collector XP\\src\\test-integration\\resources\\images\\java_logo.png");
+            Path imagePath = Paths.get("C:\\Users\\roberto.magale\\IdeaProjects\\ChipCollectorXP\\src\\test-integration\\resources\\images\\java_logo.png");
             BufferedImage resizedImage = Scalr.resize(ImageIO.read(imagePath.toUri().toURL()), THUMBNAIL_IMAGE_SIZE, THRESHOLD_QUALITY_BALANCED);
             image_1.setThumbnail(ImageConverter.bufferedImageToRawBytes(resizedImage, "png"));
             image_1.setImage(Files.readAllBytes(imagePath));

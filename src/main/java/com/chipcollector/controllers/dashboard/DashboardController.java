@@ -1,6 +1,6 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.data.PokerChipDAO;
+import com.chipcollector.data.Collection;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
@@ -15,48 +15,54 @@ import javafx.scene.control.Pagination;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static javafx.scene.input.MouseButton.PRIMARY;
+
 public class DashboardController implements Initializable {
 
     private static final int PAGE_SIZE = 200;
 
-    private PokerChipDAO pokerChipDAO;
+    @Setter
+    private Collection collection;
     private TableView<PokerChipBean> pokerChipsTable;
 
     @FXML
     private Pagination pagination;
 
     @FXML
-    private TreeView<Casino> casinoTreeView;
+    private TreeView<Object> casinoTreeView;
 
-    public DashboardController(PokerChipDAO pokerChipDAO) {
-        this.pokerChipDAO = pokerChipDAO;
+    private ResourceBundle resources;
+
+    public DashboardController() {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.resources = resources;
+    }
+
+    public void loadComponentsData() {
         setUpTablePagination();
         setUpPokerChipTable(resources);
         setUpCasinoTreeView();
     }
 
     private void setUpCasinoTreeView() {
-        List<Casino> allCasinos = pokerChipDAO.getAllCasinos();
-
-        TreeItem<Casino> collect = new TreeItem<>(allCasinos.get(0));
-        collect.getChildren().add(new TreeItem<>(allCasinos.get(0)));
-        casinoTreeView.setRoot(collect);
-
+        List<Casino> allCasinos = collection.getAllCasinos();
+        casinoTreeView.setRoot(new CasinoTreeRoot(allCasinos));
     }
 
     private void setUpTablePagination() {
         pagination.setPageFactory(this::getPokerChipTablePage);
-        int numPages = (int) Math.ceil(pokerChipDAO.getPokerChipCount() / PAGE_SIZE);
+        int numPages = (int) Math.ceil(collection.getPokerChipCount() / PAGE_SIZE);
         pagination.setPageCount(numPages);
     }
 
@@ -69,14 +75,25 @@ public class DashboardController implements Initializable {
         }
     }
 
-    public Node getPokerChipTablePage(int pageIndex) {
+    private Node getPokerChipTablePage(int pageIndex) {
         pokerChipsTable.getItems().clear();
-        List<PokerChip> pagedPokerChips = pokerChipDAO.getPagedPokerChips(pageIndex, PAGE_SIZE);
+        List<PokerChip> pagedPokerChips = collection.getPagedPokerChips(pageIndex, PAGE_SIZE);
         pagedPokerChips.stream()
                 .map(PokerChipBean::new)
                 .forEach(pokerChipsTable.getItems()::add);
 
         return pokerChipsTable;
+    }
+
+    @FXML
+    public void onMouseClick(MouseEvent event) {
+        if (event.getButton() == PRIMARY) {
+            TreeItem<Object> selectedItem = casinoTreeView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null && selectedItem.getValue() instanceof Casino) {
+                collection.setCasinoFilter((Casino) selectedItem.getValue());
+                setUpTablePagination();
+            }
+        }
     }
 
     public static final String TABLE_VIEW_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipsTableView.fxml";

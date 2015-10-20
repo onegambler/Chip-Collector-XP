@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
+<?language javascript?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-
 <VBox fx:id="vBox" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8"
-      xmlns:fx="http://javafx.com/fxml/1">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chipcollector.controllers.dashboard.DashboardController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -70,7 +64,11 @@
                                                 <TreeView fx:id="casinoTreeView" layoutY="79.0" prefHeight="475.0"
                                                           prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                          AnchorPane.topAnchor="0.0"/>
+                                                          AnchorPane.topAnchor="0.0" onMouseClicked="#onMouseClick">
+                                                    <fx:script>
+                                                        casinoTreeView.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
+                                                    </fx:script>
+                                                </TreeView>
                                             </children>
                                         </AnchorPane>
                                     </content>

@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 public class MessagesHelper {
-    private static final String BUNDLE_NAME = "com/chipcollector/resources/DisplayStrings";
+    private static final String BUNDLE_NAME = "DisplayStrings";
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
     private MessagesHelper() {

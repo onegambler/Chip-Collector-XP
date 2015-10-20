@@ -24,10 +24,9 @@ public class PokerChipDAO {
         return ebeanServer.find(PokerChip.class).findList();
     }
 
-    public List<PokerChip> getPagedPokerChips(int pagedIndex, int pageSize) {
-        Query<PokerChip> query = ebeanServer.createQuery(PokerChip.class);
+    public List<PokerChip> getPagedPokerChips(Query<PokerChip> currentFilter, int pagedIndex, int pageSize) {
         return ebeanServer.
-                findPagedList(query, ebeanServer.currentTransaction(), pagedIndex, pageSize)
+                findPagedList(currentFilter, ebeanServer.currentTransaction(), pagedIndex, pageSize)
                 .getList();
     }
 
@@ -86,15 +85,15 @@ public class PokerChipDAO {
         return ebeanServer.find(PokerChip.class, chipId);
     }
 
-    public List<PokerChip> getPokerChipListFromCasino(Casino casino) {
-        return ebeanServer.createQuery(PokerChip.class).where().eq("casino.id", casino.getId()).findList();
+    public List<PokerChip> getPokerChipList(Query<PokerChip> filter) {
+        return filter.findList();
     }
 
     public int getPokerChipCount(Query<PokerChip> pokerChipQuery) {
         return ebeanServer.findRowCount(pokerChipQuery, ebeanServer.currentTransaction());
     }
 
-    public int getPokerChipCount() {
-        return getPokerChipCount(ebeanServer.createQuery(PokerChip.class));
+    public Query<PokerChip> createPokerChipFilter() {
+        return ebeanServer.createQuery(PokerChip.class);
     }
 }
