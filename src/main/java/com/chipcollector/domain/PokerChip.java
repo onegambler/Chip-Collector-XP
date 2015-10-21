@@ -1,7 +1,9 @@
 package com.chipcollector.domain;
 
-import lombok.experimental.Builder;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,41 +13,56 @@ import static java.util.Objects.nonNull;
 import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.NONE;
 
+@Data
 @Entity
 @Builder
-@Getter
 @Table(name = "POKER_CHIPS")
 public class PokerChip {
 
     @Id
-    private int id;
-    @ManyToOne(optional = false, cascade = {PERSIST, REFRESH, MERGE})
+    @Setter(NONE)
+    private long id;
+
     @JoinColumn(name = "CASINO_ID")
+    @ManyToOne(optional = false, cascade = {PERSIST, REFRESH, MERGE})
     private Casino casino;
+
     @Column(length = 50)
     private String denom;
+
     @Column(length = 4)
     private String year;
+
     @Column(length = 50)
     private String color;
+
     @Column(length = 50)
     private String inserts;
+
     @Column(length = 50)
     private String mold;
+
     @Column(unique = true, length = 10)
     private String tcrID;
+
     @Column(scale = 3)
     private int issue;
+
     @Column(length = 50)
     private String inlay;
+
     @Column(length = 4)
     private String rarity;
+
     @Column(length = 15)
     private String condition;
+
     @Column(length = 25)
     private String category;
+
     @Column(name = "ACQUISITION_DATE")
     private LocalDate acquisitionDate;
+
     @Column(length = 4000)
     private String notes;
 
@@ -75,7 +92,7 @@ public class PokerChip {
         this.casino = updateDirty(this.casino, casino);
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = updateDirty(this.id, id);
     }
 

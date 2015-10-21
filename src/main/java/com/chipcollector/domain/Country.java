@@ -5,6 +5,7 @@ import com.google.common.base.Throwables;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.awt.image.BufferedImage;
@@ -20,14 +21,15 @@ import static lombok.AccessLevel.NONE;
 public class Country {
 
     @Id
+    @Setter(NONE)
     private long id;
 
     @Column(length = 50)
     private String name;
 
     @Lob
-    @Column(name = "FLAG_IMAGE")
     @Getter(NONE)
+    @Column(name = "FLAG_IMAGE")
     private byte[] flagImageByteArray;
 
     @Transient

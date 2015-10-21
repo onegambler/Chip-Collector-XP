@@ -1,33 +1,29 @@
 package com.chipcollector.domain;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.NONE;
 
+@Data
 @Entity
 @Table(name = "POKER_CHIP_IMAGES")
 public class BlobImage {
 
     @Id
-    @Getter
+    @Setter(NONE)
     private long id;
 
     @Lob
-    @Getter
-    @Setter
     @Basic(optional = false, fetch = LAZY)
-    @Column(nullable = false, name = "IMAGE")
     private byte[] image;
 
     @Lob
-    @Getter
-    @Setter
     @Basic(optional = false, fetch = EAGER)
-    @Column(nullable = false, name = "THUMBNAIL")
     private byte[] thumbnail;
 
     @Override

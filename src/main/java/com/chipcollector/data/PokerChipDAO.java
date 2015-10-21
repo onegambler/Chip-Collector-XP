@@ -96,4 +96,8 @@ public class PokerChipDAO {
     public Query<PokerChip> createPokerChipFilter() {
         return ebeanServer.createQuery(PokerChip.class);
     }
+
+    public void createDB() {
+
+    }
 }

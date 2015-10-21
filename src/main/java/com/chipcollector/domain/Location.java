@@ -1,35 +1,30 @@
 package com.chipcollector.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.experimental.Builder;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.NONE;
 
 @Data
 @Entity
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "LOCATIONS")
 public class Location {
 
     @Id
+    @Setter(NONE)
     private long id;
 
-    @Column(name = "CITY", nullable = false)
+    @Column(nullable = false)
     private String city;
 
-    @Column(name = "STATE", nullable = false)
+    @Column(nullable = false)
     private String state;
 
-    @ManyToOne(fetch = LAZY, cascade = ALL)
-    @Column(name = "COUNTRY", nullable = false)
+    @ManyToOne(fetch = LAZY, cascade = ALL, optional = false)
     private Country country;
 
 }

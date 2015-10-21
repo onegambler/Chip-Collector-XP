@@ -1,7 +1,7 @@
 package com.chipcollector.domain;
 
 import com.chipcollector.util.MessagesHelper;
-import lombok.experimental.Builder;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,7 +34,6 @@ public class Casino {
     @Column(name = "CLOSE_DATE")
     private LocalDate closeDate;
 
-    @Column(name = "THEME")
     private String theme;
 
     @Transient

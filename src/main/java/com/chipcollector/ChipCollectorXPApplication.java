@@ -57,6 +57,7 @@ public class ChipCollectorXPApplication extends Application {
     }
 
     public void createDB(PokerChipDAO pokerChipDAO) {
+
         //TODO: remove
         final Country country = new Country("Name");
         final Location locat = Location.builder()
