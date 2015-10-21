@@ -23,6 +23,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static java.lang.Math.ceil;
+import static java.lang.Math.max;
 import static javafx.scene.input.MouseButton.PRIMARY;
 
 public class DashboardController implements Initializable {
@@ -62,7 +64,10 @@ public class DashboardController implements Initializable {
 
     private void setUpTablePagination() {
         pagination.setPageFactory(this::getPokerChipTablePage);
-        int numPages = (int) Math.ceil(collection.getPokerChipCount() / PAGE_SIZE);
+
+        int pokerChipCount = collection.getPokerChipCount();
+        int numPages = (int) max(1, ceil(pokerChipCount / PAGE_SIZE)); //we want at least a page
+
         pagination.setPageCount(numPages);
     }
 

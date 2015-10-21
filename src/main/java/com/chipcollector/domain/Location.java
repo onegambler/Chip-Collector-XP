@@ -11,7 +11,7 @@ import static lombok.AccessLevel.NONE;
 @Data
 @Entity
 @Builder
-@Table(name = "LOCATIONS")
+@Table(name = "LOCATIONS", uniqueConstraints = @UniqueConstraint(columnNames = {"city", "state", "country_id"}))
 public class Location {
 
     @Id
@@ -25,6 +25,7 @@ public class Location {
     private String state;
 
     @ManyToOne(fetch = LAZY, cascade = ALL, optional = false)
+    @Column(name = "country_id")
     private Country country;
 
 }
