@@ -57,7 +57,6 @@ public class ChipCollectorXPApplication extends Application {
     }
 
     public void createDB(PokerChipDAO pokerChipDAO) {
-
         //TODO: remove
         final Country country = new Country("Name");
         final Location locat = Location.builder()
@@ -87,7 +86,7 @@ public class ChipCollectorXPApplication extends Application {
         BlobImage image_1 = null;
         try {
             image_1 = new BlobImage();
-            Path imagePath = Paths.get("C:\\Users\\roberto.magale\\IdeaProjects\\ChipCollectorXP\\src\\test-integration\\resources\\images\\java_logo.png");
+            Path imagePath = Paths.get("C:\\Users\\PC\\IdeaProjects\\Chip Collector XP\\src\\test-integration\\resources\\images\\java_logo.png");
             BufferedImage resizedImage = Scalr.resize(ImageIO.read(imagePath.toUri().toURL()), THUMBNAIL_IMAGE_SIZE, THRESHOLD_QUALITY_BALANCED);
             image_1.setThumbnail(ImageConverter.bufferedImageToRawBytes(resizedImage, "png"));
             image_1.setImage(Files.readAllBytes(imagePath));

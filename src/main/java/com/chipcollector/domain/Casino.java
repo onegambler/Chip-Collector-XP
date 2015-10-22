@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Casino {
 
     @Id
-    private long id;
+    private int id;
 
     @Column(nullable = false)
     private String name;
