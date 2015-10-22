@@ -1,8 +1,8 @@
 package com.chipcollector.domain;
 
+import com.avaje.ebean.annotation.CacheStrategy;
 import com.chipcollector.util.ImageConverter;
 import com.google.common.base.Throwables;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +14,12 @@ import java.util.Optional;
 
 import static lombok.AccessLevel.NONE;
 
-@Data
 @Entity
+@Getter
 @NoArgsConstructor
 @Table(name = "COUNTRIES")
-public class Country {
+@CacheStrategy(readOnly = true, warmingQuery = "order by name")
+public final class Country {
 
     @Id
     @Setter(NONE)
@@ -53,14 +54,5 @@ public class Country {
 
         return flagImage;
 
-    }
-
-    public void setFlagImage(BufferedImage flagImage) {
-        try {
-            this.flagImageByteArray = ImageConverter.bufferedImageToRawBytes(flagImage, "png");
-            this.flagImage = Optional.of(flagImage);
-        } catch (IOException e) {
-            Throwables.propagate(e);
-        }
     }
 }

@@ -1,15 +1,14 @@
 package com.chipcollector.data;
 
 import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Transactional;
-import com.chipcollector.domain.BlobImage;
-import com.chipcollector.domain.Casino;
-import com.chipcollector.domain.Country;
-import com.chipcollector.domain.PokerChip;
+import com.chipcollector.domain.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class PokerChipDAO {
@@ -34,8 +33,22 @@ public class PokerChipDAO {
         return ebeanServer.find(Casino.class).findList();
     }
 
+    public CasinoFinder getCasinoFinder() {
+        return new CasinoFinder();
+    }
+
     public List<Country> getAllCountries() {
-        return ebeanServer.find(Country.class).findList();
+        return ebeanServer.find(Country.class)
+                .setUseCache(true)
+                .setReadOnly(false)
+                .findList();
+    }
+
+    public Country getCountry(String name) {
+        return ebeanServer.find(Country.class)
+                .setUseCache(true)
+                .setReadOnly(true)
+                .findUnique();
     }
 
     public void savePokerChip(PokerChip pokerChip) {
@@ -99,5 +112,66 @@ public class PokerChipDAO {
 
     public void createDB() {
 
+    }
+
+    public LocationFinder getLocationFinder() {
+        return new LocationFinder();
+    }
+
+    public class CasinoFinder {
+        private final ExpressionList<Casino> query = ebeanServer.createQuery(Casino.class).where();
+
+        public CasinoFinder withName(String name) {
+            query.eq("name", name);
+            return this;
+        }
+
+        public CasinoFinder withCity(String city) {
+            query.eq("location.city", city);
+            return this;
+        }
+
+        public CasinoFinder withCountry(String country) {
+            query.eq("location.country", country);
+            return this;
+        }
+
+        public CasinoFinder withState(String state) {
+            query.eq("location.state", state);
+            return this;
+        }
+
+        public Optional<Casino> findSingle() {
+            Casino uniqueCasino = ebeanServer.findUnique(query.query(), ebeanServer.currentTransaction());
+            return Optional.ofNullable(uniqueCasino);
+        }
+
+        public List<Casino> findList() {
+            return ebeanServer.findList(query.query(), ebeanServer.currentTransaction());
+        }
+    }
+
+    public class LocationFinder {
+        private final ExpressionList<Location> query = ebeanServer.createQuery(Location.class).where();
+
+        public LocationFinder withCity(String city) {
+            query.eq("city", city);
+            return this;
+        }
+
+        public LocationFinder withCountry(String country) {
+            query.eq("country", country);
+            return this;
+        }
+
+        public LocationFinder withState(String state) {
+            query.eq("state", state);
+            return this;
+        }
+
+        public Optional<Location> findSingle() {
+            Location uniqueLocation = ebeanServer.findUnique(query.query(), ebeanServer.currentTransaction());
+            return Optional.ofNullable(uniqueLocation);
+        }
     }
 }
