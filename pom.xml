@@ -30,7 +30,7 @@
         <h2.version>1.4.186</h2.version>
 
         <build.helper.plugin.version>1.9.1</build.helper.plugin.version>
-        <controlsfx.version>8.40.9</controlsfx.version>
+        <controlsfx.version>8.40.10</controlsfx.version>
         <sqlite-jdbc.version>3.8.11.2</sqlite-jdbc.version>
         <imgscalr.version>4.2</imgscalr.version>
         <liquibase-core.version>3.4.1</liquibase-core.version>
