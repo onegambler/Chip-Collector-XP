@@ -1,11 +1,11 @@
 package com.chipcollector.scraper;
 
 import com.chipcollector.data.PokerChipDAO;
-import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
-import com.chipcollector.scraper.themogh.TheMoghPokerChipScraper;
+import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.themogh.TheMoghCasinoScraper;
+import com.chipcollector.scraper.themogh.TheMoghPokerChipScraper;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +26,7 @@ public class TheMoghScraperEngine implements ScraperEngine {
     }
 
     @Override
-    public List<PokerChip> searchPokerChip(CasinoBean casino) throws IOException {
+    public List<PokerChipBean> searchPokerChip(CasinoBean casino) throws IOException {
         return pokerChipScraper.searchItems(casino);
     }
 }

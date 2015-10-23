@@ -6,6 +6,7 @@ import com.chipcollector.domain.Country;
 import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
+import com.chipcollector.models.dashboard.PokerChipBean;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -45,21 +46,18 @@ public class TheMoghPokerChipScraper {
         this.pokerChipDAO = pokerChipDAO;
     }
 
-    public List<PokerChip> searchItems(CasinoBean casinoBean) throws IOException {
+    public List<PokerChipBean> searchItems(CasinoBean casinoBean) throws IOException {
         checkArgument(casinoBean instanceof TheMoghCasino, "Passed casinoBean it's not of the expected instance {}", TheMoghCasino.class.getSimpleName());
 
         Document doc = Jsoup.connect(WEBSITE_ROOT + ((TheMoghCasino) casinoBean).getDetailPageUrl()).get();
 
-        List<PokerChip> pokerChipList = new ArrayList<>();
+        List<PokerChipBean> pokerChipList = new ArrayList<>();
 
         Elements pokerChipElementList = doc.select(POKER_CHIPS_QUERY);
         for (Element pokerChipElement : pokerChipElementList) {
-            Casino casino = getActualCasino(casinoBean);
 
-            PokerChip pokerChip = PokerChip.builder()
-                    .casino(casino)
-                            //TODO: aggiungere altre info
-                    .build();
+            PokerChipBean pokerChip = new PokerChipBean();
+            pokerChip.set
 
             pokerChipList.add(pokerChip);
         }

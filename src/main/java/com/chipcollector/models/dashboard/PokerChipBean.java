@@ -6,11 +6,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
 
 public class PokerChipBean {
 
@@ -45,6 +47,20 @@ public class PokerChipBean {
             Image image = getImageFromByteArray(pokerChip.getBackImage().map(BlobImage::getThumbnail).get());
             this.backImage = new ImageView(image);
         }
+    }
+
+    private PokerChipBean(StringProperty casinoName, StringProperty cityName, StringProperty denom, StringProperty mold, StringProperty color, StringProperty inlay, StringProperty inserts, StringProperty year, StringProperty tcrId, ImageView frontImage, ImageView backImage) {
+        this.casinoName = casinoName;
+        this.cityName = cityName;
+        this.denom = denom;
+        this.mold = mold;
+        this.color = color;
+        this.inlay = inlay;
+        this.inserts = inserts;
+        this.year = year;
+        this.tcrId = tcrId;
+        this.frontImage = frontImage;
+        this.backImage = backImage;
     }
 
     @NotNull
@@ -97,5 +113,75 @@ public class PokerChipBean {
         return backImage;
     }
 
-    public static final int IMAGE_THUMBNAIL_SIZE = 75;
+    public static PokerChipBeanBuilder builder() {
+        return new PokerChipBeanBuilder();
+    }
+
+
+    public static class PokerChipBeanBuilder {
+        private CasinoBean casinoBean;
+        private String color;
+        private String denom;
+        private String inlay;
+        private String inserts;
+        private String mold;
+        private String tcrId;
+        private String year;
+        private ImageView frontImage;
+        private ImageView backImage;
+
+        public PokerChipBeanBuilder casino(CasinoBean casino) {
+            this.casinoBean = casino;
+            return this;
+        }
+
+        public PokerChipBeanBuilder color(String color) {
+            this.color = color;
+            return this;
+        }
+
+        public PokerChipBeanBuilder denom(String denom) {
+            this.denom = denom;
+            return this;
+        }
+
+        public PokerChipBeanBuilder inlay(String inlay) {
+            this.inlay = inlay;
+            return this;
+        }
+
+        public PokerChipBeanBuilder inserts(String inserts) {
+            this.inserts = inserts;
+            return this;
+        }
+
+        public PokerChipBeanBuilder mold(String mold) {
+            this.mold = mold;
+            return this;
+        }
+
+        public PokerChipBeanBuilder tcrId(String tcrId) {
+            this.tcrId = tcrId;
+            return this;
+        }
+
+        public PokerChipBeanBuilder year(String year) {
+            this.year = year;
+            return this;
+        }
+
+        public PokerChipBeanBuilder frontImage(ImageView frontImage) {
+            this.frontImage = frontImage;
+            return this;
+        }
+
+        public PokerChipBeanBuilder backImage(ImageView backImage) {
+            this.backImage = backImage;
+            return this;
+        }
+
+        public PokerChipBean build() {
+            return new PokerChipBean(casinoBean, color, denom, inlay, inserts, mold, tcrId, year, frontImage, backImage);
+        }
+    }
 }
