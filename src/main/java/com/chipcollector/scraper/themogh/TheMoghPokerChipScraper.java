@@ -5,6 +5,7 @@ import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.Country;
 import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
+import com.chipcollector.models.dashboard.CasinoBean;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,9 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 
-public class TheChipGuidePokerChipScraper {
+public class TheMoghPokerChipScraper {
 
     private static final String WEBSITE_ROOT = "http://www.themogh.org/";
     private static final String IMG_TAG = "img";
@@ -39,22 +41,24 @@ public class TheChipGuidePokerChipScraper {
 
     private final PokerChipDAO pokerChipDAO;
 
-    public TheChipGuidePokerChipScraper(PokerChipDAO pokerChipDAO) {
+    public TheMoghPokerChipScraper(PokerChipDAO pokerChipDAO) {
         this.pokerChipDAO = pokerChipDAO;
     }
 
-    protected List<PokerChip> searchItems(TheMoghCasino theMoghCasino) throws Throwable {
+    public List<PokerChip> searchItems(CasinoBean casinoBean) throws IOException {
+        checkArgument(casinoBean instanceof TheMoghCasino, "Passed casinoBean it's not of the expected instance {}", TheMoghCasino.class.getSimpleName());
 
-        Document doc = Jsoup.connect(WEBSITE_ROOT + theMoghCasino.getDetailPageUrl()).get();
+        Document doc = Jsoup.connect(WEBSITE_ROOT + ((TheMoghCasino) casinoBean).getDetailPageUrl()).get();
 
         List<PokerChip> pokerChipList = new ArrayList<>();
 
         Elements pokerChipElementList = doc.select(POKER_CHIPS_QUERY);
         for (Element pokerChipElement : pokerChipElementList) {
-            Casino casino = getCasino(theMoghCasino);
+            Casino casino = getActualCasino(casinoBean);
 
             PokerChip pokerChip = PokerChip.builder()
                     .casino(casino)
+                            //TODO: aggiungere altre info
                     .build();
 
             pokerChipList.add(pokerChip);
@@ -72,33 +76,27 @@ public class TheChipGuidePokerChipScraper {
         return ImageIO.read(new URL(url));
     }
 
-    public static void main(String[] args) throws Throwable {
-        TheMoghCasino theMoghCasino = TheMoghCasino.builder().build();
-        theMoghCasino.setDetailPageUrl("cg_chip2.php?id=lkcoc1&sort=type");
-        new TheChipGuidePokerChipScraper(null).searchItems(theMoghCasino);
-    }
-
-    public Casino getCasino(TheMoghCasino theChipGuideCasino) {
+    private Casino getActualCasino(CasinoBean casino) {
         Optional<Casino> existingCasino = pokerChipDAO.getCasinoFinder()
-                .withCity(theChipGuideCasino.getCity())
-                .withName(theChipGuideCasino.getName())
-                .withState(theChipGuideCasino.getState())
-                .withCountry(theChipGuideCasino.getCountry())
+                .withCity(casino.getCity())
+                .withName(casino.getName())
+                .withState(casino.getState())
+                .withCountry(casino.getCountry())
                 .findSingle();
 
         if (!existingCasino.isPresent()) {
             Optional<Location> existingLocation = pokerChipDAO.getLocationFinder()
-                    .withCity(theChipGuideCasino.getCity())
-                    .withState(theChipGuideCasino.getState())
-                    .withCountry(theChipGuideCasino.getCountry())
+                    .withCity(casino.getCity())
+                    .withState(casino.getState())
+                    .withCountry(casino.getCountry())
                     .findSingle();
             Location location;
 
             if (!existingLocation.isPresent()) {
-                Country country = pokerChipDAO.getCountry(theChipGuideCasino.getCountry());
+                Country country = pokerChipDAO.getCountry(casino.getCountry());
                 location = Location.builder()
-                        .city(theChipGuideCasino.getCity())
-                        .state(theChipGuideCasino.getState())
+                        .city(casino.getCity())
+                        .state(casino.getState())
                         .country(country)
                         .build();
 
@@ -108,8 +106,8 @@ public class TheChipGuidePokerChipScraper {
 
             return Casino.builder()
                     .location(location)
-                    .name(theChipGuideCasino.getName())
-                    .website(theChipGuideCasino.getWebsiteUrl())
+                    .name(casino.getName())
+                    .website(casino.getWebsite())
                     .build();
         }
 

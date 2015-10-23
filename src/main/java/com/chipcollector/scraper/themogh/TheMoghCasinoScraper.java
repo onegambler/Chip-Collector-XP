@@ -1,11 +1,13 @@
 package com.chipcollector.scraper.themogh;
 
+import com.chipcollector.models.dashboard.CasinoBean;
 import com.google.common.collect.ImmutableSet;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +18,7 @@ public class TheMoghCasinoScraper {
     public static final String SEARCH_URL = "http://www.themogh.org/cg_casino_search.php";
     public static final String CASINO_LIST_QUERY = "td.casinolist:not([align]) tr:has(td[class~=casinolist?]";
 
-    protected List<TheMoghCasino> searchItems(String query) throws Throwable {
+    public List<CasinoBean> searchItems(String query) throws IOException {
         String nameString, cityString, stateString, websiteString, countryString, detailsPageUrl;
 
         Document doc = Jsoup.connect(SEARCH_URL)
@@ -28,7 +30,7 @@ public class TheMoghCasinoScraper {
 
         Elements casinoHtmlTableRows = doc.select(CASINO_LIST_QUERY);
 
-        List<TheMoghCasino> queryResult = new ArrayList<>();
+        List<CasinoBean> queryResult = new ArrayList<>();
         for (Element element : casinoHtmlTableRows) {
             countryString = CasinoElement.COUNTRY.getTextFrom(element);
             nameString = CasinoElement.NAME.getTextFrom(element);
@@ -43,15 +45,14 @@ public class TheMoghCasinoScraper {
                 stateString = null;
             }
 
-            TheMoghCasino casino = TheMoghCasino.builder()
-                    .city(cityString)
-                    .state(stateString)
-                    .country(countryString)
+            TheMoghCasino casino = TheMoghCasino.moghCasinoBuilder()
                     .name(nameString)
                     .detailPageUrl(detailsPageUrl)
+                    .city(cityString)
+                    .country(countryString)
+                    .state(stateString)
                     .websiteUrl(websiteString)
                     .build();
-
 
             queryResult.add(casino);
         }

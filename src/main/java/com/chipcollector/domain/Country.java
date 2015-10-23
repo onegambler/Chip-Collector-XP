@@ -3,9 +3,7 @@ package com.chipcollector.domain;
 import com.avaje.ebean.annotation.CacheStrategy;
 import com.chipcollector.util.ImageConverter;
 import com.google.common.base.Throwables;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.awt.image.BufferedImage;
@@ -16,7 +14,9 @@ import static lombok.AccessLevel.NONE;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "COUNTRIES")
 @CacheStrategy(readOnly = true, warmingQuery = "order by name")
 public final class Country {
