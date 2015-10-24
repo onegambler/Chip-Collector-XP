@@ -25,7 +25,7 @@ public final class Country {
     @Setter(NONE)
     private long id;
 
-    @Column(length = 50)
+    @Column
     private String name;
 
     @Lob

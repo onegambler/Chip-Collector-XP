@@ -1,7 +1,5 @@
 package com.chipcollector.scraper;
 
-import com.chipcollector.data.PokerChipDAO;
-import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.themogh.TheMoghCasinoScraper;
@@ -15,9 +13,9 @@ public class TheMoghScraperEngine implements ScraperEngine {
     private TheMoghCasinoScraper casinoScraper;
     private TheMoghPokerChipScraper pokerChipScraper;
 
-    public TheMoghScraperEngine(PokerChipDAO pokerChipDAO) {
+    public TheMoghScraperEngine() {
         casinoScraper = new TheMoghCasinoScraper();
-        pokerChipScraper = new TheMoghPokerChipScraper(pokerChipDAO);
+        pokerChipScraper = new TheMoghPokerChipScraper();
     }
 
     @Override

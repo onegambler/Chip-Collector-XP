@@ -9,11 +9,14 @@ import javafx.scene.image.ImageView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 
+@ToString
 public class PokerChipBean {
 
     private StringProperty casinoName;
@@ -59,6 +62,21 @@ public class PokerChipBean {
         this.inserts = inserts;
         this.year = year;
         this.tcrId = tcrId;
+        this.frontImage = frontImage;
+        this.backImage = backImage;
+    }
+
+    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold, String tcrId, String year, ImageView frontImage, ImageView backImage) {
+        this.casinoName = new SimpleStringProperty(casinoBean.getName());
+        this.cityName = new SimpleStringProperty(casinoBean.getCity());
+        this.color = new SimpleStringProperty(color);
+        this.denom = new SimpleStringProperty(denom);
+        this.inlay = new SimpleStringProperty(inlay);
+        this.inserts = new SimpleStringProperty(inserts);
+        this.mold = new SimpleStringProperty(mold);
+        this.tcrId = new SimpleStringProperty(tcrId);
+        this.year = new SimpleStringProperty(year);
+        this.tcrId = new SimpleStringProperty(tcrId);
         this.frontImage = frontImage;
         this.backImage = backImage;
     }
@@ -177,6 +195,21 @@ public class PokerChipBean {
 
         public PokerChipBeanBuilder backImage(ImageView backImage) {
             this.backImage = backImage;
+            return this;
+        }
+
+        public PokerChipBeanBuilder images(List<Image> pictures) {
+            if (pictures.size() >= 1) {
+
+                this.frontImage(new ImageView(pictures.get(0)));
+
+                if (pictures.size() >= 2) {
+                    this.backImage(new ImageView(pictures.get(1)));
+                } else {
+                    this.backImage(new ImageView(pictures.get(0)));
+                }
+            }
+
             return this;
         }
 

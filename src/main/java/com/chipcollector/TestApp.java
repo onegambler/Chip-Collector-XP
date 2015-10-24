@@ -2,7 +2,6 @@ package com.chipcollector;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
-import com.chipcollector.controllers.dashboard.SearchDialogController;
 import com.chipcollector.data.PokerChipDAO;
 import com.google.common.io.Resources;
 import javafx.application.Application;
@@ -31,15 +30,11 @@ public class TestApp extends Application {
         final EbeanServer ebeanServer = Ebean.getDefaultServer();
         PokerChipDAO pokerChipDAO = new PokerChipDAO(ebeanServer);
 
-        SearchDialogController controller = loader.<SearchDialogController>getController();
-        controller.setPokerChipDao(pokerChipDAO);
-
-
         Scene scene = new Scene(root, 400, 600);
         primaryStage.setTitle("Chip Collector XP");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchDialog.fxml";
+    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
 }

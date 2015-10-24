@@ -27,43 +27,43 @@ public class PokerChip {
     @ManyToOne(optional = false, cascade = {PERSIST, REFRESH, MERGE})
     private Casino casino;
 
-    @Column(length = 50)
+    @Column
     private String denom;
 
-    @Column(length = 4)
+    @Column
     private String year;
 
-    @Column(length = 50)
+    @Column
     private String color;
 
-    @Column(length = 50)
+    @Column
     private String inserts;
 
-    @Column(length = 50)
+    @Column
     private String mold;
 
-    @Column(unique = true, length = 10)
+    @Column(unique = true)
     private String tcrID;
 
-    @Column(scale = 3)
+    @Column
     private int issue;
 
-    @Column(length = 50)
+    @Column
     private String inlay;
 
-    @Column(length = 4)
+    @Column
     private String rarity;
 
-    @Column(length = 15)
+    @Column
     private String condition;
 
-    @Column(length = 25)
+    @Column
     private String category;
 
     @Column(name = "ACQUISITION_DATE")
     private LocalDate acquisitionDate;
 
-    @Column(length = 4000)
+    @Column
     private String notes;
 
     private MoneyAmount value;

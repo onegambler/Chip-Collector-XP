@@ -1,6 +1,5 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.ScraperEngine;
@@ -8,7 +7,6 @@ import com.chipcollector.scraper.TheMoghScraperEngine;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -21,13 +19,10 @@ import java.util.ResourceBundle;
 
 import static javafx.scene.input.KeyCode.ENTER;
 
-public class SearchDialogController implements Initializable {
+public class SearchPokerChipDialogController implements Initializable {
 
     @FXML
     private TextField searchTextField;
-
-    @FXML
-    private Button searchButton;
 
     @FXML
     private ComboBox<String> searchSourceCombobox;
@@ -40,13 +35,10 @@ public class SearchDialogController implements Initializable {
 
     private ScraperEngine engine;
 
-    public void setPokerChipDao(PokerChipDAO pokerChipDao) {
-        engine = new TheMoghScraperEngine(pokerChipDao);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        //TODO: selezione sulla base della combobox
+        engine = new TheMoghScraperEngine();
     }
 
     @FXML

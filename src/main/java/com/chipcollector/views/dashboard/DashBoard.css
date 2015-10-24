@@ -1,7 +1,7 @@
 .root {
     -fx-base: rgb(50, 50, 50);
     -fx-background: rgb(50, 50, 50);
-    -fx-control-inner-background:  rgb(50, 50, 50);
+    -fx-control-inner-background: rgb(50, 50, 50);
 }
 
 .menu-bar {
@@ -25,6 +25,7 @@
 
 .table-view .table-row-cell {
     -fx-table-cell-border-color: transparent;
+    -fx-cell-size: 100px;
 }
 
 .left-align .label {
