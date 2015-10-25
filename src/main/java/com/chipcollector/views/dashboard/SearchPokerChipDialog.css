@@ -24,10 +24,6 @@
     -fx-padding: 0;
 }
 
-.table-view .table-row-cell {
-    -fx-table-cell-border-color: transparent;
-}
-
 .left-align .label {
     -fx-alignment: center-left;
     -fx-label-padding: 5px;

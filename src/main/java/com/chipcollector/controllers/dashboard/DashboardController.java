@@ -1,5 +1,6 @@
 package com.chipcollector.controllers.dashboard;
 
+import com.chipcollector.data.AppConfiguration;
 import com.chipcollector.data.Collection;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
@@ -11,13 +12,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lombok.Setter;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -25,11 +32,10 @@ import java.util.ResourceBundle;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
+import static javafx.scene.control.SelectionMode.SINGLE;
 import static javafx.scene.input.MouseButton.PRIMARY;
 
 public class DashboardController implements Initializable {
-
-    private static final int PAGE_SIZE = 200;
 
     @Setter
     private Collection collection;
@@ -42,13 +48,16 @@ public class DashboardController implements Initializable {
     private TreeView<Object> casinoTreeView;
 
     private ResourceBundle resources;
+    private AppConfiguration configuration;
 
-    public DashboardController() {
+    public void setConfiguration(AppConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
+        this.casinoTreeView.getSelectionModel().setSelectionMode(SINGLE);
     }
 
     public void loadComponentsData() {
@@ -66,7 +75,7 @@ public class DashboardController implements Initializable {
         pagination.setPageFactory(this::getPokerChipTablePage);
 
         int pokerChipCount = collection.getPokerChipCount();
-        int numPages = (int) max(1, ceil(pokerChipCount / PAGE_SIZE)); //we want at least a page
+        int numPages = (int) max(1, ceil(pokerChipCount / configuration.getPaginationSize())); //we want at least a page
 
         pagination.setPageCount(numPages);
     }
@@ -82,7 +91,7 @@ public class DashboardController implements Initializable {
 
     private Node getPokerChipTablePage(int pageIndex) {
         pokerChipsTable.getItems().clear();
-        List<PokerChip> pagedPokerChips = collection.getPagedPokerChips(pageIndex, PAGE_SIZE);
+        List<PokerChip> pagedPokerChips = collection.getPagedPokerChips(pageIndex, configuration.getPaginationSize());
         pagedPokerChips.stream()
                 .map(PokerChipBean::new)
                 .forEach(pokerChipsTable.getItems()::add);
@@ -101,5 +110,21 @@ public class DashboardController implements Initializable {
         }
     }
 
+    @FXML
+    public void showSearchPokerChipDialog() throws IOException {
+        FXMLLoader loader = new FXMLLoader(Resources.getResource(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION), resources);
+        final BorderPane searchPokerChipDialog = loader.load();
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Search PokerChip");
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        //dialogStage.initOwner(); //TODO: init the owner
+        Scene scene = new Scene(searchPokerChipDialog);
+        dialogStage.setScene(scene);
+
+        dialogStage.showAndWait();
+    }
+
     public static final String TABLE_VIEW_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipsTableView.fxml";
+    public static final String POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
 }

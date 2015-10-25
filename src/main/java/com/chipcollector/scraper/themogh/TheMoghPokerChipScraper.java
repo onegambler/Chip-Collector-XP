@@ -1,5 +1,6 @@
 package com.chipcollector.scraper.themogh;
 
+import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.models.dashboard.PokerChipBean.PokerChipBeanBuilder;
@@ -9,8 +10,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -19,6 +23,7 @@ import static com.chipcollector.util.StringUtils.toCamelCase;
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.DOTALL;
+import static java.util.stream.Collectors.*;
 
 public class TheMoghPokerChipScraper {
 
@@ -39,6 +44,8 @@ public class TheMoghPokerChipScraper {
     private static final String IMG_SRC_ATTRIBUTE = "src";
     private static final String TD_CHIPINFO = "td.chipinfo";
 
+    private final Executor executor = Executors.newSingleThreadExecutor();
+
     public List<PokerChipBean> searchItems(CasinoBean casinoBean) throws IOException {
         checkArgument(casinoBean instanceof TheMoghCasino, "Passed casinoBean it's not of the expected instance {}", TheMoghCasino.class.getSimpleName());
 
@@ -50,19 +57,18 @@ public class TheMoghPokerChipScraper {
 
         //TODO: add casino details
 
-        List<PokerChipBean> pokerChipList = new ArrayList<>();
+        List<Entry<PokerChipBean, List<String>>> pokerChipBeanWithPictureUrlsSet = new ArrayList<>();
+
         for (int i = 1; i < pokerChipElementList.size(); i++) {
 
             Element pokerChipElement = pokerChipElementList.get(i);
-            List<Image> pictures = pokerChipElement.select(IMAGE_QUERY).stream()
+            List<String> pictureUrls = pokerChipElement.select(IMAGE_QUERY).stream()
                     .map(element -> element.attr(IMG_SRC_ATTRIBUTE))
-                    .map(this::getImageFromUrl)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
             PokerChipBeanBuilder pokerChipBuilder =
                     PokerChipBean.builder()
-                            .casino(casinoBean)
-                            .images(pictures);
+                            .casino(casinoBean);
 
             for (String token : pokerChipElement.html().split(BR_HTML_TAG)) {
                 if (!token.isEmpty()) {
@@ -110,9 +116,18 @@ public class TheMoghPokerChipScraper {
                     }
                 }
             }
-            pokerChipList.add(pokerChipBuilder.build());
+
+            pokerChipBeanWithPictureUrlsSet.add(new SimpleEntry<>(pokerChipBuilder.build(), pictureUrls));
         }
-        return pokerChipList;
+
+        executor.execute(() -> {
+            for (Entry<PokerChipBean, List<String>> entry : pokerChipBeanWithPictureUrlsSet) {
+                final List<Image> images = entry.getValue().stream().map(this::getImageFromUrl).collect(toList());
+                entry.getKey().setImages(images);
+            }
+        });
+
+        return pokerChipBeanWithPictureUrlsSet.stream().map(Entry::getKey).collect(toList());
     }
 
     private String convertToCamelCase(Matcher matcher) {

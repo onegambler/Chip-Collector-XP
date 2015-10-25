@@ -34,14 +34,23 @@ public class AppConfiguration {
         Preference.LAST_DATABASE.setString(path);
     }
 
+    public int getPaginationSize() {
+        return Preference.PAGINATION_SIZE.getInt();
+    }
+
+    public void setPaginationSize(int paginationSize) {
+        Preference.PAGINATION_SIZE.setInt(paginationSize);
+    }
+
     private enum Preference {
         WINDOW_HEIGHT("window.size.h", 600d),
         WINDOW_WIDTH("window.size.w", 600d),
-        LAST_DATABASE("database.path", null);
+        LAST_DATABASE("database.path", null),
+        PAGINATION_SIZE("pagination.size", 200);
 
         private final String preferenceName;
         private final Object defaultValue;
-        private final Preferences preferences = Preferences.systemNodeForPackage(ChipCollectorXPApplication.class);
+        private final Preferences preferences = Preferences.userNodeForPackage(ChipCollectorXPApplication.class);
 
         Preference(String preferenceName, Object defaultValue) {
             this.preferenceName = preferenceName;
@@ -62,6 +71,14 @@ public class AppConfiguration {
 
         public double getDouble() {
             return preferences.getDouble(preferenceName, (double) defaultValue);
+        }
+
+        public int getInt() {
+            return preferences.getInt(preferenceName, (int) defaultValue);
+        }
+
+        public void setInt(int value) {
+            preferences.putInt(preferenceName, value);
         }
     }
 }

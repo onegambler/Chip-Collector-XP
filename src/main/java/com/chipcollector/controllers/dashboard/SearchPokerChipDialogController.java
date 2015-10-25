@@ -10,13 +10,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static java.util.Objects.nonNull;
 import static javafx.scene.input.KeyCode.ENTER;
 
 public class SearchPokerChipDialogController implements Initializable {
@@ -35,10 +39,13 @@ public class SearchPokerChipDialogController implements Initializable {
 
     private ScraperEngine engine;
 
+    private CasinoBean currentCasino;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //TODO: selezione sulla base della combobox
         engine = new TheMoghScraperEngine();
+        //pokerChipsTableView.setFixedCellSize(100);
     }
 
     @FXML
@@ -47,10 +54,22 @@ public class SearchPokerChipDialogController implements Initializable {
     }
 
     @FXML
-    public void onCasinoElementClicked() throws IOException {
-        //TODO: do some UI loading stuff
+    public void onCasinoElementClicked(MouseEvent mouseEvent) throws IOException {
+        if (mouseEvent.isPrimaryButtonDown()) {
+            searchPokerChip();
+        }
+    }
+
+    public void onCasinoTableKeyPressed(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchPokerChip();
+        }
+    }
+
+    private void searchPokerChip() throws IOException {
         CasinoBean selectedCasino = casinosTableView.getSelectionModel().getSelectedItem();
-        if (selectedCasino != null) {
+        if (nonNull(selectedCasino) && !selectedCasino.equals(currentCasino)) {
+            currentCasino = selectedCasino;
             List<PokerChipBean> pokerChips = engine.searchPokerChip(selectedCasino);
             pokerChipsTableView.setItems(FXCollections.observableArrayList(pokerChips));
         }

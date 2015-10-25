@@ -66,7 +66,7 @@ public class PokerChipBean {
         this.backImage = backImage;
     }
 
-    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold, String tcrId, String year, ImageView frontImage, ImageView backImage) {
+    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold, String tcrId, String year, Image frontImage, Image backImage) {
         this.casinoName = new SimpleStringProperty(casinoBean.getName());
         this.cityName = new SimpleStringProperty(casinoBean.getCity());
         this.color = new SimpleStringProperty(color);
@@ -77,8 +77,8 @@ public class PokerChipBean {
         this.tcrId = new SimpleStringProperty(tcrId);
         this.year = new SimpleStringProperty(year);
         this.tcrId = new SimpleStringProperty(tcrId);
-        this.frontImage = frontImage;
-        this.backImage = backImage;
+        this.frontImage = new ImageView(frontImage);
+        this.backImage = new ImageView(backImage);
     }
 
     @NotNull
@@ -131,6 +131,19 @@ public class PokerChipBean {
         return backImage;
     }
 
+    public void setImages(List<Image> pictures) {
+        if (pictures.size() >= 1) {
+
+            this.frontImage.setImage(pictures.get(0));
+
+            if (pictures.size() >= 2) {
+                this.backImage.setImage(pictures.get(1));
+            } else {
+                this.backImage.setImage(pictures.get(0));
+            }
+        }
+    }
+
     public static PokerChipBeanBuilder builder() {
         return new PokerChipBeanBuilder();
     }
@@ -145,8 +158,8 @@ public class PokerChipBean {
         private String mold;
         private String tcrId;
         private String year;
-        private ImageView frontImage;
-        private ImageView backImage;
+        private Image frontImage;
+        private Image backImage;
 
         public PokerChipBeanBuilder casino(CasinoBean casino) {
             this.casinoBean = casino;
@@ -188,28 +201,13 @@ public class PokerChipBean {
             return this;
         }
 
-        public PokerChipBeanBuilder frontImage(ImageView frontImage) {
+        public PokerChipBeanBuilder frontImage(Image frontImage) {
             this.frontImage = frontImage;
             return this;
         }
 
-        public PokerChipBeanBuilder backImage(ImageView backImage) {
+        public PokerChipBeanBuilder backImage(Image backImage) {
             this.backImage = backImage;
-            return this;
-        }
-
-        public PokerChipBeanBuilder images(List<Image> pictures) {
-            if (pictures.size() >= 1) {
-
-                this.frontImage(new ImageView(pictures.get(0)));
-
-                if (pictures.size() >= 2) {
-                    this.backImage(new ImageView(pictures.get(1)));
-                } else {
-                    this.backImage(new ImageView(pictures.get(0)));
-                }
-            }
-
             return this;
         }
 

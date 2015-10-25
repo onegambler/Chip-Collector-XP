@@ -3,6 +3,7 @@ package com.chipcollector;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
 import com.chipcollector.controllers.dashboard.DashboardController;
+import com.chipcollector.data.AppConfiguration;
 import com.chipcollector.data.Collection;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
@@ -41,13 +42,16 @@ public class ChipCollectorXPApplication extends Application {
 
         final EbeanServer ebeanServer = Ebean.getDefaultServer();
         PokerChipDAO pokerChipDAO = new PokerChipDAO(ebeanServer);
-        final Collection collection = new Collection(pokerChipDAO);
-        //createDB(pokerChipDAO);
 
+        final Collection collection = new Collection(pokerChipDAO);
+        final AppConfiguration configuration = new AppConfiguration();
+
+        //createDB(pokerChipDAO);
         Parent root = loader.load();
 
         DashboardController controller = loader.<DashboardController>getController();
         controller.setCollection(collection);
+        controller.setConfiguration(configuration);
         controller.loadComponentsData();
 
         Scene scene = new Scene(root, 400, 600);
