@@ -36,5 +36,5 @@ public class TestApp extends Application {
         primaryStage.show();
     }
 
-    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
+    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
 }

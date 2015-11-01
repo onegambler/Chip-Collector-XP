@@ -1,30 +1,22 @@
 package com.chipcollector;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.EbeanServer;
-import com.chipcollector.controllers.dashboard.DashboardController;
-import com.chipcollector.data.AppConfiguration;
-import com.chipcollector.data.Collection;
+import com.chipcollector.config.SpringAppConfig;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
 import com.chipcollector.util.ImageConverter;
-import com.google.common.io.Resources;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.imgscalr.Scalr;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import static org.imgscalr.Scalr.THRESHOLD_QUALITY_BALANCED;
 
@@ -35,7 +27,19 @@ public class ChipCollectorXPApplication extends Application {
         launch(args);
     }
 
+    private static final SpringFxmlLoader loader = new SpringFxmlLoader();
+
     @Override
+    public void start(Stage primaryStage) {
+        loader.setApplicationContext(new AnnotationConfigApplicationContext(SpringAppConfig.class));
+        Parent root = loader.load(DASHBOARD_FX_FILE_LOCATION);
+        Scene scene = new Scene(root, 400, 600);
+        primaryStage.setTitle("Chip Collector XP");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    /*@Override
     public void start(Stage primaryStage) throws IOException {
         ResourceBundle bundle = ResourceBundle.getBundle("DisplayStrings", Locale.ENGLISH);
         FXMLLoader loader = new FXMLLoader(Resources.getResource(DASHBOARD_FX_FILE_LOCATION), bundle);
@@ -50,7 +54,6 @@ public class ChipCollectorXPApplication extends Application {
         Parent root = loader.load();
 
         DashboardController controller = loader.<DashboardController>getController();
-        controller.setCollection(collection);
         controller.setConfiguration(configuration);
         controller.loadComponentsData();
 
@@ -58,7 +61,7 @@ public class ChipCollectorXPApplication extends Application {
         primaryStage.setTitle("Chip Collector XP");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
+    }*/
 
     public void createDB(PokerChipDAO pokerChipDAO) {
         //TODO: remove

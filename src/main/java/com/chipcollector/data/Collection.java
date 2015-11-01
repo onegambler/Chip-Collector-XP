@@ -3,15 +3,19 @@ package com.chipcollector.data;
 import com.avaje.ebean.Query;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class Collection {
 
     private final PokerChipDAO pokerChipDAO;
 
     private Query<PokerChip> currentFilter;
 
+    @Autowired
     public Collection(PokerChipDAO pokerChipDAO) {
         this.pokerChipDAO = pokerChipDAO;
         this.currentFilter = pokerChipDAO.createPokerChipFilter();

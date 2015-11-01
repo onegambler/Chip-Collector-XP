@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableSet;
 
 import java.util.Set;
 
+import static java.lang.Character.toLowerCase;
+import static java.lang.Character.toUpperCase;
 import static java.util.Objects.isNull;
 
 public class StringUtils {
@@ -24,13 +26,8 @@ public class StringUtils {
         final StringBuilder camelCaseString = new StringBuilder(string.length());
 
         for (Character character : string.toCharArray()) {
-            if (isUppercase) {
-                character = Character.toUpperCase(character);
-            } else {
-                character = Character.toLowerCase(character);
-            }
+            character = isUppercase ? toUpperCase(character) : toLowerCase(character);
             camelCaseString.append(character);
-
             isUppercase = delimiters.contains(character);
         }
 

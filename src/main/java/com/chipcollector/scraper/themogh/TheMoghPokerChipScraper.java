@@ -1,6 +1,5 @@
 package com.chipcollector.scraper.themogh;
 
-import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.models.dashboard.PokerChipBean.PokerChipBeanBuilder;
@@ -10,20 +9,20 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.chipcollector.util.StringUtils.toCamelCase;
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.DOTALL;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 public class TheMoghPokerChipScraper {
 

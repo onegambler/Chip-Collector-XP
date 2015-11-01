@@ -1,18 +1,15 @@
 package com.chipcollector.controllers.dashboard;
 
+import com.chipcollector.SpringFxmlLoader;
 import com.chipcollector.data.AppConfiguration;
 import com.chipcollector.data.Collection;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
-import com.google.common.base.Throwables;
-import com.google.common.io.Resources;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableView;
@@ -22,23 +19,27 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static com.chipcollector.util.EventUtils.isMousePrimaryButtonPressed;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 import static javafx.scene.control.SelectionMode.SINGLE;
-import static javafx.scene.input.MouseButton.PRIMARY;
 
+@Component
 public class DashboardController implements Initializable {
 
-    @Setter
+
     private Collection collection;
+    private AppConfiguration configuration;
+    private SpringFxmlLoader loader;
+
     private TableView<PokerChipBean> pokerChipsTable;
 
     @FXML
@@ -47,28 +48,23 @@ public class DashboardController implements Initializable {
     @FXML
     private TreeView<Object> casinoTreeView;
 
-    private ResourceBundle resources;
-    private AppConfiguration configuration;
-
-    public void setConfiguration(AppConfiguration configuration) {
+    @Autowired
+    public DashboardController(Collection collection, AppConfiguration configuration, SpringFxmlLoader loader) {
+        this.collection = collection;
         this.configuration = configuration;
+        this.loader = loader;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.resources = resources;
-        this.casinoTreeView.getSelectionModel().setSelectionMode(SINGLE);
-    }
-
-    public void loadComponentsData() {
         setUpTablePagination();
-        setUpPokerChipTable(resources);
+        setUpPokerChipTable();
         setUpCasinoTreeView();
     }
 
     private void setUpCasinoTreeView() {
-        List<Casino> allCasinos = collection.getAllCasinos();
-        casinoTreeView.setRoot(new CasinoTreeRoot(allCasinos));
+        casinoTreeView.getSelectionModel().setSelectionMode(SINGLE);
+        populateCasinoTreeView();
     }
 
     private void setUpTablePagination() {
@@ -80,13 +76,14 @@ public class DashboardController implements Initializable {
         pagination.setPageCount(numPages);
     }
 
-    private void setUpPokerChipTable(ResourceBundle resources) {
-        try {
-            pokerChipsTable = new FXMLLoader(Resources.getResource(TABLE_VIEW_FX_FILE_LOCATION), resources).load();
-            pokerChipsTable.setItems(FXCollections.observableArrayList());
-        } catch (IOException e) {
-            Throwables.propagate(e);
-        }
+    private void setUpPokerChipTable() {
+        pokerChipsTable = loader.load(TABLE_VIEW_FX_FILE_LOCATION);
+        pokerChipsTable.setItems(FXCollections.observableArrayList());
+    }
+
+    private void populateCasinoTreeView() {
+        List<Casino> allCasinos = collection.getAllCasinos();
+        casinoTreeView.setRoot(new CasinoTreeRoot(allCasinos));
     }
 
     private Node getPokerChipTablePage(int pageIndex) {
@@ -101,7 +98,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     public void onMouseClick(MouseEvent event) {
-        if (event.getButton() == PRIMARY) {
+        if (isMousePrimaryButtonPressed(event)) {
             TreeItem<Object> selectedItem = casinoTreeView.getSelectionModel().getSelectedItem();
             if (selectedItem != null && selectedItem.getValue() instanceof Casino) {
                 collection.setCasinoFilter((Casino) selectedItem.getValue());
@@ -112,8 +109,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     public void showSearchPokerChipDialog() throws IOException {
-        FXMLLoader loader = new FXMLLoader(Resources.getResource(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION), resources);
-        final BorderPane searchPokerChipDialog = loader.load();
+        final BorderPane searchPokerChipDialog = loader.load(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION);
 
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Search PokerChip");

@@ -1,14 +1,15 @@
 package com.chipcollector.data;
 
 import com.chipcollector.ChipCollectorXPApplication;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.prefs.Preferences;
 
 import static java.util.Optional.ofNullable;
 
+@Repository
 public class AppConfiguration {
-
 
     public double getMainWindowHeigh() {
         return Preference.WINDOW_HEIGHT.getDouble();
@@ -26,7 +27,7 @@ public class AppConfiguration {
         Preference.WINDOW_WIDTH.setDouble(windowWidth);
     }
 
-    public Optional getLastUsedDatabase() {
+    public Optional<String> getLastUsedDatabase() {
         return ofNullable(Preference.LAST_DATABASE.getString());
     }
 
