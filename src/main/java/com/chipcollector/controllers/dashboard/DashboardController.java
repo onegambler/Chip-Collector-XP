@@ -7,6 +7,7 @@ import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -108,19 +109,29 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    public void showSearchPokerChipDialog() throws IOException {
-        final BorderPane searchPokerChipDialog = loader.load(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION);
+    public void showSearchPokerChipDialog(ActionEvent actionEvent) throws IOException {
+        showDialog("Search PokerChip", POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION);
+    }
+
+    @FXML
+    public void showAddPokerChipDialog(ActionEvent actionEvent) {
+        showDialog("Add PokerChip", POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION);
+    }
+
+    private void showDialog(String title, String fxmlLocation) {
+        final BorderPane dialog = loader.load(fxmlLocation);
 
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Search PokerChip");
+        dialogStage.setTitle(title);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         //dialogStage.initOwner(); //TODO: init the owner
-        Scene scene = new Scene(searchPokerChipDialog);
+        Scene scene = new Scene(dialog);
         dialogStage.setScene(scene);
-
         dialogStage.showAndWait();
     }
 
     public static final String TABLE_VIEW_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipsTableView.fxml";
     public static final String POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
+    public static final String POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
+
 }

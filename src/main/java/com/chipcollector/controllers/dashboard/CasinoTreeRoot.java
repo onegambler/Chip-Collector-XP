@@ -67,5 +67,5 @@ public class CasinoTreeRoot extends TreeItem<Object> {
         }
     }
 
-    private static final String CASINO_STRING_KEY = "domain.casino";
+    private static final String CASINO_STRING_KEY = "dashboard.casinotree.node.allcasinos";
 }
