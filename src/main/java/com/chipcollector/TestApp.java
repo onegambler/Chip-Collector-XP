@@ -30,7 +30,7 @@ public class TestApp extends Application {
         final EbeanServer ebeanServer = Ebean.getDefaultServer();
         PokerChipDAO pokerChipDAO = new PokerChipDAO(ebeanServer);
 
-        Scene scene = new Scene(root, 400, 600);
+        Scene scene = new Scene(root, 620, 500);
         primaryStage.setTitle("Chip Collector XP");
         primaryStage.setScene(scene);
         primaryStage.show();

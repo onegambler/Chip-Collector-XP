@@ -1,22 +1,43 @@
+.root {
+    -fx-base: rgb(150, 150, 150);
+    -fx-background: rgb(150, 150, 150);
+    -fx-control-inner-background: rgb(150, 150, 150);
+}
+
+#buttonBar {
+    -fx-base: rgb(50, 50, 50);
+    -fx-background: rgb(50, 50, 50);
+    -fx-control-inner-background: rgb(50, 50, 50);
+}
+
+.image-view {
+    -fx-cursor: hand;
+}
+
+.image-border {
+    -fx-border-color: black;
+    -fx-border-width: 1;
+}
+
 .label {
     -fx-font-size: 8pt;
     -fx-font-weight: bold;
 }
 
 .toggle-button#cancelledToggleButton {
-    -fx-graphic: url('file:///C:/Users/PC/Desktop/demo/cancelled.unselected.png');
+    -fx-graphic: url("/images/cancelled.unselected.png");
 }
 
 .toggle-button:selected#cancelledToggleButton {
-    -fx-graphic: url('file:///C:/Users/PC/Desktop/demo/cancelled.selected.png');
+    -fx-graphic: url("/images/cancelled.selected.png");
 }
 
 .toggle-button#obsoleteToggleButton {
-    -fx-graphic: url('file:///C:/Users/PC/Desktop/demo/obsolete.unselected.png');
+    -fx-graphic: url("/images/obsolete.unselected.png");
 }
 
 .toggle-button:selected#obsoleteToggleButton {
-    -fx-graphic: url('file:///C:/Users/PC/Desktop/demo/obsolete.selected.png');
+    -fx-graphic: url("/images/obsolete.selected.png");
 }
 
 #money-text-field {
@@ -29,7 +50,7 @@
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 3, 2, 2;
     -fx-padding: 3 5 3 5;
-    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
+    -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
     -fx-cursor: text;
 }
 
