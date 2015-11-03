@@ -1,7 +1,7 @@
 package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.SpringFxmlLoader;
-import com.chipcollector.data.AppConfiguration;
+import com.chipcollector.data.AppSettings;
 import com.chipcollector.data.Collection;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
@@ -38,7 +38,7 @@ public class DashboardController implements Initializable {
 
 
     private Collection collection;
-    private AppConfiguration configuration;
+    private AppSettings settings;
     private SpringFxmlLoader loader;
 
     private TableView<PokerChipBean> pokerChipsTable;
@@ -50,9 +50,9 @@ public class DashboardController implements Initializable {
     private TreeView<Object> casinoTreeView;
 
     @Autowired
-    public DashboardController(Collection collection, AppConfiguration configuration, SpringFxmlLoader loader) {
+    public DashboardController(Collection collection, AppSettings configuration, SpringFxmlLoader loader) {
         this.collection = collection;
-        this.configuration = configuration;
+        this.settings = configuration;
         this.loader = loader;
     }
 
@@ -61,6 +61,15 @@ public class DashboardController implements Initializable {
         setUpTablePagination();
         setUpPokerChipTable();
         setUpCasinoTreeView();
+
+        loadDatabase();
+    }
+
+    private void loadDatabase() {
+        settings.getLastUsedDatabase().ifPresent(s ->
+        {
+            collection.load();
+        });
     }
 
     private void setUpCasinoTreeView() {
@@ -72,7 +81,7 @@ public class DashboardController implements Initializable {
         pagination.setPageFactory(this::getPokerChipTablePage);
 
         int pokerChipCount = collection.getPokerChipCount();
-        int numPages = (int) max(1, ceil(pokerChipCount / configuration.getPaginationSize())); //we want at least a page
+        int numPages = (int) max(1, ceil(pokerChipCount / settings.getPaginationSize())); //we want at least a page
 
         pagination.setPageCount(numPages);
     }
@@ -89,7 +98,7 @@ public class DashboardController implements Initializable {
 
     private Node getPokerChipTablePage(int pageIndex) {
         pokerChipsTable.getItems().clear();
-        List<PokerChip> pagedPokerChips = collection.getPagedPokerChips(pageIndex, configuration.getPaginationSize());
+        List<PokerChip> pagedPokerChips = collection.getPagedPokerChips(pageIndex, settings.getPaginationSize());
         pagedPokerChips.stream()
                 .map(PokerChipBean::new)
                 .forEach(pokerChipsTable.getItems()::add);

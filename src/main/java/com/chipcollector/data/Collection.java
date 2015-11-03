@@ -40,4 +40,8 @@ public class Collection {
     public void setCasinoFilter(Casino casino) {
         currentFilter = pokerChipDAO.createPokerChipFilter().where().eq("casino.id", casino.getId()).query();
     }
+
+    public void load() {
+
+    }
 }

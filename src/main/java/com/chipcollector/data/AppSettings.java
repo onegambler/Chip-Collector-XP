@@ -9,7 +9,7 @@ import java.util.prefs.Preferences;
 import static java.util.Optional.ofNullable;
 
 @Repository
-public class AppConfiguration {
+public class AppSettings {
 
     public double getMainWindowHeigh() {
         return Preference.WINDOW_HEIGHT.getDouble();

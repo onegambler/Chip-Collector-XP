@@ -1,6 +1,12 @@
 package com.chipcollector;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.config.DataSourceConfig;
+import com.avaje.ebean.config.ServerConfig;
 import com.chipcollector.config.SpringAppConfig;
+import com.chipcollector.data.AppSettings;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
 import com.chipcollector.util.ImageConverter;
@@ -9,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.imgscalr.Scalr;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.imageio.ImageIO;
@@ -18,20 +25,33 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
+import static java.lang.String.format;
 import static org.imgscalr.Scalr.THRESHOLD_QUALITY_BALANCED;
 
 public class ChipCollectorXPApplication extends Application {
-
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    private static final SpringFxmlLoader loader = new SpringFxmlLoader();
 
     @Override
     public void start(Stage primaryStage) {
-        loader.setApplicationContext(new AnnotationConfigApplicationContext(SpringAppConfig.class));
+        final ApplicationContext context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+
+        SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
+
+        final AppSettings settings = context.getBean(AppSettings.class);
+
+        if (settings.getLastUsedDatabase().isPresent()) {
+            ServerConfig config = new ServerConfig();
+            config.loadFromProperties();
+            config.setDefaultServer(true);
+            config.getDataSourceConfig().setUrl(format("jdbc:sqlite:%s", settings.getLastUsedDatabase().get()));
+            EbeanServer ebeanServer = EbeanServerFactory.create(config);
+            Ebean.register(ebeanServer, true);
+        }
+
         Parent root = loader.load(DASHBOARD_FX_FILE_LOCATION);
         Scene scene = new Scene(root, 400, 600);
         primaryStage.setTitle("Chip Collector XP");
