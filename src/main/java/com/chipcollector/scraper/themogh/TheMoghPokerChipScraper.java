@@ -61,13 +61,13 @@ public class TheMoghPokerChipScraper {
         for (int i = 1; i < pokerChipElementList.size(); i++) {
 
             Element pokerChipElement = pokerChipElementList.get(i);
-            List<String> pictureUrls = pokerChipElement.select(IMAGE_QUERY).stream()
+            List<String> pictureUrls = pokerChipElement
+                    .select(IMAGE_QUERY).stream()
                     .map(element -> element.attr(IMG_SRC_ATTRIBUTE))
                     .collect(toList());
 
             PokerChipBeanBuilder pokerChipBuilder =
-                    PokerChipBean.builder()
-                            .casino(casinoBean);
+                    PokerChipBean.builder().casino(casinoBean);
 
             for (String token : pokerChipElement.html().split(BR_HTML_TAG)) {
                 if (!token.isEmpty()) {

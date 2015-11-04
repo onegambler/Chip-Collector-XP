@@ -80,6 +80,7 @@ public class PokerChip {
     private BlobImage backImage;
 
     private boolean obsolete;
+    private boolean cancelled;
 
     @Transient
     private boolean imagesChanged;

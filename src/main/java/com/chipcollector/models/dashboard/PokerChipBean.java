@@ -2,13 +2,12 @@ package com.chipcollector.models.dashboard;
 
 import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.PokerChip;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +27,8 @@ public class PokerChipBean {
     private StringProperty inserts;
     private StringProperty year;
     private StringProperty tcrId;
+    private BooleanProperty obsolete;
+    private BooleanProperty cancelled;
     private ImageView frontImage;
     private ImageView backImage;
 
@@ -50,9 +51,11 @@ public class PokerChipBean {
             Image image = getImageFromByteArray(pokerChip.getBackImage().map(BlobImage::getThumbnail).get());
             this.backImage = new ImageView(image);
         }
+        this.obsolete = new SimpleBooleanProperty(pokerChip.isObsolete());
+        this.cancelled = new SimpleBooleanProperty(pokerChip.isCancelled());
     }
 
-    private PokerChipBean(StringProperty casinoName, StringProperty cityName, StringProperty denom, StringProperty mold, StringProperty color, StringProperty inlay, StringProperty inserts, StringProperty year, StringProperty tcrId, ImageView frontImage, ImageView backImage) {
+    private PokerChipBean(StringProperty casinoName, StringProperty cityName, StringProperty denom, StringProperty mold, StringProperty color, StringProperty inlay, StringProperty inserts, StringProperty year, StringProperty tcrId, ImageView frontImage, ImageView backImage, BooleanProperty obsolete, BooleanProperty cancelled) {
         this.casinoName = casinoName;
         this.cityName = cityName;
         this.denom = denom;
@@ -64,9 +67,11 @@ public class PokerChipBean {
         this.tcrId = tcrId;
         this.frontImage = frontImage;
         this.backImage = backImage;
+        this.obsolete = obsolete;
+        this.cancelled = cancelled;
     }
 
-    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold, String tcrId, String year, Image frontImage, Image backImage) {
+    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold, String tcrId, String year, Image frontImage, Image backImage, boolean obsolete, boolean cancelled) {
         this.casinoName = new SimpleStringProperty(casinoBean.getName());
         this.cityName = new SimpleStringProperty(casinoBean.getCity());
         this.color = new SimpleStringProperty(color);
@@ -79,6 +84,8 @@ public class PokerChipBean {
         this.tcrId = new SimpleStringProperty(tcrId);
         this.frontImage = new ImageView(frontImage);
         this.backImage = new ImageView(backImage);
+        this.obsolete = new SimpleBooleanProperty(obsolete);
+        this.cancelled = new SimpleBooleanProperty(cancelled);
     }
 
     @NotNull
@@ -160,6 +167,8 @@ public class PokerChipBean {
         private String year;
         private Image frontImage;
         private Image backImage;
+        private boolean obsolete;
+        private boolean cancelled;
 
         public PokerChipBeanBuilder casino(CasinoBean casino) {
             this.casinoBean = casino;
@@ -211,8 +220,18 @@ public class PokerChipBean {
             return this;
         }
 
+        public PokerChipBeanBuilder obsolete(boolean obsolete) {
+            this.obsolete = obsolete;
+            return this;
+        }
+
+        public PokerChipBeanBuilder cancelled(boolean cancelled) {
+            this.cancelled = cancelled;
+            return this;
+        }
+
         public PokerChipBean build() {
-            return new PokerChipBean(casinoBean, color, denom, inlay, inserts, mold, tcrId, year, frontImage, backImage);
+            return new PokerChipBean(casinoBean, color, denom, inlay, inserts, mold, tcrId, year, frontImage, backImage, obsolete, cancelled);
         }
     }
 }

@@ -127,6 +127,10 @@ public class DashboardController implements Initializable {
         showDialog("Add PokerChip", POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION);
     }
 
+    public void quitApplication(ActionEvent actionEvent) {
+        System.exit(0);
+    }
+
     private void showDialog(String title, String fxmlLocation) {
         final BorderPane dialog = loader.load(fxmlLocation);
 
@@ -138,9 +142,8 @@ public class DashboardController implements Initializable {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
     }
-
     public static final String TABLE_VIEW_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipsTableView.fxml";
     public static final String POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
-    public static final String POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
 
+    public static final String POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
 }
