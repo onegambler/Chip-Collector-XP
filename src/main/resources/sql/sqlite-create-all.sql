@@ -56,6 +56,7 @@ create table poker_chips (
   front_image_id                    integer,
   back_image_id                     integer,
   obsolete                          integer(1),
+  cancelled                         integer(1),
   constraint uq_poker_chips_tcr_id  unique (tcr_id),
   foreign key (casino_id)           references casinos (id) on delete restrict on update restrict,
   foreign key (front_image_id)      references poker_chip_images (id) on delete restrict on update restrict,
@@ -70,7 +71,7 @@ create table properties (
 
 PRAGMA foreign_keys = ON;
 
-INSERT INTO properties (id, key, value) values(1, "db_version", 1);
+INSERT INTO properties (id, key, value) values(1, 'db_version', 1);
 
 INSERT INTO countries (id, name, iso_alpha2, iso_alpha3, iso_numeric, currency_code, currency_name, currrency_symbol, flag_image) VALUES
 (1, 'Afghanistan', 'AF', 'AFG', 4, 'AFN', 'Afghani', '؋', 'AF.png'),

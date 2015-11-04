@@ -4,6 +4,7 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.DataSourceConfig;
+import com.avaje.ebean.config.PropertyMap;
 import com.avaje.ebean.config.ServerConfig;
 import com.chipcollector.config.SpringAppConfig;
 import com.chipcollector.data.AppSettings;
@@ -14,6 +15,7 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.flywaydb.core.Flyway;
 import org.imgscalr.Scalr;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -43,14 +45,22 @@ public class ChipCollectorXPApplication extends Application {
 
         final AppSettings settings = context.getBean(AppSettings.class);
 
+        ServerConfig config = new ServerConfig();
+        config.loadFromProperties();
+
         if (settings.getLastUsedDatabase().isPresent()) {
-            ServerConfig config = new ServerConfig();
-            config.loadFromProperties();
+
             config.setDefaultServer(true);
             config.getDataSourceConfig().setUrl(format("jdbc:sqlite:%s", settings.getLastUsedDatabase().get()));
             EbeanServer ebeanServer = EbeanServerFactory.create(config);
             Ebean.register(ebeanServer, true);
+        } else {
+            Ebean.getDefaultServer();
         }
+
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(config.getDataSource());
+        flyway.migrate();
 
         Parent root = loader.load(DASHBOARD_FX_FILE_LOCATION);
         Scene scene = new Scene(root, 400, 600);

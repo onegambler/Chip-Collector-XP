@@ -36,6 +36,7 @@
         <liquibase-core.version>3.4.1</liquibase-core.version>
         <jsoup.version>1.8.3</jsoup.version>
         <spring.version>4.2.2.RELEASE</spring.version>
+        <flyway.version>3.2.1</flyway.version>
     </properties>
 
     <dependencies>
@@ -87,6 +88,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
         </dependency>
         <dependency>
             <groupId>org.controlsfx</groupId>
