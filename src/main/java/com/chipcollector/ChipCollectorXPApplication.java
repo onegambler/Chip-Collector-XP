@@ -6,11 +6,15 @@ import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.PropertyMap;
 import com.avaje.ebean.config.ServerConfig;
+import com.avaje.ebean.dbmigration.DdlGenerator;
+import com.avaje.ebean.event.ServerConfigStartup;
+import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.chipcollector.config.SpringAppConfig;
 import com.chipcollector.data.AppSettings;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
 import com.chipcollector.util.ImageConverter;
+import com.google.common.io.Resources;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,11 +26,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
+import static com.google.common.io.Resources.getResource;
+import static com.google.common.io.Resources.toByteArray;
 import static java.lang.String.format;
 import static org.imgscalr.Scalr.THRESHOLD_QUALITY_BALANCED;
 
@@ -38,7 +47,7 @@ public class ChipCollectorXPApplication extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         final ApplicationContext context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 
         SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
@@ -57,10 +66,6 @@ public class ChipCollectorXPApplication extends Application {
         } else {
             Ebean.getDefaultServer();
         }
-
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(config.getDataSource());
-        flyway.migrate();
 
         Parent root = loader.load(DASHBOARD_FX_FILE_LOCATION);
         Scene scene = new Scene(root, 400, 600);

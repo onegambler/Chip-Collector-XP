@@ -2,6 +2,7 @@ package com.chipcollector.models.dashboard;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
 
 public class CasinoBean {
 
@@ -10,9 +11,9 @@ public class CasinoBean {
     private StringProperty state;
     private StringProperty country;
     private StringProperty website;
-    private StringProperty inserts;
     private StringProperty year;
-    private StringProperty tcrId;
+
+    private Image countryFlag;
 
     private String infoPageUrl;
 
@@ -22,9 +23,7 @@ public class CasinoBean {
         this.state = new SimpleStringProperty();
         this.country = new SimpleStringProperty();
         this.website = new SimpleStringProperty();
-        this.inserts = new SimpleStringProperty();
         this.year = new SimpleStringProperty();
-        this.tcrId = new SimpleStringProperty();
     }
 
     public String getName() {
@@ -51,9 +50,6 @@ public class CasinoBean {
         this.city.set(city);
     }
 
-    public String getState() {
-        return state.get();
-    }
 
     public StringProperty stateProperty() {
         return state;
@@ -87,18 +83,6 @@ public class CasinoBean {
         this.website.set(website);
     }
 
-    public String getInserts() {
-        return inserts.get();
-    }
-
-    public StringProperty insertsProperty() {
-        return inserts;
-    }
-
-    public void setInserts(String inserts) {
-        this.inserts.set(inserts);
-    }
-
     public String getYear() {
         return year.get();
     }
@@ -111,23 +95,23 @@ public class CasinoBean {
         this.year.set(year);
     }
 
-    public String getTcrId() {
-        return tcrId.get();
-    }
-
-    public StringProperty tcrIdProperty() {
-        return tcrId;
-    }
-
-    public void setTcrId(String tcrId) {
-        this.tcrId.set(tcrId);
-    }
-
     public String getInfoPageUrl() {
         return infoPageUrl;
     }
 
     public void setInfoPageUrl(String infoPageUrl) {
         this.infoPageUrl = infoPageUrl;
+    }
+
+    public Image getCountryFlag() {
+        return countryFlag;
+    }
+
+    public void setCountryFlag(Image countryFlag) {
+        this.countryFlag = countryFlag;
+    }
+
+    public StringProperty getState() {
+        return state;
     }
 }

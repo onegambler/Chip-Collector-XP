@@ -12,6 +12,9 @@ public class Property {
     private long id;
 
     private String key;
-
     private String value;
+
+    public String getValue() {
+        return value;
+    }
 }
