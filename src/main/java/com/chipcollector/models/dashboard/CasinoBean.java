@@ -1,8 +1,13 @@
 package com.chipcollector.models.dashboard;
 
+import com.chipcollector.domain.Casino;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
+
+import java.time.LocalDate;
 
 public class CasinoBean {
 
@@ -11,8 +16,8 @@ public class CasinoBean {
     private StringProperty state;
     private StringProperty country;
     private StringProperty website;
-    private StringProperty year;
-
+    private SimpleObjectProperty<LocalDate> openDate;
+    private SimpleObjectProperty<LocalDate> closeDate;
     private Image countryFlag;
 
     private String infoPageUrl;
@@ -23,7 +28,18 @@ public class CasinoBean {
         this.state = new SimpleStringProperty();
         this.country = new SimpleStringProperty();
         this.website = new SimpleStringProperty();
-        this.year = new SimpleStringProperty();
+        this.openDate = new SimpleObjectProperty<>();
+        this.closeDate = new SimpleObjectProperty<>();
+    }
+
+    public CasinoBean(Casino casino) {
+        this.name = new SimpleStringProperty(casino.getName());
+        this.city = new SimpleStringProperty(casino.getCity());
+        this.state = new SimpleStringProperty(casino.getState());
+        this.country = new SimpleStringProperty(casino.getCountryName());
+        this.website = new SimpleStringProperty(casino.getWebsite());
+        this.openDate = new SimpleObjectProperty<>(casino.getOpenDate());
+        this.closeDate = new SimpleObjectProperty<>(casino.getCloseDate());
     }
 
     public String getName() {
@@ -81,18 +97,6 @@ public class CasinoBean {
 
     public void setWebsite(String website) {
         this.website.set(website);
-    }
-
-    public String getYear() {
-        return year.get();
-    }
-
-    public StringProperty yearProperty() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year.set(year);
     }
 
     public String getInfoPageUrl() {

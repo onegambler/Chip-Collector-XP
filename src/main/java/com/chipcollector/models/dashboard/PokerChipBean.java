@@ -18,7 +18,7 @@ import java.util.List;
 @ToString
 public class PokerChipBean {
 
-    private StringProperty casinoName;
+    private CasinoBean casinoBean;
     private StringProperty cityName;
     private StringProperty denom;
     private StringProperty mold;
@@ -32,8 +32,10 @@ public class PokerChipBean {
     private ImageView frontImage;
     private ImageView backImage;
 
+    private String casinoFlagImageString;
+
     public PokerChipBean(PokerChip pokerChip) {
-        this.casinoName = new SimpleStringProperty(pokerChip.getCasino().getName());
+        this.casinoBean = new CasinoBean(pokerChip.getCasino());
         this.cityName = new SimpleStringProperty(pokerChip.getCasino().getCity());
         this.denom = new SimpleStringProperty(pokerChip.getDenom());
         this.mold = new SimpleStringProperty(pokerChip.getMold());
@@ -55,8 +57,8 @@ public class PokerChipBean {
         this.cancelled = new SimpleBooleanProperty(pokerChip.isCancelled());
     }
 
-    private PokerChipBean(StringProperty casinoName, StringProperty cityName, StringProperty denom, StringProperty mold, StringProperty color, StringProperty inlay, StringProperty inserts, StringProperty year, StringProperty tcrId, ImageView frontImage, ImageView backImage, BooleanProperty obsolete, BooleanProperty cancelled) {
-        this.casinoName = casinoName;
+    private PokerChipBean(CasinoBean casinoBean, StringProperty cityName, StringProperty denom, StringProperty mold, StringProperty color, StringProperty inlay, StringProperty inserts, StringProperty year, StringProperty tcrId, ImageView frontImage, ImageView backImage, BooleanProperty obsolete, BooleanProperty cancelled) {
+        this.casinoBean = casinoBean;
         this.cityName = cityName;
         this.denom = denom;
         this.mold = mold;
@@ -72,7 +74,7 @@ public class PokerChipBean {
     }
 
     private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold, String tcrId, String year, Image frontImage, Image backImage, boolean obsolete, boolean cancelled) {
-        this.casinoName = new SimpleStringProperty(casinoBean.getName());
+        this.casinoBean = casinoBean;
         this.cityName = new SimpleStringProperty(casinoBean.getCity());
         this.color = new SimpleStringProperty(color);
         this.denom = new SimpleStringProperty(denom);
@@ -92,10 +94,6 @@ public class PokerChipBean {
     private Image getImageFromByteArray(byte[] imageByteArray) {
         InputStream byteArrayInputStream = new ByteArrayInputStream(imageByteArray);
         return new Image(byteArrayInputStream);
-    }
-
-    public String getCasinoName() {
-        return casinoName.get();
     }
 
     public String getCityName() {
@@ -153,6 +151,10 @@ public class PokerChipBean {
 
     public static PokerChipBeanBuilder builder() {
         return new PokerChipBeanBuilder();
+    }
+
+    public CasinoBean getCasinoBean() {
+        return casinoBean;
     }
 
 

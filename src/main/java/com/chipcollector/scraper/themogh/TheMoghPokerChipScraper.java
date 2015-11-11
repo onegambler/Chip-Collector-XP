@@ -40,6 +40,10 @@ public class TheMoghPokerChipScraper {
     private final Pattern INSERTS_PATTERN = Pattern.compile("\\s*Inserts\\s*:\\s+");
     private final Pattern HTML_TAG_PATTERN = Pattern.compile("<[^>]*>", DOTALL);
 
+    private final Pattern CASINO_TYPE_PATTERN = Pattern.compile("\\s*Type\\s*:\\s+");
+    private final Pattern CASINO_OPENED_PATTERN = Pattern.compile("\\s*Opened\\s*:\\s+");
+    private final Pattern CASINO_CLOSED_PATTERN = Pattern.compile("\\s*Closed\\s*:\\s+");
+
     private static final String IMG_SRC_ATTRIBUTE = "src";
     private static final String TD_CHIPINFO = "td.chipinfo";
 

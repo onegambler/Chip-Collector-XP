@@ -7,18 +7,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.util.Callback;
-import org.springframework.context.annotation.Conditional;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class PokerChipDialogController  implements Initializable {
+public class PokerChipDialogController implements Initializable {
+
+    public static final String IMAGES_FLAGS_LOCATION = "images/flags/AD.png";
+    @FXML
+    private Label casinoContent;
 
     @FXML
-    public Label casinoContent;
+    private ImageView casinoCountryFlag;
 
     @FXML
     private Button cancelButton;
@@ -28,14 +33,16 @@ public class PokerChipDialogController  implements Initializable {
     @FXML
     private ComboBox<Casino> casinoComboBox;
 
+    @Setter
     private PokerChipBean pokerChipBean;
-
-    public PokerChipBean pokerChipBean() {
-        return pokerChipBean;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    public void update() {
+        casinoCountryFlag.setImage(pokerChipBean.getCasinoBean().getCountryFlag());
     }
 
     public void onCancelAction(ActionEvent actionEvent) {

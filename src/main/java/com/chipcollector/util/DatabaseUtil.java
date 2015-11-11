@@ -5,44 +5,52 @@ import com.avaje.ebean.dbmigration.DdlGenerator;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.chipcollector.domain.Property;
 import com.google.common.base.Throwables;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import static com.google.common.io.Resources.getResource;
 import static com.google.common.io.Resources.toByteArray;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-@Component
 public class DatabaseUtil {
+    private static final int LATEST_DATABASE_VERSION = 1;
 
     private final DdlGenerator generator;
-    private final Property databaseVersion;
+    private EbeanServer server;
 
-    @Autowired
     public DatabaseUtil(EbeanServer server) {
+        this.server = server;
         generator = ((SpiEbeanServer) server).getDdlGenerator();
-        databaseVersion = server.createQuery(Property.class).where("key = 'db_version'").findUnique();
-        requireNonNull(databaseVersion, "Impossible to load current database version");
     }
 
-    public void tryDatabaseUpdate(int latestVersion) {
+    public void tryDatabaseUpdate() {
         try {
-            updateDatabase(latestVersion);
+            updateDatabase(LATEST_DATABASE_VERSION);
         } catch (IOException e) {
             Throwables.propagate(e);
         }
     }
 
     private void updateDatabase(int latestVersion) throws IOException {
-        int currentVersion = Optional.ofNullable(databaseVersion).map(property -> Integer.valueOf(property.getValue())).orElse(1);
-        for (int i = currentVersion; i <= latestVersion; i++) {
-            String updateScript = String.format("sql/%s.sql", i);
+        int currentVersion;
+        if (databaseExists()) {
+            Property databaseVersion = server.createQuery(Property.class).where("key = 'db_version'").findUnique();
+            requireNonNull(databaseVersion, "Impossible to load current database version");
+            currentVersion = Integer.valueOf(databaseVersion.getValue());
+        } else {
+            currentVersion = 0;
+        }
+        for (int i = currentVersion + 1; i <= latestVersion; i++) {
+            String updateScript = format("db/migration/%s.sql", i);
             String databaseUpdateString = new String(toByteArray(getResource(updateScript)));
             generator.runScript(false, databaseUpdateString);
         }
+
+    }
+
+    private boolean databaseExists() {
+        return server.createSqlQuery("SELECT count(*) FROM sqlite_master").findUnique().getInteger("count(*)") > 0;
 
     }
 }
