@@ -42,7 +42,7 @@ public class DatabaseUtil {
             currentVersion = 0;
         }
         for (int i = currentVersion + 1; i <= latestVersion; i++) {
-            String updateScript = format("db/migration/%s.sql", i);
+            String updateScript = format("migration/%s.sql", i);
             String databaseUpdateString = new String(toByteArray(getResource(updateScript)));
             generator.runScript(false, databaseUpdateString);
         }
