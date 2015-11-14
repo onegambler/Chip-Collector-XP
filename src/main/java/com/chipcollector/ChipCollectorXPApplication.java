@@ -39,7 +39,7 @@ public class ChipCollectorXPApplication extends Application {
 
         new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
-        Parent root = loader.load(DASHBOARD_FX_FILE_LOCATION);
+        Parent root = loader.load(STATS_FX_FILE_LOCATION);
         Scene scene = new Scene(root);
         primaryStage.setTitle("Chip Collector XP");
         primaryStage.setScene(scene);
@@ -98,6 +98,6 @@ public class ChipCollectorXPApplication extends Application {
                 .casino(casino).build();
     }
 
-    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/Dashboard.fxml";
+    public static final String STATS_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/StatsDialog.fxml";
     public static final int THUMBNAIL_IMAGE_SIZE = 60;
 }

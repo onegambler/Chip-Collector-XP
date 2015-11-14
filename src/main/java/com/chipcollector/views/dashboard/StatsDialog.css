@@ -1,0 +1,49 @@
+.root {
+    -fx-base: rgb(50, 50, 50);
+    -fx-background: rgb(50, 50, 50);
+    -fx-control-inner-background:  rgb(50, 50, 50);
+}
+
+#numPokerChipsLabel {
+    -fx-font: 24 calibri;
+    -fx-font-weight: bold;
+    -fx-fill: #00C957;
+}
+
+#numPokerChipsValue {
+    -fx-font: 100 calibri;
+    -fx-fill: #00C957;
+}
+
+#numPokerChipsBoughtInLast7DaysLabel {
+    -fx-font: 16 calibri;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+#numPokerChipsBoughtInLast7DaysValue {
+    -fx-font: 30 calibri;
+    -fx-fill: white;
+}
+
+#numPokerChipsBoughtInLastMonthLabel {
+    -fx-font: 16 calibri;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+#numPokerChipsBoughtInLastMonthValue {
+    -fx-font: 30 calibri;
+    -fx-fill: white;
+}
+
+#numDifferentCasinosLabel {
+    -fx-font: 16 calibri;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+#numDifferentCasinosValue {
+    -fx-font: 30 calibri;
+    -fx-fill: white;
+}
