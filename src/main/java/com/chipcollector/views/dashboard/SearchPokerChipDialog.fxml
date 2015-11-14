@@ -51,7 +51,7 @@
                         <TableView fx:id="pokerChipsTableView" focusTraversable="false" layoutX="309.0" layoutY="103.0"
                                    prefHeight="384.0" prefWidth="778.0" AnchorPane.bottomAnchor="0.0"
                                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-                                   fixedCellSize="100">
+                                   fixedCellSize="100" onMouseClicked="#onPokerChipElementClicked">
                             <columns>
                                 <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false"
                                              text="Front">
