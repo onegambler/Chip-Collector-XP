@@ -1,24 +1,34 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.domain.Casino;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.Setter;
+import org.controlsfx.validation.ValidationResult;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @Controller
 public class PokerChipDialogController implements Initializable {
 
-    public static final String IMAGES_FLAGS_LOCATION = "images/flags/AD.png";
+    private final ValidationSupport validationSupport = new ValidationSupport();
+
+    @FXML
+    private ComboBox<String> denomComboBox;
+
+    @FXML
+    private TextField issueTextField;
+
     @FXML
     private Label casinoContent;
 
@@ -29,9 +39,6 @@ public class PokerChipDialogController implements Initializable {
     private Button cancelButton;
     @FXML
     private Button okButton;
-
-    @FXML
-    private ComboBox<Casino> casinoComboBox;
 
     @Setter
     private PokerChipBean pokerChipBean;
@@ -48,4 +55,6 @@ public class PokerChipDialogController implements Initializable {
     public void onCancelAction(ActionEvent actionEvent) {
         ((Node) actionEvent.getTarget()).getScene().getWindow().hide();
     }
+
+    public static final String IMAGES_FLAGS_LOCATION = "images/flags/%s";
 }

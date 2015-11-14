@@ -110,10 +110,10 @@
             <children>
                 <Label text="Casino" GridPane.valignment="BOTTOM"/>
                 <Label text="Denom" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
-                <ComboBox id="casinoComboBox" prefWidth="200.0" promptText="\$ 1,000,0000" GridPane.rowIndex="3"/>
+                <ComboBox id="denomComboBox" prefWidth="200.0" promptText="\$ 1,000,0000" GridPane.rowIndex="3"/>
                 <Label text="Issue" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <Label text="Year" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
-                <TextField GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+                <TextField id="issueTextField" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
                 <TextField text="2000" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
                 <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" prefHeight="25.0" prefWidth="397.0" spacing="5.0"
                       GridPane.columnSpan="9" GridPane.rowIndex="1">

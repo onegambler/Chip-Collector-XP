@@ -1,11 +1,6 @@
 package com.chipcollector;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.EbeanServer;
-import com.avaje.ebean.EbeanServerFactory;
-import com.avaje.ebean.config.ServerConfig;
 import com.chipcollector.config.SpringAppConfig;
-import com.chipcollector.data.AppSettings;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
 import com.chipcollector.util.DatabaseUtil;
@@ -27,8 +22,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 
 import static com.avaje.ebean.Ebean.getDefaultServer;
-import static com.google.common.io.Resources.getResource;
-import static java.lang.String.format;
 import static org.imgscalr.Scalr.THRESHOLD_QUALITY_BALANCED;
 
 public class ChipCollectorXPApplication extends Application {
@@ -47,7 +40,7 @@ public class ChipCollectorXPApplication extends Application {
         new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
         Parent root = loader.load(DASHBOARD_FX_FILE_LOCATION);
-        Scene scene = new Scene(root, 400, 600);
+        Scene scene = new Scene(root);
         primaryStage.setTitle("Chip Collector XP");
         primaryStage.setScene(scene);
         primaryStage.show();
