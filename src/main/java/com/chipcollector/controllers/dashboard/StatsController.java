@@ -42,7 +42,7 @@ public class StatsController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        numPokerChipsValue.setText(String.valueOf(collection.getPokerChipCount()));
+//        numPokerChipsValue.setText(String.valueOf(collection.getPokerChipCount()));
         numPokerChipsBoughtInLast7DaysValue.setText(String.valueOf(collection.getPokerChipCountForLast7Days()));
         numPokerChipsBoughtInLastMonthValue.setText(String.valueOf(collection.getPokerChipCountForLastMonth()));
         numDifferentCasinosValue.setText(String.valueOf(collection.getNumDifferentCasinos()));

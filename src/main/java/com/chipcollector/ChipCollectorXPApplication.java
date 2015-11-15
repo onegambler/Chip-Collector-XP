@@ -35,15 +35,10 @@ public class ChipCollectorXPApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         final ApplicationContext context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 
-        SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
-
         new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
-        Parent root = loader.load(STATS_FX_FILE_LOCATION);
-        Scene scene = new Scene(root);
-        primaryStage.setTitle("Chip Collector XP");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
+        loader.show(STATS_FX_FILE_LOCATION, "Chip Collector XP");
     }
 
     public void createDB(PokerChipDAO pokerChipDAO) {

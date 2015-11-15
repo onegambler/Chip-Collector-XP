@@ -69,8 +69,6 @@ create table properties (
   value                             varchar(255)
 );
 
-PRAGMA foreign_keys = ON;
-
 INSERT INTO properties (id, key, value) values(1, 'db_version', 1);
 
 INSERT INTO countries (id, name, iso_alpha2, iso_alpha3, iso_numeric, currency_code, currency_name, currrency_symbol, flag_image) VALUES
@@ -314,3 +312,4 @@ INSERT INTO countries (id, name, iso_alpha2, iso_alpha3, iso_numeric, currency_c
 (238, 'Zambia', 'ZM', 'ZMB', 894, 'ZMK', 'Kwacha', 'ZK', 'ZM.png'),
 (239, 'Zimbabwe', 'ZW', 'ZWE', 716, 'ZWD', 'Dollar', 'Z$', 'ZW.png');
 
+PRAGMA foreign_keys = ON;

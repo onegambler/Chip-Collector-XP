@@ -15,27 +15,27 @@
         <URL value="@StatsDialog.css"/>
     </stylesheets>
     <children>
-        <VBox alignment="CENTER">
-            <Text id="numPokerChipsLabel" text="Number of poker chips: "/>
+        <VBox alignment="CENTER_LEFT">
+            <Text id="numPokerChipsLabel" text="Number of poker chips: " />
             <Text id="numPokerChipsValue" fx:id="numPokerChipsValue"/>
         </VBox>
         <HBox spacing="20">
             <children>
-                <VBox alignment="TOP_CENTER" prefWidth="250">
+                <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
                     <TextFlow textAlignment="CENTER">
                         <Text id="numPokerChipsBoughtInLast7DaysLabel" text="Bought in the last 7 days: "/>
                     </TextFlow>
                     <Text id="numPokerChipsBoughtInLast7DaysValue" fx:id="numPokerChipsBoughtInLast7DaysValue"/>
                 </VBox>
 
-                <VBox alignment="TOP_CENTER" prefWidth="250">
+                <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
                     <TextFlow textAlignment="CENTER">
                         <Text id="numPokerChipsBoughtInLastMonthLabel" text="Bought in the last month: "/>
                     </TextFlow>
                     <Text id="numPokerChipsBoughtInLastMonthValue" fx:id="numPokerChipsBoughtInLastMonthValue"/>
                 </VBox>
 
-                <VBox alignment="TOP_CENTER" prefWidth="250">
+                <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
                     <TextFlow textAlignment="CENTER">
                         <Text id="numDifferentCasinosLabel" text="Number of casinos: "/>
                     </TextFlow>

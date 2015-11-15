@@ -1,13 +1,13 @@
 package com.chipcollector.models.dashboard;
 
 import com.chipcollector.domain.Casino;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.image.Image;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 public class CasinoBean {
 
@@ -16,30 +16,33 @@ public class CasinoBean {
     private StringProperty state;
     private StringProperty country;
     private StringProperty website;
+    private StringProperty oldName;
+    private StringProperty type;
     private SimpleObjectProperty<LocalDate> openDate;
     private SimpleObjectProperty<LocalDate> closeDate;
-    private Image countryFlag;
 
     private String infoPageUrl;
 
     public CasinoBean() {
-        this.name = new SimpleStringProperty();
-        this.city = new SimpleStringProperty();
-        this.state = new SimpleStringProperty();
-        this.country = new SimpleStringProperty();
-        this.website = new SimpleStringProperty();
-        this.openDate = new SimpleObjectProperty<>();
-        this.closeDate = new SimpleObjectProperty<>();
+        name = new SimpleStringProperty();
+        city = new SimpleStringProperty();
+        state = new SimpleStringProperty();
+        country = new SimpleStringProperty();
+        website = new SimpleStringProperty();
+        openDate = new SimpleObjectProperty<>();
+        closeDate = new SimpleObjectProperty<>();
+        oldName = new SimpleStringProperty();
+        type = new SimpleStringProperty();
     }
 
     public CasinoBean(Casino casino) {
-        this.name = new SimpleStringProperty(casino.getName());
-        this.city = new SimpleStringProperty(casino.getCity());
-        this.state = new SimpleStringProperty(casino.getState());
-        this.country = new SimpleStringProperty(casino.getCountryName());
-        this.website = new SimpleStringProperty(casino.getWebsite());
-        this.openDate = new SimpleObjectProperty<>(casino.getOpenDate());
-        this.closeDate = new SimpleObjectProperty<>(casino.getCloseDate());
+        name = new SimpleStringProperty(casino.getName());
+        city = new SimpleStringProperty(casino.getCity());
+        state = new SimpleStringProperty(casino.getState());
+        country = new SimpleStringProperty(casino.getCountryName());
+        website = new SimpleStringProperty(casino.getWebsite());
+        openDate = new SimpleObjectProperty<>(casino.getOpenDate());
+        closeDate = new SimpleObjectProperty<>(casino.getCloseDate());
     }
 
     public String getName() {
@@ -107,15 +110,44 @@ public class CasinoBean {
         this.infoPageUrl = infoPageUrl;
     }
 
-    public Image getCountryFlag() {
-        return countryFlag;
-    }
-
-    public void setCountryFlag(Image countryFlag) {
-        this.countryFlag = countryFlag;
-    }
-
     public StringProperty getState() {
         return state;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s)", name, city);
+    }
+
+    public void setOldName(String oldName) {
+        this.oldName.setValue(oldName);
+    }
+
+    public String getOldName() {
+        return oldName.get();
+    }
+
+    public void setOpenDate(LocalDate openDate) {
+        this.openDate.setValue(openDate);
+    }
+
+    public String getOpenDate() {
+        return Optional.ofNullable(openDate.get()).map(localDate -> localDate.format(DateTimeFormatter.BASIC_ISO_DATE)).orElse("");
+    }
+
+    public void setClosedDate(LocalDate closedDate) {
+        this.closeDate.set(closedDate);
+    }
+
+    public String getClosedDate() {
+        return Optional.ofNullable(closeDate.get()).map(localDate -> localDate.format(DateTimeFormatter.BASIC_ISO_DATE)).orElse("");
+    }
+
+    public void setType(String type) {
+        this.type.setValue(type);
+    }
+
+    public String getType() {
+        return type.get();
     }
 }
