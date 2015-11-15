@@ -38,7 +38,7 @@ public class ChipCollectorXPApplication extends Application {
         new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
         SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
-        loader.show(STATS_FX_FILE_LOCATION, "Chip Collector XP");
+        loader.show(DASHBOARD_FX_FILE_LOCATION, "Chip Collector XP");
     }
 
     public void createDB(PokerChipDAO pokerChipDAO) {
@@ -94,5 +94,6 @@ public class ChipCollectorXPApplication extends Application {
     }
 
     public static final String STATS_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/StatsDialog.fxml";
+    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/DashBoard.fxml";
     public static final int THUMBNAIL_IMAGE_SIZE = 60;
 }

@@ -106,6 +106,10 @@ public class PokerChipDAO {
         return filter.findList();
     }
 
+    public int getAllPokerChipsCount() {
+        return getPokerChipCount(ebeanServer.createQuery(PokerChip.class));
+    }
+
     public int getPokerChipCount(Query<PokerChip> pokerChipQuery) {
         return ebeanServer.findRowCount(pokerChipQuery, ebeanServer.currentTransaction());
     }
