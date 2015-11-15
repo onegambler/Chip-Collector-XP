@@ -1,87 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chipcollector.controllers.dashboard.StatsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.chipcollector.controllers.dashboard.StatsController">
     <padding>
-        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
     </padding>
     <stylesheets>
-        <URL value="@StatsDialog.css" />
+        <URL value="@StatsDialog.css"/>
     </stylesheets>
     <children>
-      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
-         <children>
-            <BorderPane minHeight="-Infinity" prefHeight="200.0" prefWidth="200.0">
-               <top>
-                     <Text id="numPokerChipsLabel" text="Number of poker chips: " textAlignment="RIGHT" BorderPane.alignment="CENTER_RIGHT">
-                     <BorderPane.margin>
-                        <Insets top="20.0" />
-                     </BorderPane.margin>
-                  </Text>
-               </top>
-               <center>
-                     <Text id="numPokerChipsValue" fx:id="numPokerChipsValue" text="99999999" BorderPane.alignment="CENTER_RIGHT" />
-               </center>
-            </BorderPane>
-            <ImageView fitHeight="230" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="/images/dashboard/pokerChipRack.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
+        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+            <children>
+                <BorderPane minHeight="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                    <top>
+                        <Text id="numPokerChipsLabel" text="Number of poker chips: " textAlignment="RIGHT"
+                              BorderPane.alignment="CENTER_RIGHT">
+                            <BorderPane.margin>
+                                <Insets top="20.0"/>
+                            </BorderPane.margin>
+                        </Text>
+                    </top>
+                    <center>
+                        <Text id="numPokerChipsValue" fx:id="numPokerChipsValue" text="0"
+                              BorderPane.alignment="CENTER_RIGHT"/>
+                    </center>
+                </BorderPane>
+                <ImageView fitHeight="230" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="/images/dashboard/pokerChipRack.png"/>
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
         <HBox spacing="20">
             <children>
                 <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
-                   <children>
-                       <TextFlow textAlignment="CENTER">
-                          <children>
-                              <Text id="numPokerChipsBoughtInLast7DaysLabel" text="Bought in the last 7 days: " />
-                          </children>
-                       </TextFlow>
-                       <Text id="numPokerChipsBoughtInLast7DaysValue" fx:id="numPokerChipsBoughtInLast7DaysValue" text="0" />
-                   </children>
+                    <children>
+                        <TextFlow textAlignment="CENTER">
+                            <children>
+                                <Text id="numPokerChipsBoughtInLast7DaysLabel" text="Bought in the last 7 days: "/>
+                            </children>
+                        </TextFlow>
+                        <Text id="numPokerChipsBoughtInLast7DaysValue" fx:id="numPokerChipsBoughtInLast7DaysValue"
+                              text="0"/>
+                    </children>
                 </VBox>
 
                 <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
-   <children>
-                       <TextFlow textAlignment="CENTER">
-                          <children>
-                              <Text id="numPokerChipsBoughtInLastMonthLabel" text="Bought in the last month: " />
-                          </children>
-                       </TextFlow>
-                       <Text id="numPokerChipsBoughtInLastMonthValue" fx:id="numPokerChipsBoughtInLastMonthValue" text="0" />
-   </children>
+                    <children>
+                        <TextFlow textAlignment="CENTER">
+                            <children>
+                                <Text id="numPokerChipsBoughtInLastMonthLabel" text="Bought in the last month: "/>
+                            </children>
+                        </TextFlow>
+                        <Text id="numPokerChipsBoughtInLastMonthValue" fx:id="numPokerChipsBoughtInLastMonthValue"
+                              text="0"/>
+                    </children>
                 </VBox>
 
                 <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
-   <children>
-                       <TextFlow textAlignment="CENTER">
-                          <children>
-                              <Text id="numDifferentCasinosLabel" text="Number of casinos: " />
-                          </children>
-                       </TextFlow>
-                       <Text id="numDifferentCasinosValue" fx:id="numDifferentCasinosValue" text="0" />
-   </children>
+                    <children>
+                        <TextFlow textAlignment="CENTER">
+                            <children>
+                                <Text id="numDifferentCasinosLabel" text="Number of casinos: "/>
+                            </children>
+                        </TextFlow>
+                        <Text id="numDifferentCasinosValue" fx:id="numDifferentCasinosValue" text="0"/>
+                    </children>
                 </VBox>
             </children>
         </HBox>
         <HBox alignment="CENTER" spacing="10">
-           <children>
-               <Button id="showAllButton" alignment="BOTTOM_CENTER" onMouseClicked="#onViewAllButtonPressed" prefHeight="150.0" prefWidth="150.0" text="View All" contentDisplay="TOP">View All</Button>
-               <Button id="searchButton" alignment="BOTTOM_CENTER" prefHeight="150.0" prefWidth="150.0" contentDisplay="TOP">Search</Button>
-               <Button id="addNewButton" alignment="BOTTOM_CENTER" onMouseClicked="#onAddButtonPressed" prefHeight="150.0" prefWidth="150.0" text="Add" contentDisplay="TOP">Add</Button>
-           </children>
+            <children>
+                <Button id="showAllButton" alignment="BOTTOM_CENTER" contentDisplay="TOP"
+                        onMouseClicked="#onViewAllButtonPressed" prefHeight="150.0" prefWidth="150.0" text="View All">
+                    View All
+                </Button>
+                <Button id="searchButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" prefHeight="150.0"
+                        prefWidth="150.0">Search
+                </Button>
+                <Button id="addNewButton" alignment="BOTTOM_CENTER" contentDisplay="TOP"
+                        onMouseClicked="#onAddButtonPressed" prefHeight="150.0" prefWidth="150.0" text="Add">Add
+                </Button>
+            </children>
         </HBox>
     </children>
 </VBox>
