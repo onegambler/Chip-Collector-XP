@@ -68,7 +68,7 @@ public class DashboardController implements Initializable {
     private void loadDatabase() {
         settings.getLastUsedDatabase().ifPresent(s ->
         {
-            collection.load();
+            //collection.load();
         });
     }
 

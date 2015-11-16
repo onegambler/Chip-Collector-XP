@@ -59,3 +59,7 @@
 .button#addNewButton {
     -fx-graphic: url("/images/dashboard/add.png");
 }
+
+.menu-button#addNewMenuButton {
+    -fx-graphic: url("/images/dashboard/add.png");
+}

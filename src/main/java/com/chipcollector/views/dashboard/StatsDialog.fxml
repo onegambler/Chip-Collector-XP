@@ -87,6 +87,12 @@
                 </Button>
                 <Button id="addNewButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" onMouseClicked="#onAddButtonPressed" prefHeight="150.0" prefWidth="150.0" text="Add">Add
                 </Button>
+            <MenuButton id="addNewMenuButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="TOP" prefHeight="150.0" prefWidth="150.0" text="Add New">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Manually add new Poker Chip" />
+                <MenuItem mnemonicParsing="false" text="Search new Poker Chip" />
+              </items>
+            </MenuButton>
             </children>
         </HBox>
     </children>
