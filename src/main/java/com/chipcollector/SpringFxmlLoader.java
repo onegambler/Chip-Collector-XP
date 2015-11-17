@@ -1,6 +1,5 @@
 package com.chipcollector;
 
-import com.chipcollector.controllers.dashboard.PokerChipDialogController;
 import com.google.common.base.Throwables;
 import com.google.common.io.Resources;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +13,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-
-import static com.chipcollector.controllers.dashboard.DashboardController.POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION;
 
 @Component
 public class SpringFxmlLoader implements ApplicationContextAware {
@@ -46,22 +42,29 @@ public class SpringFxmlLoader implements ApplicationContextAware {
     }
 
     public <T> void showDialog(String dialogFile, String title, Consumer<T> consumer) {
-
         FXMLLoader loader = getLoader(dialogFile);
-        Parent dialog = null;
-        try {
-            dialog = loader.load();
-        } catch (IOException e) {
-            Throwables.propagate(e);
-        }
-        consumer.accept(loader.getController());
-
-        Stage dialogStage = new Stage();
+        Stage dialogStage = getStage(loader, title);
         dialogStage.setTitle(title);
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        consumer.accept(loader.getController());
         //dialogStage.initOwner(); //TODO: init the owner
-        Scene scene = new Scene(dialog);
-        dialogStage.setScene(scene);
         dialogStage.showAndWait();
+    }
+
+    public void show(String fxmlFile, String title) {
+        FXMLLoader loader = getLoader(fxmlFile);
+        getStage(loader, title).show();
+    }
+
+    private Stage getStage(FXMLLoader loader, String title) {
+        try {
+            Parent node = loader.load();
+            Scene scene = new Scene(node);
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(scene);
+            return stage;
+        } catch (IOException e) {
+            throw Throwables.propagate(e);
+        }
     }
 }

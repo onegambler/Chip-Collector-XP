@@ -47,3 +47,19 @@
     -fx-font: 30 calibri;
     -fx-fill: white;
 }
+
+.button#showAllButton {
+    -fx-graphic: url("/images/dashboard/showall.png");
+}
+
+.button#searchButton {
+    -fx-graphic: url("/images/dashboard/search.png");
+}
+
+.button#addNewButton {
+    -fx-graphic: url("/images/dashboard/add.png");
+}
+
+.menu-button#addNewMenuButton {
+    -fx-graphic: url("/images/dashboard/add.png");
+}

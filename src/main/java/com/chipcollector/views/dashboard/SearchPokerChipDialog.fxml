@@ -56,13 +56,13 @@
                                 <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false"
                                              text="Front">
                                     <cellValueFactory>
-                                        <PropertyValueFactory property="frontImage"/>
+                                        <PropertyValueFactory property="frontImageThumbnailView"/>
                                     </cellValueFactory>
                                 </TableColumn>
                                 <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false"
                                              text="Back">
                                     <cellValueFactory>
-                                        <PropertyValueFactory property="backImage"/>
+                                        <PropertyValueFactory property="backImageThumbnailView"/>
                                     </cellValueFactory>
                                 </TableColumn>
                                 <TableColumn minWidth="25.0" prefWidth="75.0" text="Denom">

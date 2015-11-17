@@ -35,15 +35,10 @@ public class ChipCollectorXPApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         final ApplicationContext context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 
-        SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
-
         new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
-        Parent root = loader.load(STATS_FX_FILE_LOCATION);
-        Scene scene = new Scene(root);
-        primaryStage.setTitle("Chip Collector XP");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
+        loader.show(DASHBOARD_FX_FILE_LOCATION, "Chip Collector XP");
     }
 
     public void createDB(PokerChipDAO pokerChipDAO) {
@@ -99,5 +94,6 @@ public class ChipCollectorXPApplication extends Application {
     }
 
     public static final String STATS_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/StatsDialog.fxml";
+    public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/DashBoard.fxml";
     public static final int THUMBNAIL_IMAGE_SIZE = 60;
 }

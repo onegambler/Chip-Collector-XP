@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
+
 @Repository
 public class PokerChipDAO {
 
@@ -52,6 +55,7 @@ public class PokerChipDAO {
         return ebeanServer.find(Country.class)
                 .setUseCache(true)
                 .setReadOnly(true)
+                .select(format("name = %s", name))
                 .findUnique();
     }
 
@@ -106,6 +110,10 @@ public class PokerChipDAO {
         return filter.findList();
     }
 
+    public int getAllPokerChipsCount() {
+        return getPokerChipCount(ebeanServer.createQuery(PokerChip.class));
+    }
+
     public int getPokerChipCount(Query<PokerChip> pokerChipQuery) {
         return ebeanServer.findRowCount(pokerChipQuery, ebeanServer.currentTransaction());
     }
@@ -147,7 +155,7 @@ public class PokerChipDAO {
 
         public Optional<Casino> findSingle() {
             Casino uniqueCasino = ebeanServer.findUnique(query.query(), ebeanServer.currentTransaction());
-            return Optional.ofNullable(uniqueCasino);
+            return ofNullable(uniqueCasino);
         }
 
         public List<Casino> findList() {
@@ -175,7 +183,7 @@ public class PokerChipDAO {
 
         public Optional<Location> findSingle() {
             Location uniqueLocation = ebeanServer.findUnique(query.query(), ebeanServer.currentTransaction());
-            return Optional.ofNullable(uniqueLocation);
+            return ofNullable(uniqueLocation);
         }
     }
 }

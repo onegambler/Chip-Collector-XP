@@ -2,19 +2,24 @@ package com.chipcollector.models.dashboard;
 
 import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.PokerChip;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import com.chipcollector.models.core.BigDecimalProperty;
+import javafx.beans.property.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Objects.*;
+
+@Getter
 @ToString
 public class PokerChipBean {
 
@@ -27,11 +32,20 @@ public class PokerChipBean {
     private StringProperty inserts;
     private StringProperty year;
     private StringProperty tcrId;
+    private ImageView frontImageThumbnailView;
+    private ImageView backImageThumbnailView;
     private BooleanProperty obsolete;
     private BooleanProperty cancelled;
-    private ImageView frontImage;
-    private ImageView backImage;
-
+    private StringProperty rarity;
+    private StringProperty condition;
+    private StringProperty category;
+    private BigDecimalProperty value;
+    private BigDecimalProperty paid;
+    private SimpleObjectProperty<LocalDate> dateOfAcquisition;
+    private StringProperty notes;
+    private StringProperty issue;
+    private byte[] frontImage;
+    private byte[] backImage;
     private String casinoFlagImageString;
 
     public PokerChipBean(PokerChip pokerChip) {
@@ -44,36 +58,18 @@ public class PokerChipBean {
         this.inserts = new SimpleStringProperty(pokerChip.getInserts());
         this.year = new SimpleStringProperty(pokerChip.getYear());
         this.tcrId = new SimpleStringProperty(pokerChip.getTcrID());
-        if (pokerChip.getFrontImage().isPresent()) {
-            Image image = getImageFromByteArray(pokerChip.getFrontImage().map(BlobImage::getThumbnail).get());
-            this.frontImage = new ImageView(image);
-        }
-
-        if (pokerChip.getBackImage().isPresent()) {
-            Image image = getImageFromByteArray(pokerChip.getBackImage().map(BlobImage::getThumbnail).get());
-            this.backImage = new ImageView(image);
-        }
+        this.frontImage = pokerChip.getFrontImage().map(BlobImage::getImage).orElse(new byte[0]);
+        this.backImage = pokerChip.getBackImage().map(BlobImage::getImage).orElse(new byte[0]);
         this.obsolete = new SimpleBooleanProperty(pokerChip.isObsolete());
         this.cancelled = new SimpleBooleanProperty(pokerChip.isCancelled());
+        this.frontImageThumbnailView = new ImageView();
+        this.backImageThumbnailView = new ImageView();
     }
 
-    private PokerChipBean(CasinoBean casinoBean, StringProperty cityName, StringProperty denom, StringProperty mold, StringProperty color, StringProperty inlay, StringProperty inserts, StringProperty year, StringProperty tcrId, ImageView frontImage, ImageView backImage, BooleanProperty obsolete, BooleanProperty cancelled) {
-        this.casinoBean = casinoBean;
-        this.cityName = cityName;
-        this.denom = denom;
-        this.mold = mold;
-        this.color = color;
-        this.inlay = inlay;
-        this.inserts = inserts;
-        this.year = year;
-        this.tcrId = tcrId;
-        this.frontImage = frontImage;
-        this.backImage = backImage;
-        this.obsolete = obsolete;
-        this.cancelled = cancelled;
-    }
-
-    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold, String tcrId, String year, Image frontImage, Image backImage, boolean obsolete, boolean cancelled) {
+    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold,
+                          String tcrId, String year, byte[] frontImage, byte[] backImage, boolean obsolete, boolean cancelled,
+                          BigDecimal value, BigDecimal paid, String condition, String rarity, LocalDate dateOfAcquisition,
+                          String category, String issue, String notes) {
         this.casinoBean = casinoBean;
         this.cityName = new SimpleStringProperty(casinoBean.getCity());
         this.color = new SimpleStringProperty(color);
@@ -84,10 +80,21 @@ public class PokerChipBean {
         this.tcrId = new SimpleStringProperty(tcrId);
         this.year = new SimpleStringProperty(year);
         this.tcrId = new SimpleStringProperty(tcrId);
-        this.frontImage = new ImageView(frontImage);
-        this.backImage = new ImageView(backImage);
         this.obsolete = new SimpleBooleanProperty(obsolete);
         this.cancelled = new SimpleBooleanProperty(cancelled);
+        this.condition = new SimpleStringProperty(condition);
+        this.category = new SimpleStringProperty(category);
+        this.rarity = new SimpleStringProperty(rarity);
+        this.dateOfAcquisition = new SimpleObjectProperty<>(dateOfAcquisition);
+        this.value = new BigDecimalProperty(value);
+        this.paid = new BigDecimalProperty(paid);
+        this.issue = new SimpleStringProperty(issue);
+        this.notes = new SimpleStringProperty(notes);
+        this.frontImage = frontImage;
+        this.backImage = backImage;
+        this.frontImageThumbnailView = new ImageView();
+        this.backImageThumbnailView = new ImageView();
+        setImageThumbnails(newArrayList(frontImage, backImage));
     }
 
     @NotNull
@@ -128,24 +135,57 @@ public class PokerChipBean {
         return year.get();
     }
 
-    public ImageView getFrontImage() {
-        return frontImage;
+    public ImageView getFrontImageThumbnailView() {
+        return frontImageThumbnailView;
     }
 
-    public ImageView getBackImage() {
-        return backImage;
+    public ImageView getBackImageThumbnailView() {
+        return backImageThumbnailView;
     }
 
-    public void setImages(List<Image> pictures) {
+    public Image getFrontImage() {
+        return getImageFromByteArray(frontImage, 120, 120);
+    }
+
+    public Image getBackImage() {
+        return getImageFromByteArray(backImage, 120, 120);
+    }
+
+    @NotNull
+    private Image getImageFromByteArray(byte[] image, double requestedWidth, double requestedHeight) {
+        return new Image(new ByteArrayInputStream(image), requestedWidth, requestedHeight, true, true);
+    }
+
+    public boolean isCancelled() {
+        return this.cancelled.get();
+    }
+
+    public boolean isObsolete() {
+        return this.obsolete.get();
+    }
+
+    public String getRarity() {
+        return this.rarity.get();
+    }
+
+    public void setImageThumbnails(List<byte[]> pictures) {
+        requireNonNull(pictures);
         if (pictures.size() >= 1) {
-
-            this.frontImage.setImage(pictures.get(0));
+            frontImage = pictures.get(0);
+            setImageThumbnailIfNotNull(frontImage, frontImageThumbnailView);
 
             if (pictures.size() >= 2) {
-                this.backImage.setImage(pictures.get(1));
+                backImage = pictures.get(1);
             } else {
-                this.backImage.setImage(pictures.get(0));
+                backImage = frontImage;
             }
+            setImageThumbnailIfNotNull(backImage, backImageThumbnailView);
+        }
+    }
+
+    private void setImageThumbnailIfNotNull(byte[] imageByteArray, ImageView imageThumbnailView) {
+        if (imageByteArray != null) {
+            imageThumbnailView.setImage(getImageFromByteArray(imageByteArray, 90, 90));
         }
     }
 
@@ -157,6 +197,33 @@ public class PokerChipBean {
         return casinoBean;
     }
 
+    public String getCondition() {
+        return condition.get();
+    }
+
+    public String getCategory() {
+        return category.get();
+    }
+
+    public BigDecimal getValue() {
+        return value.get();
+    }
+
+    public BigDecimal getPaid() {
+        return paid.get();
+    }
+
+    public LocalDate getDateOfAcquisition() {
+        return dateOfAcquisition.get();
+    }
+
+    public String getNotes() {
+        return notes.get();
+    }
+
+    public String getIssue() {
+        return issue.get();
+    }
 
     public static class PokerChipBeanBuilder {
         private CasinoBean casinoBean;
@@ -167,10 +234,18 @@ public class PokerChipBean {
         private String mold;
         private String tcrId;
         private String year;
-        private Image frontImage;
-        private Image backImage;
+        private String category;
+        private String condition;
+        private String rarity;
+        private byte[] frontImage;
+        private byte[] backImage;
         private boolean obsolete;
         private boolean cancelled;
+        private BigDecimal value;
+        private BigDecimal paid;
+        private LocalDate dateOfAcquisition;
+        private String issue;
+        private String notes;
 
         public PokerChipBeanBuilder casino(CasinoBean casino) {
             this.casinoBean = casino;
@@ -212,12 +287,12 @@ public class PokerChipBean {
             return this;
         }
 
-        public PokerChipBeanBuilder frontImage(Image frontImage) {
+        public PokerChipBeanBuilder frontImage(byte[] frontImage) {
             this.frontImage = frontImage;
             return this;
         }
 
-        public PokerChipBeanBuilder backImage(Image backImage) {
+        public PokerChipBeanBuilder backImage(byte[] backImage) {
             this.backImage = backImage;
             return this;
         }
@@ -232,8 +307,49 @@ public class PokerChipBean {
             return this;
         }
 
+        public PokerChipBeanBuilder category(String category) {
+            this.category = category;
+            return this;
+        }
+
+        public PokerChipBeanBuilder condition(String condition) {
+            this.condition = condition;
+            return this;
+        }
+
+        public PokerChipBeanBuilder rarity(String rarity) {
+            this.rarity = rarity;
+            return this;
+        }
+
+        public PokerChipBeanBuilder notes(String notes) {
+            this.notes = notes;
+            return this;
+        }
+
+        public PokerChipBeanBuilder issue(String issue) {
+            this.issue = issue;
+            return this;
+        }
+
+        public PokerChipBeanBuilder value(BigDecimal value) {
+            this.value = value;
+            return this;
+        }
+
+        public PokerChipBeanBuilder paid(BigDecimal paid) {
+            this.paid = paid;
+            return this;
+        }
+
+        public PokerChipBeanBuilder dateOfAcquisition(LocalDate dateOfAcquisition) {
+            this.dateOfAcquisition = dateOfAcquisition;
+            return this;
+        }
+
         public PokerChipBean build() {
-            return new PokerChipBean(casinoBean, color, denom, inlay, inserts, mold, tcrId, year, frontImage, backImage, obsolete, cancelled);
+            return new PokerChipBean(casinoBean, color, denom, inlay, inserts, mold, tcrId, year, frontImage, backImage,
+                    obsolete, cancelled, value, paid, condition, rarity, dateOfAcquisition, category, issue, notes);
         }
     }
 }

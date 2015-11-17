@@ -2,14 +2,19 @@ package com.chipcollector.data;
 
 import com.avaje.ebean.Query;
 import com.chipcollector.domain.Casino;
+import com.chipcollector.domain.Country;
+import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
+import com.chipcollector.models.dashboard.CasinoBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-@Component
+import static java.time.LocalDateTime.now;
+
+@Repository
 public class Collection {
 
     private final PokerChipDAO pokerChipDAO;
@@ -34,12 +39,16 @@ public class Collection {
         return pokerChipDAO.getPokerChipCount(currentFilter);
     }
 
+    public int getAllPokerChipsCount() {
+        return pokerChipDAO.getAllPokerChipsCount();
+    }
+
     public int getPokerChipCountForLast7Days() {
-        return pokerChipDAO.getPokerChipCount(pokerChipDAO.createPokerChipFilter().where().gt("acquisitionDate", LocalDateTime.now().minusDays(7)).query());
+        return pokerChipDAO.getPokerChipCount(pokerChipDAO.createPokerChipFilter().where().gt("acquisitionDate", now().minusDays(7)).query());
     }
 
     public int getPokerChipCountForLastMonth() {
-        return pokerChipDAO.getPokerChipCount(pokerChipDAO.createPokerChipFilter().where().gt("acquisitionDate", LocalDateTime.now().minusMonths(1)).query());
+        return pokerChipDAO.getPokerChipCount(pokerChipDAO.createPokerChipFilter().where().gt("acquisitionDate", now().minusMonths(1)).query());
     }
 
     public int getNumDifferentCasinos() {
@@ -54,7 +63,28 @@ public class Collection {
         currentFilter = pokerChipDAO.createPokerChipFilter().where().eq("casino.id", casino.getId()).query();
     }
 
-    public void load() {
+    public void add(PokerChip pokerChip) {
+        pokerChipDAO.savePokerChip(pokerChip);
+    }
 
+    public Optional<Casino> getCasinoFromCasinoBean(CasinoBean casinoBean) {
+        return pokerChipDAO.getCasinoFinder()
+                .withName(casinoBean.getName())
+                .withCity(casinoBean.getCity())
+                .withState(casinoBean.getState())
+                .withCountry(casinoBean.getCountry())
+                .findSingle();
+    }
+
+    public Optional<Location> getLocationFromCasinoBean(CasinoBean casinoBean) {
+        return pokerChipDAO.getLocationFinder()
+                .withCity(casinoBean.getCity())
+                .withState(casinoBean.getState())
+                .withCountry(casinoBean.getCountry())
+                .findSingle();
+    }
+
+    public Country getCountryFromCasinoBean(CasinoBean casinoBean) {
+        return pokerChipDAO.getCountry(casinoBean.getCountry());
     }
 }

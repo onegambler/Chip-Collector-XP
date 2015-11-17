@@ -29,10 +29,10 @@ create table casinos (
   id                                integer primary key autoincrement,
   name                              varchar(255) not null,
   type                              varchar(255),
-  website                          varchar(255),
-  open_date                         date,
-  close_date                        date,
-  theme                             varchar(255),
+  website                           varchar(255),
+  open_date                         varchar(10),
+  close_date                        varchar(10),
+  status                            varchar(255),
   location_id                       integer not null,
   foreign key (location_id)         references countries (id) on delete restrict on update restrict
 );
@@ -68,8 +68,6 @@ create table properties (
   key                              	varchar(50) not null,
   value                             varchar(255)
 );
-
-PRAGMA foreign_keys = ON;
 
 INSERT INTO properties (id, key, value) values(1, 'db_version', 1);
 
@@ -314,3 +312,4 @@ INSERT INTO countries (id, name, iso_alpha2, iso_alpha3, iso_numeric, currency_c
 (238, 'Zambia', 'ZM', 'ZMB', 894, 'ZMK', 'Kwacha', 'ZK', 'ZM.png'),
 (239, 'Zimbabwe', 'ZW', 'ZWE', 716, 'ZWD', 'Dollar', 'Z$', 'ZW.png');
 
+PRAGMA foreign_keys = ON;

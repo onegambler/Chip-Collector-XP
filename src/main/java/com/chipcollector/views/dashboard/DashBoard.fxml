@@ -15,17 +15,17 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="%menu.title.preferences"/>
                         <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" text="%menu.title.quit" onAction="#quitApplication"/>
+                        <MenuItem mnemonicParsing="false" onAction="#quitApplication" text="%menu.title.quit"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="%menu.title.edit">
                     <items>
                         <Menu mnemonicParsing="false" text="%menu.edit.pokerchip">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="%menu.edit.pokerchip.search"
-                                          onAction="#showSearchPokerChipDialog"/>
-                                <MenuItem mnemonicParsing="false" text="%menu.edit.pokerchip.addnew"
-                                onAction="#showAddPokerChipDialog"/>
+                                <MenuItem mnemonicParsing="false" onAction="#showSearchPokerChipDialog"
+                                          text="%menu.edit.pokerchip.search"/>
+                                <MenuItem mnemonicParsing="false" onAction="#showAddPokerChipDialog"
+                                          text="%menu.edit.pokerchip.addnew"/>
                             </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" text="%menu.edit.casino"/>
@@ -43,46 +43,43 @@
             <items>
                 <AnchorPane SplitPane.resizableWithParent="false">
                     <children>
-                        <Accordion layoutX="7.0" layoutY="187.0" prefHeight="551.0" prefWidth="209.0"
-                                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <panes>
-                                <TitledPane animated="false" text="untitled 1">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <TreeView fx:id="casinoTreeView" layoutY="79.0"
-                                                          onMouseClicked="#onMouseClick" prefHeight="475.0"
-                                                          prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-                                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                          AnchorPane.topAnchor="0.0">
-                                                </TreeView>
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </TitledPane>
-                                <TitledPane animated="false" text="untitled 2">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
-                                                    prefWidth="200.0"/>
-                                    </content>
-                                </TitledPane>
-                                <TitledPane animated="false" text="untitled 3">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
-                                                    prefWidth="200.0"/>
-                                    </content>
-                                </TitledPane>
-                            </panes>
-                        </Accordion>
+                        <VBox prefHeight="551.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <ToggleButton mnemonicParsing="false" prefWidth="300.0" text="Dashboard"/>
+                                <Accordion layoutX="7.0" layoutY="187.0" prefHeight="551.0" prefWidth="209.0"
+                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <panes>
+                                        <TitledPane animated="false" text="untitled 1">
+                                            <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+                                                            prefWidth="200.0">
+                                                    <children>
+                                                        <TreeView fx:id="casinoTreeView" layoutY="79.0"
+                                                                  onMouseClicked="#onMouseClick" prefHeight="475.0"
+                                                                  prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                                                                  AnchorPane.leftAnchor="0.0"
+                                                                  AnchorPane.rightAnchor="0.0"
+                                                                  AnchorPane.topAnchor="0.0">
+                                                        </TreeView>
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </TitledPane>
+                                    </panes>
+                                </Accordion>
+                            </children>
+                        </VBox>
                     </children>
                 </AnchorPane>
                 <AnchorPane>
-                    <children>
-                        <Pagination fx:id="pagination" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
-                                    prefWidth="690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                    </children>
+                    <fx:include visible="true" source="StatsDialog.fxml" layoutX="253.0" layoutY="138.0"
+                                prefHeight="551.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0"
+                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    <Pagination visible="false" fx:id="pagination" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
+                                prefWidth="690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                 </AnchorPane>
             </items>
         </SplitPane>
@@ -106,6 +103,6 @@
         </HBox>
     </children>
     <stylesheets>
-        <URL value="@DashBoard.css"/>
+        <URL value="@Dashboard.css"/>
     </stylesheets>
 </VBox>
