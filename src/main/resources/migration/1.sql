@@ -13,7 +13,7 @@ create table countries (
 create table poker_chip_images (
   id                                integer primary key autoincrement,
   image                             blob not null,
-  thumbnail                         blob not null
+  thumbnail                         blob null
 );
 
 create table locations (
@@ -29,7 +29,7 @@ create table casinos (
   id                                integer primary key autoincrement,
   name                              varchar(255) not null,
   type                              varchar(255),
-  web_site                          varchar(255),
+  website                          varchar(255),
   open_date                         date,
   close_date                        date,
   theme                             varchar(255),
