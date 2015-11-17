@@ -20,3 +20,4 @@ alter table locations rename column country to country_id;
 alter table casinos rename column opened to open_date;
 alter table casinos rename column closed to close_date;
 alter table casinos rename column locationID to location_id;
+alter table casinos rename column theme to status;
