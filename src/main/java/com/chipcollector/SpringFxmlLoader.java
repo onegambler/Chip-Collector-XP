@@ -42,12 +42,12 @@ public class SpringFxmlLoader implements ApplicationContextAware {
     }
 
     public <T> void showDialog(String dialogFile, String title, Consumer<T> consumer) {
-            FXMLLoader loader = getLoader(dialogFile);
-            Stage dialogStage = getStage(loader, title);
-            dialogStage.setTitle(title);
-            consumer.accept(loader.getController());
-            //dialogStage.initOwner(); //TODO: init the owner
-            dialogStage.showAndWait();
+        FXMLLoader loader = getLoader(dialogFile);
+        Stage dialogStage = getStage(loader, title);
+        dialogStage.setTitle(title);
+        consumer.accept(loader.getController());
+        //dialogStage.initOwner(); //TODO: init the owner
+        dialogStage.showAndWait();
     }
 
     public void show(String fxmlFile, String title) {

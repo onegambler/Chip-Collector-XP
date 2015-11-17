@@ -30,9 +30,9 @@ create table casinos (
   name                              varchar(255) not null,
   type                              varchar(255),
   web_site                          varchar(255),
-  open_date                         date,
-  close_date                        date,
-  theme                             varchar(255),
+  open_date                         varchar(10),
+  close_date                        varchar(10),
+  status                            varchar(255),
   location_id                       integer not null,
   foreign key (location_id)         references countries (id) on delete restrict on update restrict
 );

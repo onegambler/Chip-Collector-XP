@@ -17,9 +17,11 @@ public class CasinoBean {
     private StringProperty country;
     private StringProperty website;
     private StringProperty oldName;
+    private StringProperty status;
     private StringProperty type;
-    private SimpleObjectProperty<LocalDate> openDate;
-    private SimpleObjectProperty<LocalDate> closeDate;
+
+    private SimpleStringProperty openDate;
+    private SimpleStringProperty closeDate;
 
     private String infoPageUrl;
 
@@ -29,8 +31,8 @@ public class CasinoBean {
         state = new SimpleStringProperty();
         country = new SimpleStringProperty();
         website = new SimpleStringProperty();
-        openDate = new SimpleObjectProperty<>();
-        closeDate = new SimpleObjectProperty<>();
+        openDate = new SimpleStringProperty();
+        closeDate = new SimpleStringProperty();
         oldName = new SimpleStringProperty();
         type = new SimpleStringProperty();
     }
@@ -41,8 +43,8 @@ public class CasinoBean {
         state = new SimpleStringProperty(casino.getState());
         country = new SimpleStringProperty(casino.getCountryName());
         website = new SimpleStringProperty(casino.getWebsite());
-        openDate = new SimpleObjectProperty<>(casino.getOpenDate());
-        closeDate = new SimpleObjectProperty<>(casino.getCloseDate());
+        openDate = new SimpleStringProperty(casino.getOpenDate());
+        closeDate = new SimpleStringProperty(casino.getCloseDate());
     }
 
     public String getName() {
@@ -110,8 +112,8 @@ public class CasinoBean {
         this.infoPageUrl = infoPageUrl;
     }
 
-    public StringProperty getState() {
-        return state;
+    public String getState() {
+        return state.get();
     }
 
     @Override
@@ -127,20 +129,20 @@ public class CasinoBean {
         return oldName.get();
     }
 
-    public void setOpenDate(LocalDate openDate) {
+    public void setOpenDate(String openDate) {
         this.openDate.setValue(openDate);
     }
 
     public String getOpenDate() {
-        return Optional.ofNullable(openDate.get()).map(localDate -> localDate.format(DateTimeFormatter.BASIC_ISO_DATE)).orElse("");
+        return openDate.get();
     }
 
-    public void setClosedDate(LocalDate closedDate) {
+    public void setClosedDate(String closedDate) {
         this.closeDate.set(closedDate);
     }
 
     public String getClosedDate() {
-        return Optional.ofNullable(closeDate.get()).map(localDate -> localDate.format(DateTimeFormatter.BASIC_ISO_DATE)).orElse("");
+        return closeDate.get();
     }
 
     public void setType(String type) {
@@ -149,5 +151,13 @@ public class CasinoBean {
 
     public String getType() {
         return type.get();
+    }
+
+    public String getStatus() {
+        return status.get();
+    }
+
+    public void setStatus(String status) {
+        this.status.setValue(status);
     }
 }

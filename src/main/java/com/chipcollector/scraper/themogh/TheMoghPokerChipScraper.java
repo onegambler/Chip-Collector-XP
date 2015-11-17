@@ -3,18 +3,19 @@ package com.chipcollector.scraper.themogh;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.models.dashboard.PokerChipBean.PokerChipBeanBuilder;
-import javafx.scene.image.Image;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -112,8 +113,8 @@ public class TheMoghPokerChipScraper {
     private void loadImagesInASeparateThread(List<Entry<PokerChipBean, List<String>>> pokerChipBeanWithPictureUrlsSet) {
         executor.execute(() -> {
             for (Entry<PokerChipBean, List<String>> entry : pokerChipBeanWithPictureUrlsSet) {
-                final List<Image> images = entry.getValue().stream().map(this::getImageFromUrl).collect(toList());
-                entry.getKey().setImages(images);
+                final List<byte[]> images = entry.getValue().stream().map(this::getImageFromUrl).collect(toList());
+                entry.getKey().setImageThumbnails(images);
             }
         });
     }
@@ -136,20 +137,25 @@ public class TheMoghPokerChipScraper {
                 matcher = CASINO_OPENED_PATTERN.matcher(info);
                 if (matcher.find()) {
                     final String openDate = matcher.replaceAll("");
-                    casinoBean.setOpenDate(parseDate(openDate));
+                    casinoBean.setOpenDate(openDate);
                     continue;
                 }
 
                 matcher = CASINO_CLOSED_PATTERN.matcher(info);
                 if (matcher.find()) {
                     final String closedDate = matcher.replaceAll("");
-                    casinoBean.setClosedDate(parseDate(closedDate));
+                    casinoBean.setClosedDate(closedDate);
                     continue;
                 }
 
                 matcher = CASINO_TYPE_PATTERN.matcher(info);
                 if (matcher.find()) {
                     casinoBean.setType(matcher.replaceAll(""));
+                }
+
+                matcher = CASINO_STATUS_PATTERN.matcher(info);
+                if (matcher.find()) {
+                    casinoBean.setStatus(matcher.replaceAll(""));
                 }
             }
         }
@@ -168,13 +174,27 @@ public class TheMoghPokerChipScraper {
         return toCamelCase(matcher.replaceAll(""), ' ', '-');
     }
 
-    private Image getImageFromUrl(String url) {
+    private byte[] getImageFromUrl(String url) {
         requireNonNull(url, "Image url cannot be null");
         if (!url.startsWith(WEBSITE_ROOT)) {
             url = WEBSITE_ROOT + url;
         }
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            byte[] chunk = new byte[4096];
+            int bytesRead;
+            InputStream stream = new URL(url).openStream();
+
+            while ((bytesRead = stream.read(chunk)) > 0) {
+                outputStream.write(chunk, 0, bytesRead);
+            }
+
+        } catch (IOException e) {
+            return null;
+        }
+        return outputStream.toByteArray();
         //TODO: improve image resize
-        return new Image(url, 90, 90, true, true);
     }
 
     private final Pattern HTML_TAG_PATTERN = Pattern.compile("<[^>]*>", DOTALL);
@@ -191,6 +211,7 @@ public class TheMoghPokerChipScraper {
     private final Pattern CASINO_OPENED_PATTERN = Pattern.compile("\\s*Open\\s*:\\s+");
     private final Pattern CASINO_CLOSED_PATTERN = Pattern.compile("\\s*Close\\s*:\\s+");
     private final Pattern CASINO_WAS_PATTERN = Pattern.compile("\\s*Was\\s*:\\s+");
+    private final Pattern CASINO_STATUS_PATTERN = Pattern.compile("\\s*Status\\s*:\\s+");
 
     private static final String IMAGE_QUERY = "td.chippics img";
     private static final String WEBSITE_ROOT = "http://www.themogh.org/";

@@ -1,13 +1,11 @@
 package com.chipcollector.domain;
 
 import com.chipcollector.util.MessagesHelper;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static javax.persistence.CascadeType.ALL;
@@ -33,19 +31,19 @@ public class Casino {
     private String type;
 
     @Setter(PROTECTED)
-    @Column(name = "WEB_SITE")
+    @Column(name = "WEBSITE")
     private String website;
 
     @Setter(PROTECTED)
     @Column(name = "OPEN_DATE")
-    private LocalDate openDate;
+    private String openDate;
 
     @Setter(PROTECTED)
     @Column(name = "CLOSE_DATE")
-    private LocalDate closeDate;
+    private String closeDate;
 
     @Setter(PROTECTED)
-    private String theme;
+    private String status;
 
     @Transient
     @Setter(NONE)

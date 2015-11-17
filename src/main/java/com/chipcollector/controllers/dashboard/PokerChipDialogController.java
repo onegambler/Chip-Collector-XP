@@ -1,5 +1,8 @@
 package com.chipcollector.controllers.dashboard;
 
+import com.chipcollector.data.Collection;
+import com.chipcollector.domain.*;
+import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,12 +10,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 import org.controlsfx.validation.ValidationSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
@@ -64,8 +70,19 @@ public class PokerChipDialogController implements Initializable {
     private Button cancelButton;
     @FXML
     private Button okButton;
+    @FXML
+    private ImageView frontImage;
+    @FXML
+    private ImageView backImage;
     @Setter
     private PokerChipBean pokerChipBean;
+
+    private Collection collection;
+
+    @Autowired
+    public PokerChipDialogController(Collection collection) {
+        this.collection = collection;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -96,11 +113,54 @@ public class PokerChipDialogController implements Initializable {
         denomComboBox.setValue(pokerChipBean.getDenom());
         issueTextField.setText(pokerChipBean.getIssue());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
+        frontImage.setImage(pokerChipBean.getFrontImage());
+        backImage.setImage(pokerChipBean.getBackImage());
 
     }
 
     public void onCancelAction(ActionEvent actionEvent) {
         ((Node) actionEvent.getTarget()).getScene().getWindow().hide();
+    }
+
+    public void onOkAction(MouseEvent event) {
+        final CasinoBean casinoBean = pokerChipBean.getCasinoBean();
+        final Optional<Casino> existingCasino = collection.getCasinoFromCasinoBean(casinoBean);
+        Casino casino;
+        if (!existingCasino.isPresent()) {
+            Optional<Location> existingLocation = collection.getLocationFromCasinoBean(casinoBean);
+            Location location;
+            if (!existingLocation.isPresent()) {
+                Country country = collection.getCountryFromCasinoBean(casinoBean);
+                location = Location.builder()
+                        .city(casinoBean.getCity())
+                        .country(country)
+                        .build();
+            } else {
+                location = existingLocation.get();
+            }
+
+            casino = Casino.builder()
+                    .closeDate(casinoBean.getClosedDate())
+                    .openDate(casinoBean.getOpenDate())
+                    .name(casinoBean.getName())
+                    .type(casinoBean.getType())
+                    .status(casinoBean.getStatus())
+                    .website(casinoBean.getWebsite())
+                    .location(location)
+                    .build();
+        } else {
+            casino = existingCasino.get();
+        }
+
+        PokerChip pokerChip = PokerChip.builder()
+                .category(categoryComboBox.getValue())
+                .acquisitionDate(dateOfAcquisitionDatePicker.getValue())
+                //.amountPaid(paidTextField.getText())
+                //.
+                .casino(casino)
+                .build();
+
+        collection.add(pokerChip);
     }
 
     public static final String IMAGES_FLAGS_LOCATION = "images/flags/%s";

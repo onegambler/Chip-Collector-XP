@@ -114,7 +114,10 @@ public class SearchPokerChipDialogController implements Initializable {
 
     private void openNewPokerChipDialog(PokerChipBean selectedPokerChip) {
               springFxmlLoader.<PokerChipDialogController>showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION,
-                      "Add new Poker Chip", controller -> controller.setPokerChipBean(selectedPokerChip));
+                      "Add new Poker Chip", controller -> {
+                          controller.setPokerChipBean(selectedPokerChip);
+                          controller.update();
+                      });
     }
 
     private boolean isMouseDoubleClicked(MouseEvent event) {
