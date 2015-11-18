@@ -72,7 +72,7 @@ public class TheMoghCasinoScraper {
     public static final String POST_PARAM_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0";
     public static final String HREF_ATTRIBUTE_KEY = "href";
 
-    public static final String USA_COUNTRY = "U.S.A.";
+    public static final String USA_COUNTRY = "United States";
 
     private enum CasinoElement {
         COUNTRY(0),

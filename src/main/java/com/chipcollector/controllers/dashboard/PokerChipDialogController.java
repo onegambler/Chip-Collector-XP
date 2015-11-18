@@ -1,14 +1,20 @@
 package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.data.Collection;
-import com.chipcollector.domain.*;
+import com.chipcollector.domain.Casino;
+import com.chipcollector.domain.Country;
+import com.chipcollector.domain.Location;
+import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
+import com.google.common.base.Throwables;
+import com.google.common.io.Resources;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import lombok.Setter;
@@ -16,11 +22,13 @@ import org.controlsfx.validation.ValidationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static java.util.Optional.ofNullable;
 import static javafx.collections.FXCollections.observableArrayList;
 
 @Controller
@@ -103,8 +111,8 @@ public class PokerChipDialogController implements Initializable {
         insertsTextField.setText(pokerChipBean.getInserts());
         conditionComboBox.setValue(pokerChipBean.getCondition());
         categoryComboBox.setValue(pokerChipBean.getCategory());
-        valueTextField.setText(String.valueOf(pokerChipBean.getValue()));
-        paidTextField.setText(String.valueOf(pokerChipBean.getPaid()));
+        ofNullable(pokerChipBean.getValue()).map(BigDecimal::toString).ifPresent(valueTextField::setText);
+        ofNullable(pokerChipBean.getPaid()).map(BigDecimal::toString).ifPresent(paidTextField::setText);
         dateOfAcquisitionDatePicker.setValue(pokerChipBean.getDateOfAcquisition());
         tcrTextField.setText(pokerChipBean.getTcrId());
         notesTextArea.setText(pokerChipBean.getNotes());
@@ -115,7 +123,15 @@ public class PokerChipDialogController implements Initializable {
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
         frontImage.setImage(pokerChipBean.getFrontImage());
         backImage.setImage(pokerChipBean.getBackImage());
-
+        Country country = collection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
+        if (country != null) {
+            URL imageUrl = Resources.getResource(String.format(IMAGES_FLAGS_LOCATION, country.getFlagImageName()));
+            try {
+                casinoCountryFlag.setImage(new Image(imageUrl.openStream()));
+            } catch (IOException e) {
+                Throwables.propagate(e);
+            }
+        }
     }
 
     public void onCancelAction(ActionEvent actionEvent) {

@@ -50,11 +50,10 @@ public class ChipCollectorXPApplication extends Application {
                 .state("state")
                 .build();
         final Casino casino = Casino.builder()
-                .closeDate(LocalDate.now())
+                .closeDate(LocalDate.now().toString())
                 .location(locat)
                 .name("name")
-                .openDate(LocalDate.now())
-                .theme("theme")
+                .openDate(LocalDate.now().toString())
                 .type("type")
                 .website("website")
                 .build();

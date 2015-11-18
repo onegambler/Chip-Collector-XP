@@ -35,6 +35,7 @@ public class CasinoBean {
         closeDate = new SimpleStringProperty();
         oldName = new SimpleStringProperty();
         type = new SimpleStringProperty();
+        status = new SimpleStringProperty();
     }
 
     public CasinoBean(Casino casino) {
@@ -45,6 +46,7 @@ public class CasinoBean {
         website = new SimpleStringProperty(casino.getWebsite());
         openDate = new SimpleStringProperty(casino.getOpenDate());
         closeDate = new SimpleStringProperty(casino.getCloseDate());
+        status = new SimpleStringProperty(casino.getStatus());
     }
 
     public String getName() {
@@ -118,7 +120,7 @@ public class CasinoBean {
 
     @Override
     public String toString() {
-        return String.format("%s (%s)", name, city);
+        return String.format("%s (%s)", name.get(), city.get());
     }
 
     public void setOldName(String oldName) {

@@ -85,6 +85,10 @@ public class Collection {
     }
 
     public Country getCountryFromCasinoBean(CasinoBean casinoBean) {
-        return pokerChipDAO.getCountry(casinoBean.getCountry());
+        return getCountryFromName(casinoBean.getCountry());
+    }
+
+    public Country getCountryFromName(String name) {
+        return pokerChipDAO.getCountry(name);
     }
 }

@@ -1,14 +1,12 @@
 package com.chipcollector.domain;
 
 import com.avaje.ebean.annotation.CacheStrategy;
-import com.chipcollector.util.ImageConverter;
-import com.google.common.base.Throwables;
 import lombok.*;
 
-import javax.persistence.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Optional;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import static lombok.AccessLevel.NONE;
 
@@ -28,31 +26,10 @@ public final class Country {
     @Column
     private String name;
 
-    @Lob
-    @Getter(NONE)
     @Column(name = "FLAG_IMAGE")
-    private byte[] flagImageByteArray;
-
-    @Transient
-    private Optional<BufferedImage> flagImage;
+    private String flagImageName;
 
     public Country(String name) {
         this.name = name;
-    }
-
-    public Optional<BufferedImage> getFlagImage() {
-
-        if (flagImage == null) {
-            flagImage = Optional.ofNullable(flagImageByteArray).map(bytes -> {
-                try {
-                    return ImageConverter.rawBytesToBufferedImage(bytes);
-                } catch (IOException e) {
-                    throw Throwables.propagate(e);
-                }
-            });
-        }
-
-        return flagImage;
-
     }
 }

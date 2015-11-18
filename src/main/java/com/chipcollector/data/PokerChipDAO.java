@@ -55,7 +55,7 @@ public class PokerChipDAO {
         return ebeanServer.find(Country.class)
                 .setUseCache(true)
                 .setReadOnly(true)
-                .select(format("name = %s", name))
+                .where().eq("name", name)
                 .findUnique();
     }
 
