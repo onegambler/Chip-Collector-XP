@@ -1,33 +1,37 @@
 package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.data.Collection;
-import com.chipcollector.domain.Casino;
-import com.chipcollector.domain.Country;
-import com.chipcollector.domain.Location;
-import com.chipcollector.domain.PokerChip;
+import com.chipcollector.domain.*;
+import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.util.ImageConverter;
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.io.Resources;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 import org.controlsfx.validation.ValidationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
+import static com.chipcollector.util.ImageConverter.resizeImage;
+import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -79,9 +83,9 @@ public class PokerChipDialogController implements Initializable {
     @FXML
     private Button okButton;
     @FXML
-    private ImageView frontImage;
+    private ImageView frontImageView;
     @FXML
-    private ImageView backImage;
+    private ImageView backImageView;
     @Setter
     private PokerChipBean pokerChipBean;
 
@@ -121,8 +125,8 @@ public class PokerChipDialogController implements Initializable {
         denomComboBox.setValue(pokerChipBean.getDenom());
         issueTextField.setText(pokerChipBean.getIssue());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
-        frontImage.setImage(pokerChipBean.getFrontImage());
-        backImage.setImage(pokerChipBean.getBackImage());
+        frontImageView.setImage(pokerChipBean.getFrontImage());
+        backImageView.setImage(pokerChipBean.getBackImage());
         Country country = collection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
         if (country != null) {
             URL imageUrl = Resources.getResource(String.format(IMAGES_FLAGS_LOCATION, country.getFlagImageName()));
@@ -135,10 +139,14 @@ public class PokerChipDialogController implements Initializable {
     }
 
     public void onCancelAction(ActionEvent actionEvent) {
-        ((Node) actionEvent.getTarget()).getScene().getWindow().hide();
+        closeDialog(actionEvent);
     }
 
-    public void onOkAction(MouseEvent event) {
+    private void closeDialog(Event event) {
+        ((Node) event.getTarget()).getScene().getWindow().hide();
+    }
+
+    public void onOkAction(ActionEvent event) throws IOException {
         final CasinoBean casinoBean = pokerChipBean.getCasinoBean();
         final Optional<Casino> existingCasino = collection.getCasinoFromCasinoBean(casinoBean);
         Casino casino;
@@ -149,6 +157,7 @@ public class PokerChipDialogController implements Initializable {
                 Country country = collection.getCountryFromCasinoBean(casinoBean);
                 location = Location.builder()
                         .city(casinoBean.getCity())
+                        .state(casinoBean.getState())
                         .country(country)
                         .build();
             } else {
@@ -168,15 +177,55 @@ public class PokerChipDialogController implements Initializable {
             casino = existingCasino.get();
         }
 
-        PokerChip pokerChip = PokerChip.builder()
+        PokerChipBuilder pokerChipBuilder = PokerChip.builder()
                 .category(categoryComboBox.getValue())
                 .acquisitionDate(dateOfAcquisitionDatePicker.getValue())
+                .color(colorComboBox.getValue())
+                .condition(conditionComboBox.getValue())
+                .denom(denomComboBox.getValue())
+                .inserts(insertsTextField.getText())
+                .mold(moldComboBox.getValue())
+                .notes(notesTextArea.getText())
+                .obsolete(obsoleteToggleButton.isSelected())
+                .rarity(rarityComboBox.getValue())
+                .tcrID(tcrTextField.getText())
+                .year(yearTextField.getText())
                 //.amountPaid(paidTextField.getText())
-                //.
-                .casino(casino)
-                .build();
+                //.value()
+                .casino(casino);
 
-        collection.add(pokerChip);
+        String issueText = issueTextField.getText();
+        if (!Strings.isNullOrEmpty(issueText)) {
+            pokerChipBuilder.issue(parseInt(issueText));
+        }
+        Image frontImage = frontImageView.getImage();
+        BlobImage frontBlobImage = null;
+        if (frontImage != null) {
+            frontBlobImage = getBlobImageFromImage(frontImage);
+            pokerChipBuilder.frontImage(frontBlobImage);
+        }
+
+        Image backImage = backImageView.getImage();
+        if (backImage != null) {
+            if (frontImage == backImage) {
+                pokerChipBuilder.backImage(frontBlobImage);
+            } else {
+                pokerChipBuilder.backImage(getBlobImageFromImage(backImage));
+            }
+        }
+        collection.add(pokerChipBuilder.build());
+
+        closeDialog(event);
+    }
+
+    private BlobImage getBlobImageFromImage(Image image) throws IOException {
+        BufferedImage originalImage = ImageConverter.imageToBufferedImage(image);
+        byte[] thumbnail = bufferedImageToRawBytes(resizeImage(originalImage, 90), "png");
+        byte[] resizedImage = bufferedImageToRawBytes(resizeImage(originalImage, 120), "png");
+        BlobImage blobImage = new BlobImage();
+        blobImage.setImage(resizedImage);
+        blobImage.setThumbnail(thumbnail);
+        return blobImage;
     }
 
     public static final String IMAGES_FLAGS_LOCATION = "images/flags/%s";

@@ -144,7 +144,7 @@ public class PokerChipDAO {
         }
 
         public CasinoFinder withCountry(String country) {
-            query.eq("location.country", country);
+            query.eq("location.country.name", country);
             return this;
         }
 
@@ -172,7 +172,7 @@ public class PokerChipDAO {
         }
 
         public LocationFinder withCountry(String country) {
-            query.eq("country", country);
+            query.eq("country.name", country);
             return this;
         }
 

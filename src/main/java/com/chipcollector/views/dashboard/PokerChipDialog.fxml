@@ -26,7 +26,7 @@
                         <Label text="Front"/>
                         <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" styleClass="image-border">
                             <children>
-                                <ImageView fx:id="frontImage" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
+                                <ImageView fx:id="frontImageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
                                            preserveRatio="true">
                                     <VBox.margin>
                                         <Insets/>
@@ -45,7 +45,7 @@
                         <Label text="Back"/>
                         <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" styleClass="image-border">
                             <children>
-                                <ImageView fx:id="backImage" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
+                                <ImageView fx:id="backImageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
                                            preserveRatio="true">
                                     <VBox.margin>
                                         <Insets/>
@@ -67,7 +67,7 @@
     <bottom>
         <ButtonBar id="buttonBar" VBox.vgrow="NEVER">
             <buttons>
-                <Button fx:id="okButton" text="OK" ButtonBar.buttonData="RIGHT"/>
+                <Button fx:id="okButton" onAction="#onOkAction" text="OK" ButtonBar.buttonData="RIGHT"/>
                 <Button fx:id="cancelButton" onAction="#onCancelAction" text="Cancel" ButtonBar.buttonData="RIGHT"/>
             </buttons>
         </ButtonBar>

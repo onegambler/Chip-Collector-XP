@@ -19,7 +19,7 @@ create table poker_chip_images (
 create table locations (
   id                                integer primary key autoincrement,
   city                              varchar(255) not null,
-  state                             varchar(255) not null,
+  state                             varchar(255),
   country_id                        integer not null,
   constraint uq_locations           unique (city, state, country_id),
   foreign key (country_id)          references countries (id) on delete restrict on update restrict
