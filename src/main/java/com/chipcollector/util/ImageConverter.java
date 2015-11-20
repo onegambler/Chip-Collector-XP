@@ -38,6 +38,11 @@ public class ImageConverter {
         return bufferedImageToRawBytes(bufferedImage, format);
     }
 
+
+    public static Image rawBytesToImage(byte[] imageByteArray) throws IOException {
+        return SwingFXUtils.toFXImage(rawBytesToBufferedImage(imageByteArray), null);
+    }
+
     public static BufferedImage resizeImage(BufferedImage bufferedImage, int targetSize) {
         return Scalr.resize(bufferedImage, targetSize);
     }

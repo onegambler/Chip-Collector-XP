@@ -51,7 +51,7 @@
                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <panes>
-                                        <TitledPane animated="false" text="untitled 1">
+                                        <TitledPane animated="false" text="All Poker Chips">
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                             prefWidth="200.0">
@@ -74,7 +74,7 @@
                     </children>
                 </AnchorPane>
                 <AnchorPane>
-                    <fx:include visible="true" source="StatsDialog.fxml" layoutX="253.0" layoutY="138.0"
+                    <fx:include fx:id="statsPane" visible="true" source="StatsPane.fxml" layoutX="253.0" layoutY="138.0"
                                 prefHeight="551.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0"
                                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                     <Pagination visible="false" fx:id="pagination" layoutX="253.0" layoutY="138.0" prefHeight="551.0"

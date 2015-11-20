@@ -18,6 +18,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,12 @@ public class DashboardController implements Initializable {
     @FXML
     private TreeView<Object> casinoTreeView;
 
+    @FXML
+    private StatsController statsPaneController;
+
+    @FXML
+    public VBox statsPane;
+
     @Autowired
     public DashboardController(Collection collection, AppSettings configuration, SpringFxmlLoader loader) {
         this.collection = collection;
@@ -58,11 +65,14 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //setUpTablePagination();
+        setUpTablePagination();
         setUpPokerChipTable();
         setUpCasinoTreeView();
-
         loadDatabase();
+        statsPaneController.registerViewAllAction(event -> {
+            statsPane.setVisible(false);
+            pagination.setVisible(true);
+        });
     }
 
     private void loadDatabase() {

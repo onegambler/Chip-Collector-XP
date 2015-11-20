@@ -6,8 +6,6 @@ import com.chipcollector.domain.*;
 import com.chipcollector.util.DatabaseUtil;
 import com.chipcollector.util.ImageConverter;
 import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.imgscalr.Scalr;
 import org.springframework.context.ApplicationContext;
@@ -92,7 +90,7 @@ public class ChipCollectorXPApplication extends Application {
                 .casino(casino).build();
     }
 
-    public static final String STATS_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/StatsDialog.fxml";
+    public static final String STATS_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/StatsPane.fxml";
     public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/DashBoard.fxml";
     public static final int THUMBNAIL_IMAGE_SIZE = 60;
 }

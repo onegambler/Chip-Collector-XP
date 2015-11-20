@@ -2,15 +2,21 @@ package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.SpringFxmlLoader;
 import com.chipcollector.data.Collection;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+
+import static java.util.Objects.nonNull;
 
 @Component
 public class StatsController implements Initializable {
@@ -30,10 +36,16 @@ public class StatsController implements Initializable {
     @FXML
     private Text numDifferentCasinosValue;
 
+    private Consumer<Event> viewAllActionConsumer;
+
     @Autowired
     public StatsController(Collection collection, SpringFxmlLoader loader) {
         this.collection = collection;
         this.loader = loader;
+    }
+
+    public void registerViewAllAction(Consumer<Event> eventConsumer) {
+        viewAllActionConsumer = eventConsumer;
     }
 
     @Override
@@ -46,9 +58,10 @@ public class StatsController implements Initializable {
     }
 
     @FXML
-    public void onViewAllButtonPressed() throws IOException {
-        loader.showDialog(DASHBOARD_FX_FILE_LOCATION, "All Poker Chips", o -> {
-        });
+    public void onViewAllButtonPressed(Event event) throws IOException {
+        if (nonNull(viewAllActionConsumer)) {
+            viewAllActionConsumer.accept(event);
+        }
     }
 
     @FXML

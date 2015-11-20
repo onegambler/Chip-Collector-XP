@@ -3,14 +3,17 @@ package com.chipcollector.models.dashboard;
 import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.core.BigDecimalProperty;
+import com.chipcollector.util.ImageConverter;
 import javafx.beans.property.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +23,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Objects.*;
 
 @Getter
+@Slf4j
 @ToString
 public class PokerChipBean {
 
@@ -64,6 +68,20 @@ public class PokerChipBean {
         this.cancelled = new SimpleBooleanProperty(pokerChip.isCancelled());
         this.frontImageThumbnailView = new ImageView();
         this.backImageThumbnailView = new ImageView();
+        pokerChip.getFrontImage().ifPresent(blobImage -> {
+            try {
+                frontImageThumbnailView.setImage(ImageConverter.rawBytesToImage(blobImage.getThumbnail()));
+            } catch (IOException e) {
+                log.error("Impossible to load image", e);
+            }
+        });
+        pokerChip.getBackImage().ifPresent(blobImage -> {
+            try {
+                backImageThumbnailView.setImage(ImageConverter.rawBytesToImage(blobImage.getThumbnail()));
+            } catch (IOException e) {
+                log.error("Impossible to load image", e);
+            }
+        });
     }
 
     private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold,
