@@ -215,6 +215,8 @@ public class PokerChipBean {
         return casinoBean;
     }
 
+    public String getCasinoName() { return casinoBean.getName(); }
+
     public String getCondition() {
         return condition.get();
     }

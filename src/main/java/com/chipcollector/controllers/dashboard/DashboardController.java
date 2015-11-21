@@ -8,6 +8,7 @@ import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -69,10 +70,17 @@ public class DashboardController implements Initializable {
         setUpPokerChipTable();
         setUpCasinoTreeView();
         loadDatabase();
-        statsPaneController.registerViewAllAction(event -> {
-            statsPane.setVisible(false);
-            pagination.setVisible(true);
-        });
+        statsPaneController.registerViewAllAction(event -> showPagination());
+    }
+
+    private void showPagination() {
+        statsPane.setVisible(false);
+        pagination.setVisible(true);
+    }
+
+    private void showStatsPane() {
+        statsPane.setVisible(true);
+        pagination.setVisible(false);
     }
 
     private void loadDatabase() {
@@ -157,4 +165,8 @@ public class DashboardController implements Initializable {
     public static final String POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
 
     public static final String POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
+
+    public void onAllPokerChipsTabClicked(Event event) {
+        showPagination();
+    }
 }
