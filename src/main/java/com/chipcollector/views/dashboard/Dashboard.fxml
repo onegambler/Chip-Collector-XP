@@ -16,9 +16,9 @@
         <URL value="@Dashboard.css" />
     </stylesheets>
     <children>
-        <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+        <HBox alignment="CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
             <children>
-                <BorderPane minHeight="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                <BorderPane>
                     <top>
                         <Text id="numPokerChipsLabel" text="Number of poker chips: " textAlignment="RIGHT" BorderPane.alignment="CENTER_RIGHT">
                             <BorderPane.margin>
@@ -27,7 +27,7 @@
                         </Text>
                     </top>
                     <center>
-                        <Text id="numPokerChipsValue" fx:id="numPokerChipsValue" text="0" BorderPane.alignment="CENTER_RIGHT" />
+                        <Text id="numPokerChipsValue" fx:id="numPokerChipsValue" BorderPane.alignment="CENTER_RIGHT" />
                     </center>
                 </BorderPane>
                 <ImageView fitHeight="230" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -37,55 +37,51 @@
                 </ImageView>
             </children>
         </HBox>
-        <HBox spacing="20">
+        <HBox alignment="CENTER" spacing="20" VBox.vgrow="ALWAYS">
             <children>
-                <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
+                <VBox alignment="CENTER" prefWidth="250" spacing="5">
                     <children>
                         <TextFlow textAlignment="CENTER">
                             <children>
                                 <Text id="numPokerChipsBoughtInLast7DaysLabel" text="Bought in the last 7 days: " />
                             </children>
                         </TextFlow>
-                        <Text id="numPokerChipsBoughtInLast7DaysValue" fx:id="numPokerChipsBoughtInLast7DaysValue" text="0" />
+                        <Text id="numPokerChipsBoughtInLast7DaysValue" fx:id="numPokerChipsBoughtInLast7DaysValue"/>
                     </children>
                 </VBox>
 
-                <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
+                <VBox alignment="CENTER" prefWidth="250" spacing="5">
                     <children>
                         <TextFlow textAlignment="CENTER">
                             <children>
                                 <Text id="numPokerChipsBoughtInLastMonthLabel" text="Bought in the last month: " />
                             </children>
                         </TextFlow>
-                        <Text id="numPokerChipsBoughtInLastMonthValue" fx:id="numPokerChipsBoughtInLastMonthValue" text="0" />
+                        <Text id="numPokerChipsBoughtInLastMonthValue" fx:id="numPokerChipsBoughtInLastMonthValue" />
                     </children>
                 </VBox>
 
-                <VBox alignment="TOP_CENTER" prefWidth="250" spacing="5">
+                <VBox alignment="CENTER" prefWidth="250" spacing="5">
                     <children>
                         <TextFlow textAlignment="CENTER">
                             <children>
                                 <Text id="numDifferentCasinosLabel" text="Number of casinos: " />
                             </children>
                         </TextFlow>
-                        <Text id="numDifferentCasinosValue" fx:id="numDifferentCasinosValue" text="0" />
+                        <Text id="numDifferentCasinosValue" fx:id="numDifferentCasinosValue" />
                     </children>
                 </VBox>
             </children>
         </HBox>
-        <HBox alignment="CENTER" spacing="10">
+        <HBox alignment="BOTTOM_CENTER" spacing="10" VBox.vgrow="ALWAYS">
             <children>
-                <Button id="showAllButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" onMouseClicked="#onViewAllButtonPressed" prefHeight="150.0" prefWidth="150.0" text="View All">
-                    View All
-                </Button>
-                <Button id="searchButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" prefHeight="150.0" prefWidth="150.0">Search
-                </Button>
-                <Button id="addNewButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" onMouseClicked="#onAddButtonPressed" prefHeight="150.0" prefWidth="150.0" text="Add">Add
-                </Button>
-            <MenuButton id="addNewMenuButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="TOP" prefHeight="150.0" prefWidth="150.0" text="Add New">
+                <Button id="showAllButton" contentDisplay="TOP" onMouseClicked="#onViewAllButtonPressed" prefHeight="150.0" prefWidth="150.0" text="View All" />
+                <Button id="searchButton" contentDisplay="TOP" prefHeight="150.0" prefWidth="150.0" />
+                <Button id="addNewButton" contentDisplay="TOP" onMouseClicked="#onAddButtonPressed" prefHeight="150.0" prefWidth="150.0" text="Add" />
+            <MenuButton id="addNewMenuButton" contentDisplay="TOP" popupSide="TOP" prefHeight="150.0" prefWidth="150.0" text="Add New">
               <items>
-                <MenuItem mnemonicParsing="false" text="Manually add new Poker Chip" />
-                <MenuItem mnemonicParsing="false" text="Search new Poker Chip" />
+                <MenuItem text="Manually add new Poker Chip" />
+                <MenuItem text="Search new Poker Chip" />
               </items>
             </MenuButton>
             </children>
