@@ -47,8 +47,10 @@
                                    AnchorPane.bottomAnchor="0.0"
                                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <panes>
-                                <TitledPane expanded="false" onMouseClicked="#onDashboardTabSelected" text="Dashboard"/>
-                                <TitledPane onMouseClicked="#onAllPokerChipsTabClicked" text="All Poker Chips">
+                                <TitledPane fx:id="dashboardTitledPane" expanded="false"
+                                            onMouseClicked="#showDashboardPane" text="Dashboard"/>
+                                <TitledPane fx:id="showAllPokerChipTitledPane" onMouseClicked="#showAllPokerChipsPane"
+                                            text="All Poker Chips">
                                     <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                             <children>
@@ -68,12 +70,12 @@
                 </AnchorPane>
                 <AnchorPane>
                     <children>
-                        <fx:include fx:id="statsPane" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
-                                    prefWidth="690.0" source="Dashboard.fxml" visible="true"
+                        <fx:include fx:id="dashboard" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
+                                    prefWidth="690.0" source="Dashboard.fxml"
                                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                        <Pagination fx:id="pagination" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
-                                    prefWidth="690.0" visible="false" AnchorPane.bottomAnchor="0.0"
+                        <Pagination fx:id="pokerChipsPaginatedTable" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
+                                    prefWidth="690.0" AnchorPane.bottomAnchor="0.0"
                                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                     AnchorPane.topAnchor="0.0"/>
                     </children>
