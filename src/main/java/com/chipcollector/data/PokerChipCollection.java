@@ -15,14 +15,14 @@ import java.util.Optional;
 import static java.time.LocalDateTime.now;
 
 @Repository
-public class Collection {
+public class PokerChipCollection {
 
     private final PokerChipDAO pokerChipDAO;
 
     private Query<PokerChip> currentFilter;
 
     @Autowired
-    public Collection(PokerChipDAO pokerChipDAO) {
+    public PokerChipCollection(PokerChipDAO pokerChipDAO) {
         this.pokerChipDAO = pokerChipDAO;
         this.currentFilter = pokerChipDAO.createPokerChipFilter();
     }

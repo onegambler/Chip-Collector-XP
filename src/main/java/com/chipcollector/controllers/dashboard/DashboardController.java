@@ -1,27 +1,25 @@
 package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.SpringFxmlLoader;
-import com.chipcollector.data.Collection;
+import com.chipcollector.data.PokerChipCollection;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 
 @Component
-public class StatsController implements Initializable {
+public class DashboardController implements Initializable {
 
-    private Collection collection;
+    private PokerChipCollection pokerChipCollection;
     private SpringFxmlLoader loader;
 
     @FXML
@@ -39,8 +37,8 @@ public class StatsController implements Initializable {
     private Consumer<Event> viewAllActionConsumer;
 
     @Autowired
-    public StatsController(Collection collection, SpringFxmlLoader loader) {
-        this.collection = collection;
+    public DashboardController(PokerChipCollection pokerChipCollection, SpringFxmlLoader loader) {
+        this.pokerChipCollection = pokerChipCollection;
         this.loader = loader;
     }
 
@@ -50,10 +48,10 @@ public class StatsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        numPokerChipsValue.setText(String.valueOf(collection.getAllPokerChipsCount()));
-        numPokerChipsBoughtInLast7DaysValue.setText(String.valueOf(collection.getPokerChipCountForLast7Days()));
-        numPokerChipsBoughtInLastMonthValue.setText(String.valueOf(collection.getPokerChipCountForLastMonth()));
-        numDifferentCasinosValue.setText(String.valueOf(collection.getNumDifferentCasinos()));
+        numPokerChipsValue.setText(String.valueOf(pokerChipCollection.getAllPokerChipsCount()));
+        numPokerChipsBoughtInLast7DaysValue.setText(String.valueOf(pokerChipCollection.getPokerChipCountForLast7Days()));
+        numPokerChipsBoughtInLastMonthValue.setText(String.valueOf(pokerChipCollection.getPokerChipCountForLastMonth()));
+        numDifferentCasinosValue.setText(String.valueOf(pokerChipCollection.getNumDifferentCasinos()));
 
     }
 

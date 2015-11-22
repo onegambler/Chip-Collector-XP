@@ -1,6 +1,6 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.data.Collection;
+import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.domain.*;
 import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.chipcollector.models.dashboard.CasinoBean;
@@ -89,11 +89,11 @@ public class PokerChipDialogController implements Initializable {
     @Setter
     private PokerChipBean pokerChipBean;
 
-    private Collection collection;
+    private PokerChipCollection pokerChipCollection;
 
     @Autowired
-    public PokerChipDialogController(Collection collection) {
-        this.collection = collection;
+    public PokerChipDialogController(PokerChipCollection pokerChipCollection) {
+        this.pokerChipCollection = pokerChipCollection;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class PokerChipDialogController implements Initializable {
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
         frontImageView.setImage(pokerChipBean.getFrontImage());
         backImageView.setImage(pokerChipBean.getBackImage());
-        Country country = collection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
+        Country country = pokerChipCollection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
         if (country != null) {
             URL imageUrl = Resources.getResource(String.format(IMAGES_FLAGS_LOCATION, country.getFlagImageName()));
             try {
@@ -148,13 +148,13 @@ public class PokerChipDialogController implements Initializable {
 
     public void onOkAction(ActionEvent event) throws IOException {
         final CasinoBean casinoBean = pokerChipBean.getCasinoBean();
-        final Optional<Casino> existingCasino = collection.getCasinoFromCasinoBean(casinoBean);
+        final Optional<Casino> existingCasino = pokerChipCollection.getCasinoFromCasinoBean(casinoBean);
         Casino casino;
         if (!existingCasino.isPresent()) {
-            Optional<Location> existingLocation = collection.getLocationFromCasinoBean(casinoBean);
+            Optional<Location> existingLocation = pokerChipCollection.getLocationFromCasinoBean(casinoBean);
             Location location;
             if (!existingLocation.isPresent()) {
-                Country country = collection.getCountryFromCasinoBean(casinoBean);
+                Country country = pokerChipCollection.getCountryFromCasinoBean(casinoBean);
                 location = Location.builder()
                         .city(casinoBean.getCity())
                         .state(casinoBean.getState())
@@ -213,7 +213,7 @@ public class PokerChipDialogController implements Initializable {
                 pokerChipBuilder.backImage(getBlobImageFromImage(backImage));
             }
         }
-        collection.add(pokerChipBuilder.build());
+        pokerChipCollection.add(pokerChipBuilder.build());
 
         closeDialog(event);
     }

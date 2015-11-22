@@ -2,7 +2,7 @@ package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.SpringFxmlLoader;
 import com.chipcollector.data.AppSettings;
-import com.chipcollector.data.Collection;
+import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
@@ -36,7 +36,7 @@ import static javafx.scene.control.SelectionMode.SINGLE;
 public class MainWindowController implements Initializable {
 
 
-    private Collection collection;
+    private PokerChipCollection pokerChipCollection;
     private AppSettings settings;
     private SpringFxmlLoader loader;
 
@@ -49,14 +49,14 @@ public class MainWindowController implements Initializable {
     private TreeView<Object> casinoTreeView;
 
     @FXML
-    private StatsController statsPaneController;
+    private DashboardController statsPaneController;
 
     @FXML
     public VBox statsPane;
 
     @Autowired
-    public MainWindowController(Collection collection, AppSettings configuration, SpringFxmlLoader loader) {
-        this.collection = collection;
+    public MainWindowController(PokerChipCollection pokerChipCollection, AppSettings configuration, SpringFxmlLoader loader) {
+        this.pokerChipCollection = pokerChipCollection;
         this.settings = configuration;
         this.loader = loader;
     }
@@ -83,7 +83,7 @@ public class MainWindowController implements Initializable {
     private void loadDatabase() {
         settings.getLastUsedDatabase().ifPresent(s ->
         {
-            //collection.load();
+            //pokerChipCollection.load();
         });
     }
 
@@ -95,7 +95,7 @@ public class MainWindowController implements Initializable {
     private void setUpTablePagination() {
         pagination.setPageFactory(this::getPokerChipTablePage);
 
-        int pokerChipCount = collection.getPokerChipCount();
+        int pokerChipCount = pokerChipCollection.getPokerChipCount();
         int numPages = (int) max(1, ceil(pokerChipCount / settings.getPaginationSize())); //we want at least a page
 
         pagination.setPageCount(numPages);
@@ -107,13 +107,13 @@ public class MainWindowController implements Initializable {
     }
 
     private void populateCasinoTreeView() {
-        List<Casino> allCasinos = collection.getAllCasinos();
+        List<Casino> allCasinos = pokerChipCollection.getAllCasinos();
         casinoTreeView.setRoot(new CasinoTreeRoot(allCasinos));
     }
 
     private Node getPokerChipTablePage(int pageIndex) {
         pokerChipsTable.getItems().clear();
-        List<PokerChip> pagedPokerChips = collection.getPagedPokerChips(pageIndex, settings.getPaginationSize());
+        List<PokerChip> pagedPokerChips = pokerChipCollection.getPagedPokerChips(pageIndex, settings.getPaginationSize());
         pagedPokerChips.stream()
                 .map(PokerChipBean::new)
                 .forEach(pokerChipsTable.getItems()::add);
@@ -126,7 +126,7 @@ public class MainWindowController implements Initializable {
         if (isMousePrimaryButtonPressed(event)) {
             TreeItem<Object> selectedItem = casinoTreeView.getSelectionModel().getSelectedItem();
             if (selectedItem != null && selectedItem.getValue() instanceof Casino) {
-                collection.setCasinoFilter((Casino) selectedItem.getValue());
+                pokerChipCollection.setCasinoFilter((Casino) selectedItem.getValue());
                 setUpTablePagination();
             }
         }
