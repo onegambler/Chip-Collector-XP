@@ -13,7 +13,7 @@
         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
     </padding>
     <stylesheets>
-        <URL value="@StatsPane.css" />
+        <URL value="@Dashboard.css" />
     </stylesheets>
     <children>
         <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">

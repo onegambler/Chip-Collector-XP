@@ -13,10 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -36,7 +33,7 @@ import static java.lang.Math.max;
 import static javafx.scene.control.SelectionMode.SINGLE;
 
 @Component
-public class DashboardController implements Initializable {
+public class MainWindowController implements Initializable {
 
 
     private Collection collection;
@@ -58,7 +55,7 @@ public class DashboardController implements Initializable {
     public VBox statsPane;
 
     @Autowired
-    public DashboardController(Collection collection, AppSettings configuration, SpringFxmlLoader loader) {
+    public MainWindowController(Collection collection, AppSettings configuration, SpringFxmlLoader loader) {
         this.collection = collection;
         this.settings = configuration;
         this.loader = loader;
@@ -167,6 +164,16 @@ public class DashboardController implements Initializable {
     public static final String POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
 
     public void onAllPokerChipsTabClicked(Event event) {
+        final TitledPane source = (TitledPane) event.getSource();
         showPagination();
+        source.setExpanded(true);
     }
+
+    public void onDashboardTabSelected(Event event) {
+        final TitledPane source = (TitledPane) event.getSource();
+        showStatsPane();
+        source.setExpanded(true);
+    }
+
+
 }

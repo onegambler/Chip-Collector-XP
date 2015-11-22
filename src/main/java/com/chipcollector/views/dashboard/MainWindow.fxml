@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<VBox fx:id="vBox" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chipcollector.controllers.dashboard.MainWindowController">
+    <children>
+        <MenuBar VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="%menu.title.file">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="%menu.title.preferences"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem mnemonicParsing="false" onAction="#quitApplication" text="%menu.title.quit"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="%menu.title.edit">
+                    <items>
+                        <Menu mnemonicParsing="false" text="%menu.edit.pokerchip">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#showSearchPokerChipDialog"
+                                          text="%menu.edit.pokerchip.search"/>
+                                <MenuItem mnemonicParsing="false" onAction="#showAddPokerChipDialog"
+                                          text="%menu.edit.pokerchip.addnew"/>
+                            </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" text="%menu.edit.casino"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="%menu.title.help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="%menu.title.about"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <SplitPane dividerPositions="0.22828507795100222" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0"
+                   VBox.vgrow="ALWAYS">
+            <items>
+                <AnchorPane SplitPane.resizableWithParent="false">
+                    <children>
+                        <Accordion styleClass="left-bar" prefHeight="551.0" prefWidth="225.0"
+                                   AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <panes>
+                                <TitledPane expanded="false" onMouseClicked="#onDashboardTabSelected" text="Dashboard"/>
+                                <TitledPane onMouseClicked="#onAllPokerChipsTabClicked" text="All Poker Chips">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <TreeView fx:id="casinoTreeView" layoutY="79.0"
+                                                          onMouseClicked="#onMouseClick" prefHeight="475.0"
+                                                          prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                          AnchorPane.topAnchor="0.0">
+                                                </TreeView>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </TitledPane>
+                            </panes>
+                        </Accordion>
+                    </children>
+                </AnchorPane>
+                <AnchorPane>
+                    <children>
+                        <fx:include fx:id="statsPane" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
+                                    prefWidth="690.0" source="Dashboard.fxml" visible="true"
+                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                        <Pagination fx:id="pagination" layoutX="253.0" layoutY="138.0" prefHeight="551.0"
+                                    prefWidth="690.0" visible="false" AnchorPane.bottomAnchor="0.0"
+                                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                    AnchorPane.topAnchor="0.0"/>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+            <children>
+                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="%label.text.left.status"
+                       HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="11.0" fx:id="x3"/>
+                    </font>
+                    <textFill>
+                        <Color blue="0.625" green="0.625" red="0.625" fx:id="x4"/>
+                    </textFill>
+                </Label>
+                <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS"/>
+                <Label font="$x3" maxWidth="-1.0" text="Right Status" textFill="$x4" HBox.hgrow="NEVER"/>
+            </children>
+            <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+            </padding>
+        </HBox>
+    </children>
+    <stylesheets>
+        <URL value="@MainWindow.css"/>
+    </stylesheets>
+</VBox>
