@@ -8,7 +8,6 @@ import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -35,24 +34,24 @@ import static javafx.scene.control.SelectionMode.SINGLE;
 @Component
 public class MainWindowController implements Initializable {
 
-
     private PokerChipCollection pokerChipCollection;
     private AppSettings settings;
     private SpringFxmlLoader loader;
 
-    private TableView<PokerChipBean> pokerChipsTable;
-
     @FXML
-    private Pagination pagination;
-
+    private DashboardController dashboardController;
+    @FXML
+    private TableView<PokerChipBean> pokerChipsTable;
+    @FXML
+    private Pagination pokerChipsPaginatedTable;
     @FXML
     private TreeView<Object> casinoTreeView;
-
     @FXML
-    private DashboardController statsPaneController;
-
+    private VBox dashboard;
     @FXML
-    public VBox statsPane;
+    private TitledPane dashboardTitledPane;
+    @FXML
+    private TitledPane showAllPokerChipTitledPane;
 
     @Autowired
     public MainWindowController(PokerChipCollection pokerChipCollection, AppSettings configuration, SpringFxmlLoader loader) {
@@ -67,17 +66,8 @@ public class MainWindowController implements Initializable {
         setUpPokerChipTable();
         setUpCasinoTreeView();
         loadDatabase();
-        statsPaneController.registerViewAllAction(event -> showPagination());
-    }
-
-    private void showPagination() {
-        statsPane.setVisible(false);
-        pagination.setVisible(true);
-    }
-
-    private void showStatsPane() {
-        statsPane.setVisible(true);
-        pagination.setVisible(false);
+        dashboardController.registerViewAllAction(event -> showAllPokerChipsPane());
+        showDashboardPane();
     }
 
     private void loadDatabase() {
@@ -93,12 +83,12 @@ public class MainWindowController implements Initializable {
     }
 
     private void setUpTablePagination() {
-        pagination.setPageFactory(this::getPokerChipTablePage);
+        pokerChipsPaginatedTable.setPageFactory(this::getPokerChipTablePage);
 
         int pokerChipCount = pokerChipCollection.getPokerChipCount();
         int numPages = (int) max(1, ceil(pokerChipCount / settings.getPaginationSize())); //we want at least a page
 
-        pagination.setPageCount(numPages);
+        pokerChipsPaginatedTable.setPageCount(numPages);
     }
 
     private void setUpPokerChipTable() {
@@ -158,22 +148,20 @@ public class MainWindowController implements Initializable {
         dialogStage.showAndWait();
     }
 
+    public void showAllPokerChipsPane() {
+        dashboard.setVisible(false);
+        pokerChipsPaginatedTable.setVisible(true);
+        showAllPokerChipTitledPane.setExpanded(true);
+    }
+
+    public void showDashboardPane() {
+        dashboard.setVisible(true);
+        pokerChipsPaginatedTable.setVisible(false);
+        dashboardTitledPane.setExpanded(true);
+    }
+
     public static final String TABLE_VIEW_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipsTableView.fxml";
     public static final String POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
 
     public static final String POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
-
-    public void onAllPokerChipsTabClicked(Event event) {
-        final TitledPane source = (TitledPane) event.getSource();
-        showPagination();
-        source.setExpanded(true);
-    }
-
-    public void onDashboardTabSelected(Event event) {
-        final TitledPane source = (TitledPane) event.getSource();
-        showStatsPane();
-        source.setExpanded(true);
-    }
-
-
 }
