@@ -5,6 +5,7 @@ import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
 import com.chipcollector.util.DatabaseUtil;
 import com.chipcollector.util.ImageConverter;
+import com.chipcollector.util.MessagesHelper;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.imgscalr.Scalr;
@@ -36,7 +37,12 @@ public class ChipCollectorXPApplication extends Application {
         new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
         SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
-        loader.show(DASHBOARD_FX_FILE_LOCATION, "Chip Collector XP");
+        loader.show(DASHBOARD_FX_FILE_LOCATION, MessagesHelper.getString("main.title.text"));
+    }
+
+    @Override
+    public void stop() throws Exception {
+        System.exit(0);
     }
 
     public void createDB(PokerChipDAO pokerChipDAO) {

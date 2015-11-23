@@ -7,11 +7,13 @@ import com.chipcollector.scraper.ScraperEngine;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Window;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -100,14 +102,14 @@ public class SearchPokerChipDialogController implements Initializable {
         PokerChipBean selectedPokerChip = pokerChipsTableView.getSelectionModel().getSelectedItem();
         if (nonNull(selectedPokerChip)) {
             if (isMousePrimaryButtonPressed(event) && isMouseDoubleClicked(event)) {
-                openNewPokerChipDialog(selectedPokerChip);
+                openNewPokerChipDialog(((Node) event.getSource()).getScene().getWindow(), selectedPokerChip);
             }
         }
     }
 
-    private void openNewPokerChipDialog(PokerChipBean selectedPokerChip) {
+    private void openNewPokerChipDialog(Window owner, PokerChipBean selectedPokerChip) {
         springFxmlLoader.<PokerChipDialogController>showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION,
-                "Add new Poker Chip", null, controller -> {
+                "Add new Poker Chip", owner, controller -> {
                     controller.setPokerChipBean(selectedPokerChip);
                     controller.update();
                 });

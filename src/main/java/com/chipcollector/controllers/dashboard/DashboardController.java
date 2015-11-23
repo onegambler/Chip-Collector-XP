@@ -47,13 +47,16 @@ public class DashboardController implements Initializable {
         viewAllActionConsumer = eventConsumer;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void updateWindow() {
         numPokerChipsValue.setText(String.valueOf(pokerChipCollection.getAllPokerChipsCount()));
         numPokerChipsBoughtInLast7DaysValue.setText(String.valueOf(pokerChipCollection.getPokerChipCountForLast7Days()));
         numPokerChipsBoughtInLastMonthValue.setText(String.valueOf(pokerChipCollection.getPokerChipCountForLastMonth()));
         numDifferentCasinosValue.setText(String.valueOf(pokerChipCollection.getNumDifferentCasinos()));
+    }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        updateWindow();
     }
 
     @FXML
@@ -71,4 +74,5 @@ public class DashboardController implements Initializable {
 
     public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/Dashboard.fxml";
     public static final String POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
+
 }

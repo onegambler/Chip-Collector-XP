@@ -1,6 +1,7 @@
 package com.chipcollector.data;
 
 import com.avaje.ebean.Query;
+import com.chipcollector.data.listeners.Listener;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.Country;
 import com.chipcollector.domain.Location;
@@ -9,6 +10,7 @@ import com.chipcollector.models.dashboard.CasinoBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,8 @@ public class PokerChipCollection {
     private final PokerChipDAO pokerChipDAO;
 
     private Query<PokerChip> currentFilter;
+
+    private List<Listener> updateListenersList = new ArrayList<>();
 
     @Autowired
     public PokerChipCollection(PokerChipDAO pokerChipDAO) {
@@ -65,6 +69,7 @@ public class PokerChipCollection {
 
     public void add(PokerChip pokerChip) {
         pokerChipDAO.savePokerChip(pokerChip);
+        updateListenersList.forEach(Listener::action);
     }
 
     public Optional<Casino> getCasinoFromCasinoBean(CasinoBean casinoBean) {
@@ -90,5 +95,9 @@ public class PokerChipCollection {
 
     public Country getCountryFromName(String name) {
         return pokerChipDAO.getCountry(name);
+    }
+
+    public void addUpdateListener(Listener listener) {
+        updateListenersList.add(listener);
     }
 }

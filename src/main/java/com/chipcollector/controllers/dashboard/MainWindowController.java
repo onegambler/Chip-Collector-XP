@@ -67,7 +67,15 @@ public class MainWindowController implements Initializable {
         setUpCasinoTreeView();
         loadDatabase();
         dashboardController.registerViewAllAction(event -> showAllPokerChipsPane());
+        pokerChipCollection.addUpdateListener(this::updateWindow);
         showDashboardPane();
+    }
+
+    private void updateWindow() {
+        populateCasinoTreeView();
+        setUpTablePagination();
+        dashboardController.updateWindow();
+
     }
 
     private void loadDatabase() {

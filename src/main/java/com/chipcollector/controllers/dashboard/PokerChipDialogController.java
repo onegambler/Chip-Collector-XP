@@ -26,12 +26,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
 import static com.chipcollector.util.ImageConverter.resizeImage;
 import static java.lang.Integer.parseInt;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -128,10 +130,11 @@ public class PokerChipDialogController implements Initializable {
         frontImageView.setImage(pokerChipBean.getFrontImage());
         backImageView.setImage(pokerChipBean.getBackImage());
         Country country = pokerChipCollection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
-        if (country != null) {
+        if (nonNull(country)) {
             URL imageUrl = Resources.getResource(String.format(IMAGES_FLAGS_LOCATION, country.getFlagImageName()));
             try {
                 casinoCountryFlag.setImage(new Image(imageUrl.openStream()));
+                Tooltip.install(casinoCountryFlag, new Tooltip(pokerChipBean.getCasinoBean().getCountry()));
             } catch (IOException e) {
                 Throwables.propagate(e);
             }
@@ -214,7 +217,6 @@ public class PokerChipDialogController implements Initializable {
             }
         }
         pokerChipCollection.add(pokerChipBuilder.build());
-
         closeDialog(event);
     }
 

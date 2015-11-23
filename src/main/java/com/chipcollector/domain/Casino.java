@@ -77,5 +77,5 @@ public class Casino {
         return name;
     }
 
-    public static String UNKNOWN_COUNTRY_KEY = "country.unknown";
+    public static String UNKNOWN_COUNTRY_KEY = "domain.country.unknown";
 }
