@@ -5,6 +5,7 @@ import com.chipcollector.data.PokerChipCollection;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -63,9 +64,9 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    public void onAddButtonPressed() throws IOException {
-        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "All Poker Chips", o -> {
-        });
+    public void onAddButtonPressed(Event event) throws IOException {
+        Button sourceButton = (Button) event.getSource();
+        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "All Poker Chips", sourceButton.getScene().getWindow());
     }
 
     public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/Dashboard.fxml";
