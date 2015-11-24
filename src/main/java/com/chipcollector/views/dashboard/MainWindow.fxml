@@ -24,7 +24,7 @@
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#showSearchPokerChipDialog"
                                           text="%menu.edit.pokerchip.search"/>
-                                <MenuItem mnemonicParsing="false" onAction="#showAddPokerChipDialog"
+                                <MenuItem mnemonicParsing="false" onAction="#onShowAddPokerChipDialog"
                                           text="%menu.edit.pokerchip.addnew"/>
                             </items>
                         </Menu>

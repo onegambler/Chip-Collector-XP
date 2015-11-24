@@ -5,6 +5,7 @@ import com.google.common.io.Resources;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.springframework.beans.BeansException;
@@ -45,14 +46,14 @@ public class SpringFxmlLoader implements ApplicationContextAware {
         FXMLLoader loader = getLoader(dialogFile);
         Stage dialogStage = getStage(loader, title);
         dialogStage.setTitle(title);
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
         controllerConsumer.accept(loader.getController());
         dialogStage.initOwner(dialogOwner);
         dialogStage.showAndWait();
     }
 
-    public <T> void showDialog(String dialogFile, String title, Window dialogOwner) {
-        showDialog(dialogFile, title, dialogOwner, o -> {
-        });
+    public void showDialog(String dialogFile, String title, Window dialogOwner) {
+        showDialog(dialogFile, title, dialogOwner, o -> {});
     }
 
     public void show(String fxmlFile, String title) {

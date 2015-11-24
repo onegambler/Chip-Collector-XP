@@ -5,6 +5,7 @@ import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.core.BigDecimalProperty;
 import com.chipcollector.util.ImageConverter;
 import javafx.beans.property.*;
+import javafx.beans.property.adapter.JavaBeanStringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
@@ -66,6 +67,15 @@ public class PokerChipBean {
         this.backImage = pokerChip.getBackImage().map(BlobImage::getImage).orElse(new byte[0]);
         this.obsolete = new SimpleBooleanProperty(pokerChip.isObsolete());
         this.cancelled = new SimpleBooleanProperty(pokerChip.isCancelled());
+        this.rarity = new SimpleStringProperty(pokerChip.getRarity());
+        this.condition = new SimpleStringProperty(pokerChip.getCondition());
+        this.category = new SimpleStringProperty(pokerChip.getCategory());
+        //TODO: values and paid
+        this.value = new BigDecimalProperty(BigDecimal.ZERO);
+        this.paid = new BigDecimalProperty(BigDecimal.ZERO);
+        this.notes = new SimpleStringProperty(pokerChip.getNotes());
+        this.dateOfAcquisition = new SimpleObjectProperty<>(pokerChip.getAcquisitionDate());
+        this.issue = new SimpleStringProperty(String.valueOf(pokerChip.getIssue()));
         this.frontImageThumbnailView = new ImageView();
         this.backImageThumbnailView = new ImageView();
         pokerChip.getFrontImage().ifPresent(blobImage -> {

@@ -131,13 +131,8 @@ public class PokerChipDialogController implements Initializable {
         backImageView.setImage(pokerChipBean.getBackImage());
         Country country = pokerChipCollection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
         if (nonNull(country)) {
-            URL imageUrl = Resources.getResource(String.format(IMAGES_FLAGS_LOCATION, country.getFlagImageName()));
-            try {
-                casinoCountryFlag.setImage(new Image(imageUrl.openStream()));
-                Tooltip.install(casinoCountryFlag, new Tooltip(pokerChipBean.getCasinoBean().getCountry()));
-            } catch (IOException e) {
-                Throwables.propagate(e);
-            }
+            casinoCountryFlag.setImage(country.getFlagImage());
+            Tooltip.install(casinoCountryFlag, new Tooltip(pokerChipBean.getCasinoBean().getCountry()));
         }
     }
 
@@ -229,8 +224,6 @@ public class PokerChipDialogController implements Initializable {
         blobImage.setThumbnail(thumbnail);
         return blobImage;
     }
-
-    public static final String IMAGES_FLAGS_LOCATION = "images/flags/%s";
 
     private static final String[] RARITY_VALUES = new String[]{"R-1", "R-2", "R-3", "R-4", "R-5", "R-6", "R-7", "R-8", "R-9", "R-10", "Unknown"};
 }

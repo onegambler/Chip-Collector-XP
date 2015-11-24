@@ -7,12 +7,14 @@ import com.chipcollector.util.DatabaseUtil;
 import com.chipcollector.util.ImageConverter;
 import com.chipcollector.util.MessagesHelper;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.imgscalr.Scalr;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,6 +44,7 @@ public class ChipCollectorXPApplication extends Application {
 
     @Override
     public void stop() throws Exception {
+        Platform.exit();
         System.exit(0);
     }
 

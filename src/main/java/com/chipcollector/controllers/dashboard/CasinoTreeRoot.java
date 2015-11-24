@@ -5,6 +5,7 @@ import com.chipcollector.domain.Country;
 import com.chipcollector.domain.Location;
 import com.chipcollector.util.MessagesHelper;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.ImageView;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -15,10 +16,12 @@ import java.util.Optional;
 
 public class CasinoTreeRoot extends TreeItem<Object> {
 
+    public static final String CASINO_OTHER_KEY = "domain.casino.other";
+
     public CasinoTreeRoot(List<Casino> casinos) {
         this.setValue(MessagesHelper.getString(CASINO_STRING_KEY));
 
-        final TreeItem<Object> others = new TreeItem<>();
+        final TreeItem<Object> others = new TreeItem<>(MessagesHelper.getString(CASINO_OTHER_KEY));
         final Map<Long, Item> casinoTreeMap = new HashMap<>();
 
         for (Casino casino : casinos) {
@@ -37,7 +40,9 @@ public class CasinoTreeRoot extends TreeItem<Object> {
             }
         }
 
-        this.getChildren().add(others);
+        if(others.getChildren().size() != 0) {
+            this.getChildren().add(others);
+        }
     }
 
     private Item createCityItem(String cityName, Item countryItem) {
@@ -47,7 +52,7 @@ public class CasinoTreeRoot extends TreeItem<Object> {
     }
 
     private Item createCountryItem(Country country) {
-        Item countryItem = new Item(country.getName());
+        Item countryItem = new Item(country.getName(), new ImageView(country.getFlagImage()));
         this.getChildren().add(countryItem.getNode());
         return countryItem;
     }
@@ -59,6 +64,10 @@ public class CasinoTreeRoot extends TreeItem<Object> {
 
         public Item(@NonNull Object nodeValue) {
             this.node = new TreeItem<>(nodeValue);
+        }
+
+        public Item(@NonNull Object nodeValue, ImageView image) {
+            this.node = new TreeItem<>(nodeValue, image);
         }
 
         @Override

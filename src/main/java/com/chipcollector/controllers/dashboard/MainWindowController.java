@@ -7,17 +7,14 @@ import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +23,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static com.chipcollector.util.EventUtils.isDoubleClick;
 import static com.chipcollector.util.EventUtils.isMousePrimaryButtonPressed;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
@@ -102,6 +100,7 @@ public class MainWindowController implements Initializable {
     private void setUpPokerChipTable() {
         pokerChipsTable = loader.load(TABLE_VIEW_FX_FILE_LOCATION);
         pokerChipsTable.setItems(FXCollections.observableArrayList());
+        pokerChipsTable.setOnMouseClicked(this::onPokerChipTableElementClicked);
     }
 
     private void populateCasinoTreeView() {
@@ -131,29 +130,39 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    public void showSearchPokerChipDialog(ActionEvent actionEvent) throws IOException {
-        showDialog("Search PokerChip", POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION);
+    public void showSearchPokerChipDialog(Event event) throws IOException {
+        Window parent = ((Node) event.getSource()).getScene().getWindow();
+        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "Search PokerChip", parent);
     }
 
     @FXML
-    public void showAddPokerChipDialog(ActionEvent actionEvent) {
-        showDialog("Add PokerChip", POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION);
+    public void onShowAddPokerChipDialog(Event event) {
+        Window parent = ((Node) event.getSource()).getScene().getWindow();
+        showAddPokerChipDialog(parent, null);
     }
 
-    public void quitApplication(ActionEvent actionEvent) {
+    public void onPokerChipTableElementClicked(MouseEvent event) {
+        if(isMousePrimaryButtonPressed(event) && isDoubleClick(event)) {
+            Window parent = ((Node) event.getSource()).getScene().getWindow();
+            final PokerChipBean selectedItem = pokerChipsTable.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                showAddPokerChipDialog(parent, selectedItem);
+            }
+        }
+    }
+
+    public void showAddPokerChipDialog(Window parent, PokerChipBean pokerChipBean) {
+        loader.<PokerChipDialogController>showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION,
+                "Add PokerChip",
+                parent,
+                controller -> {
+                    controller.setPokerChipBean(pokerChipBean);
+                    controller.update();
+                });
+    }
+
+    public void quitApplication() {
         System.exit(0);
-    }
-
-    private void showDialog(String title, String fxmlLocation) {
-        final BorderPane dialog = loader.load(fxmlLocation);
-
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle(title);
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
-        //dialogStage.initOwner(); //TODO: init the owner
-        Scene scene = new Scene(dialog);
-        dialogStage.setScene(scene);
-        dialogStage.showAndWait();
     }
 
     public void showAllPokerChipsPane() {
