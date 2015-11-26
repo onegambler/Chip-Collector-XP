@@ -1,4 +1,4 @@
-package com.chipcollector;
+package com.chipcollector.spring;
 
 import com.google.common.base.Throwables;
 import com.google.common.io.Resources;
@@ -42,18 +42,19 @@ public class SpringFxmlLoader implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public <T> void showDialog(String dialogFile, String title, Window dialogOwner, Consumer<T> controllerConsumer) {
+    public <T> void showDialog(String dialogFile, String title, Window dialogOwner, boolean resizeable, Consumer<T> controllerConsumer) {
         FXMLLoader loader = getLoader(dialogFile);
         Stage dialogStage = getStage(loader, title);
         dialogStage.setTitle(title);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         controllerConsumer.accept(loader.getController());
         dialogStage.initOwner(dialogOwner);
+        dialogStage.setResizable(resizeable);
         dialogStage.showAndWait();
     }
 
-    public void showDialog(String dialogFile, String title, Window dialogOwner) {
-        showDialog(dialogFile, title, dialogOwner, o -> {});
+    public void showDialog(String dialogFile, String title, boolean resizeable, Window dialogOwner) {
+        showDialog(dialogFile, title, dialogOwner, resizeable, o -> {});
     }
 
     public void show(String fxmlFile, String title) {

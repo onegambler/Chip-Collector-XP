@@ -47,6 +47,8 @@ public class CasinoBean {
         openDate = new SimpleStringProperty(casino.getOpenDate());
         closeDate = new SimpleStringProperty(casino.getCloseDate());
         status = new SimpleStringProperty(casino.getStatus());
+        oldName = new SimpleStringProperty(casino.getOldName());
+        type = new SimpleStringProperty(casino.getType());
     }
 
     public String getName() {

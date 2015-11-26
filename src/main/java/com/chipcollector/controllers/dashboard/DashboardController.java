@@ -1,6 +1,6 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.SpringFxmlLoader;
+import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.data.PokerChipCollection;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -69,7 +69,7 @@ public class DashboardController implements Initializable {
     @FXML
     public void onAddButtonPressed(Event event) throws IOException {
         Button sourceButton = (Button) event.getSource();
-        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "All Poker Chips", sourceButton.getScene().getWindow());
+        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "All Poker Chips", true, sourceButton.getScene().getWindow());
     }
 
     public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/Dashboard.fxml";

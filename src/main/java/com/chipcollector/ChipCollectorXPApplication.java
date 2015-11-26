@@ -1,6 +1,7 @@
 package com.chipcollector;
 
 import com.chipcollector.config.SpringAppConfig;
+import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.data.PokerChipDAO;
 import com.chipcollector.domain.*;
 import com.chipcollector.util.DatabaseUtil;
@@ -14,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,12 +34,14 @@ public class ChipCollectorXPApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        final ApplicationContext context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+        try {
+            final ApplicationContext context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 
-        new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
+            new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
-        SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
-        loader.show(DASHBOARD_FX_FILE_LOCATION, MessagesHelper.getString("main.title.text"));
+            SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
+            loader.show(DASHBOARD_FX_FILE_LOCATION, MessagesHelper.getString("main.title.text"));
+        } catch (Exception e){e.printStackTrace();}
     }
 
     @Override

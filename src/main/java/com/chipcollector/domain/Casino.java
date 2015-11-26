@@ -45,9 +45,13 @@ public class Casino {
     @Setter(PROTECTED)
     private String status;
 
+    @Setter(PROTECTED)
+    private String oldName;
+
     @Transient
     @Setter(NONE)
     private boolean dirty;
+
 
     @Setter(PROTECTED)
     @ManyToOne(fetch = LAZY, cascade = ALL)

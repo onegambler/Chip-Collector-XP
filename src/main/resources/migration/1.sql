@@ -33,6 +33,7 @@ CREATE TABLE casinos (
   open_date   VARCHAR(10),
   close_date  VARCHAR(10),
   status      VARCHAR(255),
+  old_name    VARCHAR(255),
   location_id INTEGER      NOT NULL,
   FOREIGN KEY (location_id) REFERENCES countries (id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );

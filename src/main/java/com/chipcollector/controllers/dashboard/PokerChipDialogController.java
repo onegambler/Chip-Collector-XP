@@ -7,8 +7,6 @@ import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.util.ImageConverter;
 import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
-import com.google.common.io.Resources;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -26,7 +24,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -145,6 +142,11 @@ public class PokerChipDialogController implements Initializable {
     }
 
     public void onOkAction(ActionEvent event) throws IOException {
+        savePokerChip();
+        closeDialog(event);
+    }
+
+    private void savePokerChip() throws IOException {
         final CasinoBean casinoBean = pokerChipBean.getCasinoBean();
         final Optional<Casino> existingCasino = pokerChipCollection.getCasinoFromCasinoBean(casinoBean);
         Casino casino;
@@ -212,18 +214,18 @@ public class PokerChipDialogController implements Initializable {
             }
         }
         pokerChipCollection.add(pokerChipBuilder.build());
-        closeDialog(event);
     }
 
     private BlobImage getBlobImageFromImage(Image image) throws IOException {
         BufferedImage originalImage = ImageConverter.imageToBufferedImage(image);
-        byte[] thumbnail = bufferedImageToRawBytes(resizeImage(originalImage, 90), "png");
-        byte[] resizedImage = bufferedImageToRawBytes(resizeImage(originalImage, 120), "png");
+        byte[] thumbnail = bufferedImageToRawBytes(resizeImage(originalImage, 90), PNG_FORMAT);
+        byte[] resizedImage = bufferedImageToRawBytes(resizeImage(originalImage, 120), PNG_FORMAT);
         BlobImage blobImage = new BlobImage();
         blobImage.setImage(resizedImage);
         blobImage.setThumbnail(thumbnail);
         return blobImage;
     }
 
+    public static final String PNG_FORMAT = "png";
     private static final String[] RARITY_VALUES = new String[]{"R-1", "R-2", "R-3", "R-4", "R-5", "R-6", "R-7", "R-8", "R-9", "R-10", "Unknown"};
 }

@@ -1,6 +1,6 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.SpringFxmlLoader;
+import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.data.AppSettings;
 import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.domain.Casino;
@@ -132,7 +132,7 @@ public class MainWindowController implements Initializable {
     @FXML
     public void showSearchPokerChipDialog(Event event) throws IOException {
         Window parent = ((Node) event.getSource()).getScene().getWindow();
-        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "Search PokerChip", parent);
+        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "Search PokerChip", true, parent);
     }
 
     @FXML
@@ -155,7 +155,7 @@ public class MainWindowController implements Initializable {
         loader.<PokerChipDialogController>showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION,
                 "Add PokerChip",
                 parent,
-                controller -> {
+                false, controller -> {
                     controller.setPokerChipBean(pokerChipBean);
                     controller.update();
                 });

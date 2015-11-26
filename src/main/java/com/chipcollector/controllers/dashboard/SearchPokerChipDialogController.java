@@ -1,6 +1,6 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.SpringFxmlLoader;
+import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.ScraperEngine;
@@ -109,7 +109,7 @@ public class SearchPokerChipDialogController implements Initializable {
 
     private void openNewPokerChipDialog(Window owner, PokerChipBean selectedPokerChip) {
         springFxmlLoader.<PokerChipDialogController>showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION,
-                "Add new Poker Chip", owner, controller -> {
+                "Add new Poker Chip", owner, false, controller -> {
                     controller.setPokerChipBean(selectedPokerChip);
                     controller.update();
                 });
