@@ -13,6 +13,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.Setter;
@@ -20,6 +24,7 @@ import org.controlsfx.validation.ValidationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -102,7 +107,7 @@ public class PokerChipDialogController implements Initializable {
     }
 
     public void update() {
-        cancelledToggleButton.setSelected(pokerChipBean.getCancelled().getValue());
+        cancelledToggleButton.setSelected(pokerChipBean.isCancelled());
         //TODO:
         //casinoContent.setText(pokerChipBean.getCasinoBean().);
         //casinoCountryFlag.setImage(pokerChipBean.getCasinoBean().getCountryFlag());

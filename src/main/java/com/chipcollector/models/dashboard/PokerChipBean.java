@@ -5,7 +5,6 @@ import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.core.BigDecimalProperty;
 import com.chipcollector.util.ImageConverter;
 import javafx.beans.property.*;
-import javafx.beans.property.adapter.JavaBeanStringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
@@ -21,9 +20,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 
-@Getter
+
 @Slf4j
 @ToString
 public class PokerChipBean {
@@ -51,10 +50,16 @@ public class PokerChipBean {
     private StringProperty issue;
     private byte[] frontImage;
     private byte[] backImage;
+
     private String casinoFlagImageString;
 
+    private PokerChip pokerChip;
+
     public PokerChipBean(PokerChip pokerChip) {
+        this.pokerChip = pokerChip;
+
         this.casinoBean = new CasinoBean(pokerChip.getCasino());
+
         this.cityName = new SimpleStringProperty(pokerChip.getCasino().getCity());
         this.denom = new SimpleStringProperty(pokerChip.getDenom());
         this.mold = new SimpleStringProperty(pokerChip.getMold());
@@ -94,32 +99,29 @@ public class PokerChipBean {
         });
     }
 
-    private PokerChipBean(CasinoBean casinoBean, String color, String denom, String inlay, String inserts, String mold,
-                          String tcrId, String year, byte[] frontImage, byte[] backImage, boolean obsolete, boolean cancelled,
-                          BigDecimal value, BigDecimal paid, String condition, String rarity, LocalDate dateOfAcquisition,
-                          String category, String issue, String notes) {
-        this.casinoBean = casinoBean;
+    private PokerChipBean(PokerChipBeanBuilder builder) {
+        this.casinoBean = builder.casinoBean;
         this.cityName = new SimpleStringProperty(casinoBean.getCity());
-        this.color = new SimpleStringProperty(color);
-        this.denom = new SimpleStringProperty(denom);
-        this.inlay = new SimpleStringProperty(inlay);
-        this.inserts = new SimpleStringProperty(inserts);
-        this.mold = new SimpleStringProperty(mold);
-        this.tcrId = new SimpleStringProperty(tcrId);
-        this.year = new SimpleStringProperty(year);
-        this.tcrId = new SimpleStringProperty(tcrId);
-        this.obsolete = new SimpleBooleanProperty(obsolete);
-        this.cancelled = new SimpleBooleanProperty(cancelled);
-        this.condition = new SimpleStringProperty(condition);
-        this.category = new SimpleStringProperty(category);
-        this.rarity = new SimpleStringProperty(rarity);
-        this.dateOfAcquisition = new SimpleObjectProperty<>(dateOfAcquisition);
-        this.value = new BigDecimalProperty(value);
-        this.paid = new BigDecimalProperty(paid);
-        this.issue = new SimpleStringProperty(issue);
-        this.notes = new SimpleStringProperty(notes);
-        this.frontImage = frontImage;
-        this.backImage = backImage;
+        this.color = new SimpleStringProperty(builder.color);
+        this.denom = new SimpleStringProperty(builder.denom);
+        this.inlay = new SimpleStringProperty(builder.inlay);
+        this.inserts = new SimpleStringProperty(builder.inserts);
+        this.mold = new SimpleStringProperty(builder.mold);
+        this.tcrId = new SimpleStringProperty(builder.tcrId);
+        this.year = new SimpleStringProperty(builder.year);
+        this.tcrId = new SimpleStringProperty(builder.tcrId);
+        this.obsolete = new SimpleBooleanProperty(builder.obsolete);
+        this.cancelled = new SimpleBooleanProperty(builder.cancelled);
+        this.condition = new SimpleStringProperty(builder.condition);
+        this.category = new SimpleStringProperty(builder.category);
+        this.rarity = new SimpleStringProperty(builder.rarity);
+        this.dateOfAcquisition = new SimpleObjectProperty<>(builder.dateOfAcquisition);
+        this.value = new BigDecimalProperty(builder.value);
+        this.paid = new BigDecimalProperty(builder.paid);
+        this.issue = new SimpleStringProperty(builder.issue);
+        this.notes = new SimpleStringProperty(builder.notes);
+        this.frontImage = builder.frontImage;
+        this.backImage = builder.backImage;
         this.frontImageThumbnailView = new ImageView();
         this.backImageThumbnailView = new ImageView();
         setImageThumbnails(newArrayList(frontImage, backImage));
@@ -225,7 +227,9 @@ public class PokerChipBean {
         return casinoBean;
     }
 
-    public String getCasinoName() { return casinoBean.getName(); }
+    public String getCasinoName() {
+        return casinoBean.getName();
+    }
 
     public String getCondition() {
         return condition.get();
@@ -378,8 +382,7 @@ public class PokerChipBean {
         }
 
         public PokerChipBean build() {
-            return new PokerChipBean(casinoBean, color, denom, inlay, inserts, mold, tcrId, year, frontImage, backImage,
-                    obsolete, cancelled, value, paid, condition, rarity, dateOfAcquisition, category, issue, notes);
+            return new PokerChipBean(this);
         }
     }
 }
