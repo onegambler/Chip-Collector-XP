@@ -72,6 +72,11 @@ public class PokerChipCollection {
         updateListenersList.forEach(Listener::action);
     }
 
+    public void update(PokerChip pokerChip) {
+        pokerChipDAO.updatePokerChip(pokerChip);
+        updateListenersList.forEach(Listener::action);
+    }
+
     public Optional<Casino> getCasinoFromCasinoBean(CasinoBean casinoBean) {
         return pokerChipDAO.getCasinoFinder()
                 .withName(casinoBean.getName())
@@ -89,11 +94,11 @@ public class PokerChipCollection {
                 .findSingle();
     }
 
-    public Country getCountryFromCasinoBean(CasinoBean casinoBean) {
+    public Optional<Country> getCountryFromCasinoBean(CasinoBean casinoBean) {
         return getCountryFromName(casinoBean.getCountry());
     }
 
-    public Country getCountryFromName(String name) {
+    public Optional<Country> getCountryFromName(String name) {
         return pokerChipDAO.getCountry(name);
     }
 

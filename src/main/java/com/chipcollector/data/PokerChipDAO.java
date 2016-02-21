@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
 
 @Repository
@@ -51,12 +50,13 @@ public class PokerChipDAO {
                 .findList();
     }
 
-    public Country getCountry(String name) {
-        return ebeanServer.find(Country.class)
+    public Optional<Country> getCountry(String name) {
+        final Country country = ebeanServer.find(Country.class)
                 .setUseCache(true)
                 .setReadOnly(true)
                 .where().eq("name", name)
                 .findUnique();
+        return Optional.ofNullable(country);
     }
 
     public void savePokerChip(PokerChip pokerChip) {

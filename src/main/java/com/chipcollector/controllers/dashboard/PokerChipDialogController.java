@@ -2,6 +2,7 @@ package com.chipcollector.controllers.dashboard;
 
 import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.domain.*;
+import com.chipcollector.domain.Location.LocationBuilder;
 import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
@@ -13,10 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.Setter;
@@ -24,10 +21,8 @@ import org.controlsfx.validation.ValidationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -35,8 +30,6 @@ import java.util.ResourceBundle;
 import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
 import static com.chipcollector.util.ImageConverter.resizeImage;
 import static java.lang.Integer.parseInt;
-import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
 import static javafx.collections.FXCollections.observableArrayList;
 
 @Controller
@@ -107,35 +100,34 @@ public class PokerChipDialogController implements Initializable {
     }
 
     public void update() {
-        cancelledToggleButton.setSelected(pokerChipBean.isCancelled());
-        //TODO:
-        //casinoContent.setText(pokerChipBean.getCasinoBean().);
-        //casinoCountryFlag.setImage(pokerChipBean.getCasinoBean().getCountryFlag());
-        rarityComboBox.setValue(pokerChipBean.getRarity());
-        yearTextField.setText(pokerChipBean.getYear());
-        colorComboBox.setValue(pokerChipBean.getColor());
-        moldComboBox.setValue(pokerChipBean.getMold());
-        inlayComboBox.setValue(pokerChipBean.getInlay());
-        insertsTextField.setText(pokerChipBean.getInserts());
-        conditionComboBox.setValue(pokerChipBean.getCondition());
-        categoryComboBox.setValue(pokerChipBean.getCategory());
-        ofNullable(pokerChipBean.getValue()).map(BigDecimal::toString).ifPresent(valueTextField::setText);
-        ofNullable(pokerChipBean.getPaid()).map(BigDecimal::toString).ifPresent(paidTextField::setText);
-        dateOfAcquisitionDatePicker.setValue(pokerChipBean.getDateOfAcquisition());
-        tcrTextField.setText(pokerChipBean.getTcrId());
-        notesTextArea.setText(pokerChipBean.getNotes());
-        obsoleteToggleButton.setSelected(pokerChipBean.isObsolete());
-        cancelledToggleButton.setSelected(pokerChipBean.isCancelled());
-        denomComboBox.setValue(pokerChipBean.getDenom());
-        issueTextField.setText(pokerChipBean.getIssue());
+
+        yearTextField.textProperty().bindBidirectional(pokerChipBean.yearProperty());
+        cancelledToggleButton.selectedProperty().bindBidirectional(pokerChipBean.cancelledProperty());
+        rarityComboBox.valueProperty().bindBidirectional(pokerChipBean.rarityPropertyProperty());
+        colorComboBox.valueProperty().bindBidirectional(pokerChipBean.colorProperty());
+        moldComboBox.valueProperty().bindBidirectional(pokerChipBean.moldProperty());
+        inlayComboBox.valueProperty().bindBidirectional(pokerChipBean.inlayPropertyProperty());
+        insertsTextField.textProperty().bindBidirectional(pokerChipBean.insertsProperty());
+        conditionComboBox.valueProperty().bindBidirectional(pokerChipBean.conditionPropertyProperty());
+        categoryComboBox.valueProperty().bindBidirectional(pokerChipBean.categoryProperty());
+        dateOfAcquisitionDatePicker.valueProperty().bindBidirectional(pokerChipBean.dateOfAcquisitionProperty());
+        tcrTextField.textProperty().bindBidirectional(pokerChipBean.tcrIdPropertyProperty());
+        notesTextArea.textProperty().bindBidirectional(pokerChipBean.notesProperty());
+        obsoleteToggleButton.selectedProperty().bindBidirectional(pokerChipBean.obsoletePropertyProperty());
+        denomComboBox.valueProperty().bindBidirectional(pokerChipBean.denomProperty());
+        issueTextField.textProperty().bindBidirectional(pokerChipBean.issuePropertyProperty());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
-        frontImageView.setImage(pokerChipBean.getFrontImage());
-        backImageView.setImage(pokerChipBean.getBackImage());
-        Country country = pokerChipCollection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
-        if (nonNull(country)) {
-            casinoCountryFlag.setImage(country.getFlagImage());
+        frontImageView.imageProperty().bindBidirectional(pokerChipBean.getFrontImage());
+        backImageView.imageProperty().bindBidirectional(pokerChipBean.getBackImage());
+        casinoContent.setText(pokerChipBean.getCasinoBean().toString());
+        //TODO:
+        //ofNullable(pokerChipBean.getValue()).map(BigDecimal::toString).ifPresent(valueTextField::setText);
+        //ofNullable(pokerChipBean.getPaid()).map(BigDecimal::toString).ifPresent(paidTextField::setText);
+        Optional<Country> country = pokerChipCollection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
+        country.ifPresent(value -> {
+            casinoCountryFlag.setImage(value.getFlagImage());
             Tooltip.install(casinoCountryFlag, new Tooltip(pokerChipBean.getCasinoBean().getCountry()));
-        }
+        });
     }
 
     public void onCancelAction(ActionEvent actionEvent) {
@@ -147,40 +139,25 @@ public class PokerChipDialogController implements Initializable {
     }
 
     public void onOkAction(ActionEvent event) throws IOException {
-        savePokerChip();
+        if(pokerChipBean.isNew()) {
+            createNewPokerChip();
+        } else {
+            updateExistingPokerChip();
+        }
         closeDialog(event);
     }
 
-    private void savePokerChip() throws IOException {
-        final CasinoBean casinoBean = pokerChipBean.getCasinoBean();
-        final Optional<Casino> existingCasino = pokerChipCollection.getCasinoFromCasinoBean(casinoBean);
-        Casino casino;
-        if (!existingCasino.isPresent()) {
-            Optional<Location> existingLocation = pokerChipCollection.getLocationFromCasinoBean(casinoBean);
-            Location location;
-            if (!existingLocation.isPresent()) {
-                Country country = pokerChipCollection.getCountryFromCasinoBean(casinoBean);
-                location = Location.builder()
-                        .city(casinoBean.getCity())
-                        .state(casinoBean.getState())
-                        .country(country)
-                        .build();
-            } else {
-                location = existingLocation.get();
-            }
+    private void updateExistingPokerChip() {
+        pokerChipCollection.update(pokerChipBean.getPokerChip());
+    }
 
-            casino = Casino.builder()
-                    .closeDate(casinoBean.getClosedDate())
-                    .openDate(casinoBean.getOpenDate())
-                    .name(casinoBean.getName())
-                    .type(casinoBean.getType())
-                    .status(casinoBean.getStatus())
-                    .website(casinoBean.getWebsite())
-                    .location(location)
-                    .build();
-        } else {
-            casino = existingCasino.get();
-        }
+    private void createNewPokerChip() throws IOException {
+        final CasinoBean casinoBean = pokerChipBean.getCasinoBean();
+        Casino casino = pokerChipCollection.getCasinoFromCasinoBean(casinoBean).orElseGet(() -> {
+            Location location = pokerChipCollection.getLocationFromCasinoBean(casinoBean)
+                    .orElseGet(() -> createNewLocation(casinoBean));
+            return createNewCasino(casinoBean, location);
+        });
 
         PokerChipBuilder pokerChipBuilder = PokerChip.builder()
                 .category(categoryComboBox.getValue())
@@ -195,14 +172,12 @@ public class PokerChipDialogController implements Initializable {
                 .rarity(rarityComboBox.getValue())
                 .tcrID(tcrTextField.getText())
                 .year(yearTextField.getText())
+                .issue(issueTextField.getText())
+                //TODO: amounts
                 //.amountPaid(paidTextField.getText())
                 //.value()
                 .casino(casino);
 
-        String issueText = issueTextField.getText();
-        if (!Strings.isNullOrEmpty(issueText)) {
-            pokerChipBuilder.issue(parseInt(issueText));
-        }
         Image frontImage = frontImageView.getImage();
         BlobImage frontBlobImage = null;
         if (frontImage != null) {
@@ -219,6 +194,27 @@ public class PokerChipDialogController implements Initializable {
             }
         }
         pokerChipCollection.add(pokerChipBuilder.build());
+    }
+
+    private Casino createNewCasino(CasinoBean casinoBean, Location location) {
+        return Casino.builder()
+                .closeDate(casinoBean.getClosedDate())
+                .openDate(casinoBean.getOpenDate())
+                .name(casinoBean.getName())
+                .type(casinoBean.getType())
+                .status(casinoBean.getStatus())
+                .website(casinoBean.getWebsite())
+                .location(location)
+                .build();
+    }
+
+    private Location createNewLocation(CasinoBean casinoBean) {
+        Optional<Country> country = pokerChipCollection.getCountryFromCasinoBean(casinoBean);
+        LocationBuilder locationBuilder = Location.builder()
+                .city(casinoBean.getCity())
+                .state(casinoBean.getState());
+        country.ifPresent(locationBuilder::country);
+        return locationBuilder.build();
     }
 
     private BlobImage getBlobImageFromImage(Image image) throws IOException {

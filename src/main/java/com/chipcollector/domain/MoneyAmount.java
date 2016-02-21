@@ -3,6 +3,8 @@ package com.chipcollector.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 public class MoneyAmount {
@@ -14,5 +16,5 @@ public class MoneyAmount {
 	}
 
 	private Currency currency;
-	private double amount;
+	private BigDecimal amount;
 }

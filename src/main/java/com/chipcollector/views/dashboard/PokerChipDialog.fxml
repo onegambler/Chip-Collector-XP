@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.TextInputControl.TextProperty?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0"
             prefWidth="620.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.chipcollector.controllers.dashboard.PokerChipDialogController" >
+            fx:controller="com.chipcollector.controllers.dashboard.PokerChipDialogController">
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
     </padding>
@@ -115,7 +116,7 @@
                 <Label text="Issue" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <Label text="Year" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <TextField id="issueTextField" fx:id="issueTextField" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-                <TextField fx:id="yearTextField" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+                <TextField fx:id="yearTextField" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                 <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" prefHeight="25.0" prefWidth="397.0" spacing="5.0"
                       GridPane.columnSpan="9" GridPane.rowIndex="1">
                     <children>

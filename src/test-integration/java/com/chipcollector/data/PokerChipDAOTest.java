@@ -9,15 +9,12 @@ import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.imageio.ImageIO;
-import java.io.File;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -155,7 +152,7 @@ public class PokerChipDAOTest {
 
         return PokerChip.builder()
                 .acquisitionDate(LocalDate.now())
-                .amountPaid(new MoneyAmount(MoneyAmount.Currency.DOLLAR, 3d))
+                .amountPaid(new MoneyAmount(MoneyAmount.Currency.DOLLAR, new BigDecimal(3)))
                 .tcrID("tcr_" + tcrIdSequence++)
                 .casino(casino);
     }

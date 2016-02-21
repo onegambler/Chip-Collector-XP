@@ -46,7 +46,7 @@ public class PokerChip {
     private String tcrID;
 
     @Column
-    private int issue;
+    private String issue;
 
     @Column
     private String inlay;
@@ -121,7 +121,7 @@ public class PokerChip {
         this.tcrID = updateDirty(this.tcrID, tcrID);
     }
 
-    public void setIssue(int issue) {
+    public void setIssue(String issue) {
         this.issue = updateDirty(this.issue, issue);
     }
 

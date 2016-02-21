@@ -3,25 +3,25 @@ package com.chipcollector.models.dashboard;
 import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.core.BigDecimalProperty;
-import com.chipcollector.util.ImageConverter;
 import javafx.beans.property.*;
+import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
-
 
 @Slf4j
 @ToString
@@ -29,25 +29,25 @@ public class PokerChipBean {
 
     private CasinoBean casinoBean;
     private StringProperty cityName;
-    private StringProperty denom;
-    private StringProperty mold;
-    private StringProperty color;
-    private StringProperty inlay;
-    private StringProperty inserts;
-    private StringProperty year;
-    private StringProperty tcrId;
+    private StringProperty denomProperty;
+    private StringProperty moldProperty;
+    private StringProperty colorProperty;
+    private StringProperty inlayProperty;
+    private StringProperty insertsProperty;
+    private StringProperty yearProperty;
+    private StringProperty tcrIdProperty;
     private ImageView frontImageThumbnailView;
     private ImageView backImageThumbnailView;
-    private BooleanProperty obsolete;
-    private BooleanProperty cancelled;
-    private StringProperty rarity;
-    private StringProperty condition;
-    private StringProperty category;
-    private BigDecimalProperty value;
-    private BigDecimalProperty paid;
+    private BooleanProperty obsoleteProperty;
+    private BooleanProperty cancelledProperty;
+    private StringProperty rarityProperty;
+    private StringProperty conditionProperty;
+    private StringProperty categoryProperty;
+    private BigDecimalProperty valueProperty;
+    private BigDecimalProperty paidProperty;
     private SimpleObjectProperty<LocalDate> dateOfAcquisition;
-    private StringProperty notes;
-    private StringProperty issue;
+    private StringProperty notesProperty;
+    private StringProperty issueProperty;
     private byte[] frontImage;
     private byte[] backImage;
 
@@ -57,74 +57,98 @@ public class PokerChipBean {
 
     public PokerChipBean(PokerChip pokerChip) {
         this.pokerChip = pokerChip;
+        casinoBean = new CasinoBean(pokerChip.getCasino());
+        cityName = new SimpleStringProperty(pokerChip.getCasino().getCity());
+        denomProperty = new SimpleStringProperty(pokerChip.getDenom());
+        moldProperty = new SimpleStringProperty(pokerChip.getMold());
+        colorProperty = new SimpleStringProperty(pokerChip.getColor());
+        inlayProperty = new SimpleStringProperty(pokerChip.getInlay());
+        insertsProperty = new SimpleStringProperty(pokerChip.getInserts());
+        yearProperty = new SimpleStringProperty(pokerChip.getYear());
+        tcrIdProperty = new SimpleStringProperty(pokerChip.getTcrID());
+        frontImage = pokerChip.getFrontImage().map(BlobImage::getImage).orElse(new byte[0]);
+        backImage = pokerChip.getBackImage().map(BlobImage::getImage).orElse(new byte[0]);
+        obsoleteProperty = new SimpleBooleanProperty(pokerChip.isObsolete());
+        cancelledProperty = new SimpleBooleanProperty(pokerChip.isCancelled());
+        rarityProperty = new SimpleStringProperty(pokerChip.getRarity());
+        conditionProperty = new SimpleStringProperty(pokerChip.getCondition());
+        categoryProperty = new SimpleStringProperty(pokerChip.getCategory());
+        notesProperty = new SimpleStringProperty(pokerChip.getNotes());
+        dateOfAcquisition = new SimpleObjectProperty<>(pokerChip.getAcquisitionDate());
+        issueProperty = new SimpleStringProperty(String.valueOf(pokerChip.getIssue()));
+        frontImageThumbnailView = new ImageView();
+        backImageThumbnailView = new ImageView();
+        //TODO: values and paidProperty
+        valueProperty = new BigDecimalProperty(BigDecimal.ZERO);
+        paidProperty = new BigDecimalProperty(BigDecimal.ZERO);
 
-        this.casinoBean = new CasinoBean(pokerChip.getCasino());
+        List<byte[]> imageList = new ArrayList<>();
+        pokerChip.getFrontImage().ifPresent(blobImage1 -> imageList.add(blobImage1.getThumbnail()));
+        pokerChip.getBackImage().ifPresent(blobImage1 -> imageList.add(blobImage1.getThumbnail()));
+        setImageThumbnails(imageList);
+        initialisePropertiesListeners();
+    }
 
-        this.cityName = new SimpleStringProperty(pokerChip.getCasino().getCity());
-        this.denom = new SimpleStringProperty(pokerChip.getDenom());
-        this.mold = new SimpleStringProperty(pokerChip.getMold());
-        this.color = new SimpleStringProperty(pokerChip.getColor());
-        this.inlay = new SimpleStringProperty(pokerChip.getInlay());
-        this.inserts = new SimpleStringProperty(pokerChip.getInserts());
-        this.year = new SimpleStringProperty(pokerChip.getYear());
-        this.tcrId = new SimpleStringProperty(pokerChip.getTcrID());
-        this.frontImage = pokerChip.getFrontImage().map(BlobImage::getImage).orElse(new byte[0]);
-        this.backImage = pokerChip.getBackImage().map(BlobImage::getImage).orElse(new byte[0]);
-        this.obsolete = new SimpleBooleanProperty(pokerChip.isObsolete());
-        this.cancelled = new SimpleBooleanProperty(pokerChip.isCancelled());
-        this.rarity = new SimpleStringProperty(pokerChip.getRarity());
-        this.condition = new SimpleStringProperty(pokerChip.getCondition());
-        this.category = new SimpleStringProperty(pokerChip.getCategory());
-        //TODO: values and paid
-        this.value = new BigDecimalProperty(BigDecimal.ZERO);
-        this.paid = new BigDecimalProperty(BigDecimal.ZERO);
-        this.notes = new SimpleStringProperty(pokerChip.getNotes());
-        this.dateOfAcquisition = new SimpleObjectProperty<>(pokerChip.getAcquisitionDate());
-        this.issue = new SimpleStringProperty(String.valueOf(pokerChip.getIssue()));
-        this.frontImageThumbnailView = new ImageView();
-        this.backImageThumbnailView = new ImageView();
-        pokerChip.getFrontImage().ifPresent(blobImage -> {
-            try {
-                frontImageThumbnailView.setImage(ImageConverter.rawBytesToImage(blobImage.getThumbnail()));
-            } catch (IOException e) {
-                log.error("Impossible to load image", e);
-            }
-        });
-        pokerChip.getBackImage().ifPresent(blobImage -> {
-            try {
-                backImageThumbnailView.setImage(ImageConverter.rawBytesToImage(blobImage.getThumbnail()));
-            } catch (IOException e) {
-                log.error("Impossible to load image", e);
+    private PokerChipBean(PokerChipBeanBuilder builder) {
+        casinoBean = builder.casinoBean;
+        cityName = new SimpleStringProperty(casinoBean.getCity());
+        colorProperty = new SimpleStringProperty(builder.color);
+        denomProperty = new SimpleStringProperty(builder.denom);
+        inlayProperty = new SimpleStringProperty(builder.inlay);
+        insertsProperty = new SimpleStringProperty(builder.inserts);
+        moldProperty = new SimpleStringProperty(builder.mold);
+        tcrIdProperty = new SimpleStringProperty(builder.tcrId);
+        yearProperty = new SimpleStringProperty(builder.year);
+
+        tcrIdProperty = new SimpleStringProperty(builder.tcrId);
+        obsoleteProperty = new SimpleBooleanProperty(builder.obsolete);
+        cancelledProperty = new SimpleBooleanProperty(builder.cancelled);
+        conditionProperty = new SimpleStringProperty(builder.condition);
+        categoryProperty = new SimpleStringProperty(builder.category);
+        rarityProperty = new SimpleStringProperty(builder.rarity);
+        dateOfAcquisition = new SimpleObjectProperty<>(builder.dateOfAcquisition);
+        //TODO: VALUE PROPERTY
+        valueProperty = new BigDecimalProperty(builder.value);
+        paidProperty = new BigDecimalProperty(builder.paid);
+        issueProperty = new SimpleStringProperty(builder.issue);
+        notesProperty = new SimpleStringProperty(builder.notes);
+        frontImage = builder.frontImage;
+        backImage = builder.backImage;
+        frontImageThumbnailView = new ImageView();
+        backImageThumbnailView = new ImageView();
+
+        setImageThumbnails(newArrayList(frontImage, backImage));
+    }
+
+    private void initialisePropertiesListeners() {
+        addPropertyListener(cancelledProperty, pokerChip::setCancelled);
+        addPropertyListener(categoryProperty, pokerChip::setCategory);
+        addPropertyListener(colorProperty, pokerChip::setColor);
+        addPropertyListener(denomProperty, pokerChip::setDenom);
+        addPropertyListener(inlayProperty, pokerChip::setInlay);
+        addPropertyListener(insertsProperty, pokerChip::setInserts);
+        addPropertyListener(moldProperty, pokerChip::setMold);
+        addPropertyListener(yearProperty, pokerChip::setYear);
+        addPropertyListener(tcrIdProperty, pokerChip::setTcrID);
+        addPropertyListener(obsoleteProperty, pokerChip::setObsolete);
+        addPropertyListener(conditionProperty, pokerChip::setCondition);
+        addPropertyListener(rarityProperty, pokerChip::setRarity);
+        addPropertyListener(valueProperty, bigDecimal -> pokerChip.getValue().setAmount(bigDecimal));
+        addPropertyListener(paidProperty, bigDecimal -> pokerChip.getAmountPaid().setAmount(bigDecimal));
+        addPropertyListener(issueProperty, pokerChip::setIssue);
+        addPropertyListener(notesProperty, pokerChip::setNotes);
+    }
+
+    private <T> void addPropertyListener(Property<T> property, Consumer<T> propertySetter) {
+        property.addListener((observable, oldValue, newValue) -> {
+            if (isValueChanged(oldValue, newValue)) {
+                propertySetter.accept(newValue);
             }
         });
     }
 
-    private PokerChipBean(PokerChipBeanBuilder builder) {
-        this.casinoBean = builder.casinoBean;
-        this.cityName = new SimpleStringProperty(casinoBean.getCity());
-        this.color = new SimpleStringProperty(builder.color);
-        this.denom = new SimpleStringProperty(builder.denom);
-        this.inlay = new SimpleStringProperty(builder.inlay);
-        this.inserts = new SimpleStringProperty(builder.inserts);
-        this.mold = new SimpleStringProperty(builder.mold);
-        this.tcrId = new SimpleStringProperty(builder.tcrId);
-        this.year = new SimpleStringProperty(builder.year);
-        this.tcrId = new SimpleStringProperty(builder.tcrId);
-        this.obsolete = new SimpleBooleanProperty(builder.obsolete);
-        this.cancelled = new SimpleBooleanProperty(builder.cancelled);
-        this.condition = new SimpleStringProperty(builder.condition);
-        this.category = new SimpleStringProperty(builder.category);
-        this.rarity = new SimpleStringProperty(builder.rarity);
-        this.dateOfAcquisition = new SimpleObjectProperty<>(builder.dateOfAcquisition);
-        this.value = new BigDecimalProperty(builder.value);
-        this.paid = new BigDecimalProperty(builder.paid);
-        this.issue = new SimpleStringProperty(builder.issue);
-        this.notes = new SimpleStringProperty(builder.notes);
-        this.frontImage = builder.frontImage;
-        this.backImage = builder.backImage;
-        this.frontImageThumbnailView = new ImageView();
-        this.backImageThumbnailView = new ImageView();
-        setImageThumbnails(newArrayList(frontImage, backImage));
+    private <T> boolean isValueChanged(T oldValue, T newValue) {
+        return oldValue != null && !oldValue.equals(newValue);
     }
 
     @NotNull
@@ -133,69 +157,67 @@ public class PokerChipBean {
         return new Image(byteArrayInputStream);
     }
 
-    public String getCityName() {
-        return cityName.get();
+    public StringProperty colorProperty() {
+        return colorProperty;
     }
 
-    public String getColor() {
-        return color.get();
+    public StringProperty denomProperty() {
+        return denomProperty;
     }
 
-    public String getDenom() {
-        return denom.get();
+    public StringProperty inlayPropertyProperty() {
+        return inlayProperty;
     }
 
-    public String getInlay() {
-        return inlay.get();
+    public StringProperty insertsProperty() {
+        return insertsProperty;
     }
 
-    public String getInserts() {
-        return inserts.get();
-    }
-
-    public String getMold() {
-        return mold.get();
-    }
-
-    public String getTcrId() {
-        return tcrId.get();
-    }
-
-    public String getYear() {
-        return year.get();
-    }
-
-    public ImageView getFrontImageThumbnailView() {
-        return frontImageThumbnailView;
-    }
-
+    @FXML
     public ImageView getBackImageThumbnailView() {
         return backImageThumbnailView;
     }
 
-    public Image getFrontImage() {
+    @FXML
+    public ImageView getFrontImageThumbnailView() {
+        return frontImageThumbnailView;
+    }
+
+    public StringProperty moldProperty() {
+        return moldProperty;
+    }
+
+    public StringProperty tcrIdPropertyProperty() {
+        return tcrIdProperty;
+    }
+
+    public StringProperty yearProperty() {
+        return yearProperty;
+    }
+
+    public SimpleObjectProperty<Image> getFrontImage() {
         return getImageFromByteArray(frontImage, 120, 120);
     }
 
-    public Image getBackImage() {
+    public SimpleObjectProperty<Image> getBackImage() {
         return getImageFromByteArray(backImage, 120, 120);
     }
 
-    @NotNull
-    private Image getImageFromByteArray(byte[] image, double requestedWidth, double requestedHeight) {
-        return new Image(new ByteArrayInputStream(image), requestedWidth, requestedHeight, true, true);
+    private SimpleObjectProperty<Image> getImageFromByteArray(byte[] imageBytes, double requestedWidth, double requestedHeight) {
+        final Image image = new Image(new ByteArrayInputStream(imageBytes), requestedWidth, requestedHeight, true, true);
+        return new SimpleObjectProperty<>(image);
     }
 
-    public boolean isCancelled() {
-        return this.cancelled.get();
+    public BooleanProperty cancelledProperty() {
+        return cancelledProperty;
     }
 
-    public boolean isObsolete() {
-        return this.obsolete.get();
+    public BooleanProperty obsoletePropertyProperty() {
+        return obsoleteProperty;
     }
 
-    public String getRarity() {
-        return this.rarity.get();
+    public StringProperty rarityPropertyProperty() {
+        return rarityProperty;
     }
 
     public void setImageThumbnails(List<byte[]> pictures) {
@@ -214,8 +236,8 @@ public class PokerChipBean {
     }
 
     private void setImageThumbnailIfNotNull(byte[] imageByteArray, ImageView imageThumbnailView) {
-        if (imageByteArray != null) {
-            imageThumbnailView.setImage(getImageFromByteArray(imageByteArray, 90, 90));
+        if (nonNull(imageByteArray)) {
+            imageThumbnailView.setImage(getImageFromByteArray(imageByteArray, 90, 90).getValue());
         }
     }
 
@@ -231,32 +253,40 @@ public class PokerChipBean {
         return casinoBean.getName();
     }
 
-    public String getCondition() {
-        return condition.get();
+    public StringProperty conditionPropertyProperty() {
+        return conditionProperty;
     }
 
-    public String getCategory() {
-        return category.get();
+    public StringProperty categoryProperty() {
+        return categoryProperty;
     }
 
     public BigDecimal getValue() {
-        return value.get();
+        return valueProperty.get();
     }
 
     public BigDecimal getPaid() {
-        return paid.get();
+        return paidProperty.get();
     }
 
-    public LocalDate getDateOfAcquisition() {
-        return dateOfAcquisition.get();
+    public SimpleObjectProperty<LocalDate> dateOfAcquisitionProperty() {
+        return dateOfAcquisition;
     }
 
-    public String getNotes() {
-        return notes.get();
+    public StringProperty notesProperty() {
+        return notesProperty;
     }
 
-    public String getIssue() {
-        return issue.get();
+    public StringProperty issuePropertyProperty() {
+        return issueProperty;
+    }
+
+    public PokerChip getPokerChip() {
+        return pokerChip;
+    }
+
+    public boolean isNew() {
+        return this.pokerChip.getId() <= 0;
     }
 
     public static class PokerChipBeanBuilder {
