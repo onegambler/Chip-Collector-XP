@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.math.BigDecimal.ZERO;
 import static java.util.Objects.*;
 
 @Slf4j
@@ -75,13 +76,19 @@ public class PokerChipBean {
         frontImageThumbnailView = new ImageView();
         backImageThumbnailView = new ImageView();
         //TODO: values and paidProperty
-        valueProperty = new BigDecimalProperty(BigDecimal.ZERO);
-        paidProperty = new BigDecimalProperty(BigDecimal.ZERO);
+        valueProperty = new BigDecimalProperty(ZERO);
+        paidProperty = new BigDecimalProperty(ZERO);
 
-        List<byte[]> imageList = new ArrayList<>();
-        pokerChip.getFrontImage().ifPresent(blobImage1 -> imageList.add(blobImage1.getThumbnail()));
-        pokerChip.getBackImage().ifPresent(blobImage1 -> imageList.add(blobImage1.getThumbnail()));
-        setImageThumbnails(imageList);
+        pokerChip.getFrontImage().ifPresent(frontBlobImage ->
+        {
+            frontImage = frontBlobImage.getImage();
+            frontImageThumbnailView.setImage(getImageFromByteArray(frontBlobImage.getThumbnail()));
+        });
+        pokerChip.getBackImage().ifPresent(backBlobImage ->
+        {
+            backImage = backBlobImage.getImage();
+            backImageThumbnailView.setImage(getImageFromByteArray(backBlobImage.getThumbnail()));
+        });
         initialisePropertiesListeners();
     }
 
@@ -108,10 +115,10 @@ public class PokerChipBean {
         paidProperty = new BigDecimalProperty(builder.paid);
         issueProperty = new SimpleStringProperty(builder.issue);
         notesProperty = new SimpleStringProperty(builder.notes);
-        frontImage = builder.frontImage;
-        backImage = builder.backImage;
         frontImageThumbnailView = new ImageView();
         backImageThumbnailView = new ImageView();
+        frontImage = builder.frontImage;
+        backImage = builder.backImage;
 
         setImageThumbnails(newArrayList(frontImage, backImage));
     }
@@ -192,16 +199,10 @@ public class PokerChipBean {
     }
 
     public SimpleObjectProperty<Image> getFrontImage() {
-//        return pokerChip.getFrontImage()
-//                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
-//                .orElse(new SimpleObjectProperty<>());
         return getImageFromByteArray(frontImage, 120, 120);
     }
 
     public SimpleObjectProperty<Image> getBackImage() {
-//        return pokerChip.getBackImage()
-//                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
-//                .orElse(new SimpleObjectProperty<>());
         return getImageFromByteArray(backImage, 120, 120);
     }
 
