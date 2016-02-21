@@ -1,6 +1,5 @@
 package com.chipcollector.models.dashboard;
 
-import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.core.BigDecimalProperty;
 import javafx.beans.property.*;
@@ -20,8 +19,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Objects.nonNull;
-import static java.util.Objects.requireNonNull;
+import static java.util.Objects.*;
 
 @Slf4j
 @ToString
@@ -66,8 +64,6 @@ public class PokerChipBean {
         insertsProperty = new SimpleStringProperty(pokerChip.getInserts());
         yearProperty = new SimpleStringProperty(pokerChip.getYear());
         tcrIdProperty = new SimpleStringProperty(pokerChip.getTcrID());
-        frontImage = pokerChip.getFrontImage().map(BlobImage::getImage).orElse(new byte[0]);
-        backImage = pokerChip.getBackImage().map(BlobImage::getImage).orElse(new byte[0]);
         obsoleteProperty = new SimpleBooleanProperty(pokerChip.isObsolete());
         cancelledProperty = new SimpleBooleanProperty(pokerChip.isCancelled());
         rarityProperty = new SimpleStringProperty(pokerChip.getRarity());
@@ -196,11 +192,15 @@ public class PokerChipBean {
     }
 
     public SimpleObjectProperty<Image> getFrontImage() {
-        return getImageFromByteArray(frontImage, 120, 120);
+        return pokerChip.getFrontImage()
+                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
+                .orElse(new SimpleObjectProperty<>());
     }
 
     public SimpleObjectProperty<Image> getBackImage() {
-        return getImageFromByteArray(backImage, 120, 120);
+        return pokerChip.getBackImage()
+                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
+                .orElse(new SimpleObjectProperty<>());
     }
 
     private SimpleObjectProperty<Image> getImageFromByteArray(byte[] imageBytes, double requestedWidth, double requestedHeight) {
@@ -286,7 +286,7 @@ public class PokerChipBean {
     }
 
     public boolean isNew() {
-        return this.pokerChip.getId() <= 0;
+        return isNull(this.pokerChip);
     }
 
     public static class PokerChipBeanBuilder {
