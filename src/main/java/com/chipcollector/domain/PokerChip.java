@@ -1,9 +1,6 @@
 package com.chipcollector.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +9,7 @@ import java.util.Optional;
 import static java.util.Objects.nonNull;
 import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.NONE;
+import static lombok.AccessLevel.PACKAGE;
 
 @Data
 @Entity
@@ -21,7 +19,7 @@ public class PokerChip {
 
     @Id
     @Setter(NONE)
-    private long id;
+    private Long id;
 
     @JoinColumn(name = "CASINO_ID")
     @ManyToOne(optional = false, cascade = {PERSIST, REFRESH, MERGE})
@@ -79,14 +77,17 @@ public class PokerChip {
     @JoinColumn(name = "BACK_IMAGE_ID")
     private BlobImage backImage;
 
+    @Setter(NONE)
     private boolean obsolete;
+    @Setter(NONE)
     private boolean cancelled;
 
     @Transient
     private boolean imagesChanged;
 
     @Transient
-    @Getter(NONE)
+    @Setter(NONE)
+    @Getter(PACKAGE)
     private boolean dirty;
 
     public void setCasino(Casino casino) {
@@ -159,6 +160,10 @@ public class PokerChip {
 
     public void setObsolete(boolean obsolete) {
         this.obsolete = updateDirty(this.obsolete, obsolete);
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled =  updateDirty(this.cancelled, cancelled);
     }
 
     public void setFrontImage(BlobImage image) {
