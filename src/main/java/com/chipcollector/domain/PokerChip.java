@@ -193,8 +193,4 @@ public class PokerChip {
     public String toString() {
         return this.tcrID;
     }
-
-    public static String[] CHIP_CONDITIONS = new String[]{"Uncirculated", "Slightly Used", "Average", "Well Used", "Poor", "Cancelled"};
-    public static String[] CHIP_CATEGORY = new String[]{"Baccarat", "Error", "Faro", "Free Play", "Match Play", "No Cash Value", "No Denomination", "Non-Negotiable", "Poker", "Roulette", "Race and Sport"};
-
 }

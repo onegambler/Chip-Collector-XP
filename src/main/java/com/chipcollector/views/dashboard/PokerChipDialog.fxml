@@ -112,7 +112,7 @@
             <children>
                 <Label text="Casino" GridPane.valignment="BOTTOM"/>
                 <Label text="Denom" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
-                <ComboBox id="denomComboBox" fx:id="denomComboBox" prefWidth="200.0" GridPane.rowIndex="3"/>
+                <ComboBox id="denomComboBox" fx:id="denomComboBox" prefWidth="200.0" GridPane.rowIndex="3" editable="true"/>
                 <Label text="Issue" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <Label text="Year" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <TextField id="issueTextField" fx:id="issueTextField" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
@@ -141,12 +141,12 @@
                     </children>
                 </HBox>
                 <Label text="Color" GridPane.rowIndex="4" GridPane.valignment="BOTTOM"/>
-                <ComboBox fx:id="colorComboBox" prefWidth="300.0" GridPane.rowIndex="5"/>
+                <ComboBox fx:id="colorComboBox" prefWidth="300.0" GridPane.rowIndex="5" editable="true"/>
                 <Label alignment="BOTTOM_LEFT" text="Mold" GridPane.columnIndex="2" GridPane.rowIndex="4"
                        GridPane.valignment="BOTTOM"/>
                 <ComboBox fx:id="moldComboBox" prefWidth="300.0" GridPane.columnIndex="2" GridPane.columnSpan="7"
-                          GridPane.rowIndex="5"/>
-                <ComboBox fx:id="inlayComboBox" prefWidth="200.0" GridPane.rowIndex="7"/>
+                          GridPane.rowIndex="5" editable="true"/>
+                <ComboBox fx:id="inlayComboBox" prefWidth="200.0" GridPane.rowIndex="7" editable="true"/>
                 <Label text="Inlay" GridPane.rowIndex="6" GridPane.valignment="BOTTOM"/>
                 <Label text="Inserts" GridPane.columnIndex="2" GridPane.rowIndex="6" GridPane.valignment="BOTTOM"/>
                 <TextField fx:id="insertsTextField" GridPane.columnIndex="2" GridPane.columnSpan="7"

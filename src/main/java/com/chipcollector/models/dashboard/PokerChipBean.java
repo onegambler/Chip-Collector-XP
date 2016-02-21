@@ -192,15 +192,17 @@ public class PokerChipBean {
     }
 
     public SimpleObjectProperty<Image> getFrontImage() {
-        return pokerChip.getFrontImage()
-                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
-                .orElse(new SimpleObjectProperty<>());
+//        return pokerChip.getFrontImage()
+//                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
+//                .orElse(new SimpleObjectProperty<>());
+        return getImageFromByteArray(frontImage, 120, 120);
     }
 
     public SimpleObjectProperty<Image> getBackImage() {
-        return pokerChip.getBackImage()
-                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
-                .orElse(new SimpleObjectProperty<>());
+//        return pokerChip.getBackImage()
+//                .map(blobImage -> getImageFromByteArray(blobImage.getImage(), 120, 120))
+//                .orElse(new SimpleObjectProperty<>());
+        return getImageFromByteArray(backImage, 120, 120);
     }
 
     private SimpleObjectProperty<Image> getImageFromByteArray(byte[] imageBytes, double requestedWidth, double requestedHeight) {
@@ -212,7 +214,7 @@ public class PokerChipBean {
         return cancelledProperty;
     }
 
-    public BooleanProperty obsoletePropertyProperty() {
+    public BooleanProperty obsoleteProperty() {
         return obsoleteProperty;
     }
 

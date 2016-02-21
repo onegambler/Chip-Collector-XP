@@ -87,6 +87,19 @@ public class PokerChipDAO {
         pokerChip.resetDirty();
     }
 
+    public String[] getDenomValues() {
+        return null;
+    }
+
+    private Set<PokerChip> fetchDistinctPokerChipProperty(String propertyName) {
+        return ebeanServer
+                .find(PokerChip.class)
+                .select(propertyName)
+                .fetch(propertyName)
+                .setDistinct(true)
+                .findSet();
+    }
+
     @Transactional
     public void deletePokerChip(PokerChip pokerChip) {
         ebeanServer.delete(pokerChip);

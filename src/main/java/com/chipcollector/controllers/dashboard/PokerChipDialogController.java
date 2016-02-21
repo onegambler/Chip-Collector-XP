@@ -7,7 +7,6 @@ import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.util.ImageConverter;
-import com.google.common.base.Strings;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -29,7 +28,6 @@ import java.util.ResourceBundle;
 
 import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
 import static com.chipcollector.util.ImageConverter.resizeImage;
-import static java.lang.Integer.parseInt;
 import static javafx.collections.FXCollections.observableArrayList;
 
 @Controller
@@ -96,7 +94,10 @@ public class PokerChipDialogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         rarityComboBox.setItems(observableArrayList(RARITY_VALUES));
-        denomComboBox.setItems(null);
+        categoryComboBox.setItems(observableArrayList(CATEGORY_VALUES));
+        conditionComboBox.setItems(observableArrayList(CONDITION_VALUES));
+
+        //denomComboBox.setItems(observableArrayList(pokerChipCollection.get));
     }
 
     public void update() {
@@ -113,7 +114,7 @@ public class PokerChipDialogController implements Initializable {
         dateOfAcquisitionDatePicker.valueProperty().bindBidirectional(pokerChipBean.dateOfAcquisitionProperty());
         tcrTextField.textProperty().bindBidirectional(pokerChipBean.tcrIdPropertyProperty());
         notesTextArea.textProperty().bindBidirectional(pokerChipBean.notesProperty());
-        obsoleteToggleButton.selectedProperty().bindBidirectional(pokerChipBean.obsoletePropertyProperty());
+        obsoleteToggleButton.selectedProperty().bindBidirectional(pokerChipBean.obsoleteProperty());
         denomComboBox.valueProperty().bindBidirectional(pokerChipBean.denomProperty());
         issueTextField.textProperty().bindBidirectional(pokerChipBean.issuePropertyProperty());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
@@ -139,7 +140,7 @@ public class PokerChipDialogController implements Initializable {
     }
 
     public void onOkAction(ActionEvent event) throws IOException {
-        if(pokerChipBean.isNew()) {
+        if (pokerChipBean.isNew()) {
             createNewPokerChip();
         } else {
             updateExistingPokerChip();
@@ -229,4 +230,7 @@ public class PokerChipDialogController implements Initializable {
 
     public static final String PNG_FORMAT = "png";
     private static final String[] RARITY_VALUES = new String[]{"R-1", "R-2", "R-3", "R-4", "R-5", "R-6", "R-7", "R-8", "R-9", "R-10", "Unknown"};
+    public static String[] CONDITION_VALUES = new String[]{"Uncirculated", "Slightly Used", "Average", "Well Used", "Poor", "Cancelled"};
+    public static String[] CATEGORY_VALUES = new String[]{"Baccarat", "Error", "Faro", "Free Play", "Match Play", "No Cash Value", "No Denomination", "Non-Negotiable", "Poker", "Roulette", "Race and Sport"};
+
 }
