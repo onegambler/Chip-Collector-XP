@@ -1,11 +1,11 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.data.AppSettings;
 import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.spring.SpringFxmlLoader;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -21,12 +21,15 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.chipcollector.util.EventUtils.isDoubleClick;
 import static com.chipcollector.util.EventUtils.isMousePrimaryButtonPressed;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static javafx.scene.control.SelectionMode.SINGLE;
 
 @Component
@@ -122,9 +125,14 @@ public class MainWindowController implements Initializable {
     public void onMouseClick(MouseEvent event) {
         if (isMousePrimaryButtonPressed(event)) {
             TreeItem<Object> selectedItem = casinoTreeView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null && selectedItem.getValue() instanceof Casino) {
-                pokerChipCollection.setCasinoFilter((Casino) selectedItem.getValue());
-                setUpTablePagination();
+            if (nonNull(selectedItem)) {
+                if(isNull(selectedItem.getParent())) {
+                    pokerChipCollection.resetCasinoFilter();
+                    setUpTablePagination();
+                } else if (selectedItem.isLeaf()) {
+                    pokerChipCollection.setCasinoFilter((Casino) selectedItem.getValue());
+                    setUpTablePagination();
+                }
             }
         }
     }
@@ -142,7 +150,7 @@ public class MainWindowController implements Initializable {
     }
 
     public void onPokerChipTableElementClicked(MouseEvent event) {
-        if(isMousePrimaryButtonPressed(event) && isDoubleClick(event)) {
+        if (isMousePrimaryButtonPressed(event) && isDoubleClick(event)) {
             Window parent = ((Node) event.getSource()).getScene().getWindow();
             final PokerChipBean selectedItem = pokerChipsTable.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {

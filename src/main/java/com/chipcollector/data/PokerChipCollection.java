@@ -67,6 +67,10 @@ public class PokerChipCollection {
         currentFilter = pokerChipDAO.createPokerChipFilter().where().eq("casino.id", casino.getId()).query();
     }
 
+    public void resetCasinoFilter() {
+        currentFilter = pokerChipDAO.createPokerChipFilter();
+    }
+
     public void add(PokerChip pokerChip) {
         pokerChipDAO.savePokerChip(pokerChip);
         updateListenersList.forEach(Listener::action);
@@ -105,4 +109,5 @@ public class PokerChipCollection {
     public void addUpdateListener(Listener listener) {
         updateListenersList.add(listener);
     }
+
 }
