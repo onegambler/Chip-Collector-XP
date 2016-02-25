@@ -1,6 +1,7 @@
 package com.chipcollector.views.util;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
@@ -158,22 +159,12 @@ public class AutoCompleteComboBox<T> extends ComboBox<T> {
      * setRecords() as setItems() method is a final method in ComboBox class, so
      * can not override it.
      *
-     * @param list
+     * @param items
      */
-    public void setRecords(List<T> list) {
+    public void setAutoCompleteItems(ObservableList<T> items) {
         unfilteredList.clear();
-        unfilteredList.addAll(list);
-        super.getItems().setAll(list);
+        unfilteredList.addAll(items);
+        super.getItems().setAll(items);
     }
-
-    /**
-     * Returns the unfiltered list of the combo box.
-     *
-     * @return
-     */
-    public List<T> getUnfilteredList() {
-        return unfilteredList;
-    }
-
 }
 

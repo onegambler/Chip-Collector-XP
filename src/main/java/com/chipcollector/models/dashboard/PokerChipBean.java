@@ -168,7 +168,7 @@ public class PokerChipBean {
         return denomProperty;
     }
 
-    public StringProperty inlayPropertyProperty() {
+    public StringProperty inlayProperty() {
         return inlayProperty;
     }
 

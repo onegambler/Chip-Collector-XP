@@ -12,8 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 public class PokerChipDAO {
@@ -64,6 +66,33 @@ public class PokerChipDAO {
         pokerChip.resetDirty();
     }
 
+    public List<String> getDenomAutocompleteValues() {
+        return getDistinctValueSet("denom", PokerChip::getDenom);
+    }
+
+    public List<String> getInlayAutocompleteValues() {
+        return getDistinctValueSet("inlay", PokerChip::getInlay);
+    }
+
+    public List<String> getColorAutocompleteValues() {
+        return getDistinctValueSet("color", PokerChip::getColor);
+    }
+
+    public List<String> getMoldAutocompleteValues() {
+        return getDistinctValueSet("mold", PokerChip::getMold);
+    }
+
+    private List<String> getDistinctValueSet(String propertyName, Function<PokerChip, String> propertyGetter) {
+        return ebeanServer.find(PokerChip.class)
+                .select(propertyName)
+                .setDistinct(true)
+                .setUseCache(true)
+                .findSet()
+                .stream()
+                .map(propertyGetter)
+                .collect(toList());
+    }
+
     public void updatePokerChip(PokerChip pokerChip) {
         long oldFrontImageId = -1;
         long oldBackImageId = -1;
@@ -89,15 +118,6 @@ public class PokerChipDAO {
 
     public String[] getDenomValues() {
         return null;
-    }
-
-    private Set<PokerChip> fetchDistinctPokerChipProperty(String propertyName) {
-        return ebeanServer
-                .find(PokerChip.class)
-                .select(propertyName)
-                .fetch(propertyName)
-                .setDistinct(true)
-                .findSet();
     }
 
     @Transactional

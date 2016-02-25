@@ -8,11 +8,19 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static javafx.scene.input.KeyCode.*;
+import static javafx.scene.input.KeyEvent.KEY_RELEASED;
+
 public class AutoCompleteComboBoxListener<T> {
 
     private ComboBox<T> comboBox;
     private StringBuilder sb;
     private int lastLength;
+
+    private static final List<KeyCode> IGNORED_KEYS = asList(BACK_SPACE, RIGHT, LEFT, HOME, DELETE, END, TAB);
 
     public AutoCompleteComboBoxListener(ComboBox<T> comboBox) {
         this.comboBox = comboBox;
@@ -20,59 +28,63 @@ public class AutoCompleteComboBoxListener<T> {
 
         this.comboBox.setEditable(true);
         this.comboBox.setOnKeyReleased(event -> {
-            // this variable is used to bypass the auto complete process if the length is the same.
-            // this occurs if user types fast, the length of textfield will record after the user
-            // has typed after a certain delay.
-            if (lastLength != (comboBox.getEditor().getLength() - comboBox.getEditor().getSelectedText().length()))
-                lastLength = comboBox.getEditor().getLength() - comboBox.getEditor().getSelectedText().length();
+                    // this variable is used to bypass the auto complete process if the length is the same.
+                    // this occurs if user types fast, the length of textfield will record after the user
+                    // has typed after a certain delay.
+                    lastLength = comboBox.getEditor().getLength() - comboBox.getEditor().getSelectedText().length();
 
-            if (event.isControlDown() || event.getCode() == KeyCode.BACK_SPACE ||
-                    event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT ||
-                    event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.HOME ||
-                    event.getCode() == KeyCode.END || event.getCode() == KeyCode.TAB
-                    )
-                return;
-
-            if (event.getCode().equals(KeyCode.DOWN)) {
-                comboBox.show();
-                return;
-            }
-
-            IndexRange ir = comboBox.getEditor().getSelection();
-            sb.delete(0, sb.length());
-            sb.append(comboBox.getEditor().getText());
-            // remove selected string index until end so only unselected text will be recorded
-            try {
-                sb.delete(ir.getStart(), sb.length());
-            } catch (Exception ignored) { }
-
-            ObservableList<T> items = comboBox.getItems();
-            for (int i=0; i<items.size(); i++) {
-                if (items.get(i) != null && comboBox.getEditor().getText() != null && items.get(i).toString().toLowerCase().startsWith(comboBox.getEditor().getText().toLowerCase())) {
-                    try {
-                        comboBox.getEditor().setText(sb.toString() + items.get(i).toString().substring(sb.toString().length()));
-                        comboBox.setValue(items.get(i));
-                        comboBox.getSelectionModel().select(i);
-                    } catch (Exception e) {
-                        comboBox.getEditor().setText(sb.toString());
+                    if (event.isControlDown() || IGNORED_KEYS.contains(event.getCode())) {
+                        return;
                     }
-                    comboBox.getEditor().positionCaret(sb.toString().length());
-                    comboBox.getEditor().selectEnd();
-                    break;
+
+                    if (event.getCode().equals(KeyCode.DOWN)) {
+                        comboBox.show();
+                        return;
+                    }
+
+                    sb.setLength(0);
+                    IndexRange ir = comboBox.getEditor().getSelection();
+                    sb.append(comboBox.getEditor().getText());
+                    // remove selected string index until end so only unselected text will be recorded
+                    try {
+                        sb.delete(ir.getStart(), sb.length());
+                    } catch (Exception ignored) {
+                    }
+
+                    ObservableList<T> items = comboBox.getItems();
+                    for (int i = 0; i < items.size(); i++) {
+                        if (items.get(i) != null && comboBox.getEditor().getText() != null && items.get(i).toString().toLowerCase().startsWith(comboBox.getEditor().getText().toLowerCase())) {
+                            try {
+                                comboBox.getEditor().setText(sb.toString() + items.get(i).toString().substring(sb.toString().length()));
+                                comboBox.setValue(items.get(i));
+                                comboBox.getSelectionModel().select(i);
+                            } catch (Exception e) {
+                                comboBox.getEditor().setText(sb.toString());
+                            }
+                            comboBox.getEditor().positionCaret(sb.toString().length());
+                            comboBox.getEditor().selectEnd();
+                            break;
+                        }
+                    }
                 }
-            }
-        });
+
+        );
 
         // add a focus listener such that if not in focus, reset the filtered typed keys
-        this.comboBox.getEditor().focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                lastLength = 0;
-                sb.delete(0, sb.length());
-                selectClosestResultBasedOnTextFieldValue(false, false);
-            }
-        });
+        this.comboBox.getEditor().
+                focusedProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                            if (!newValue) {
+                                lastLength = 0;
+                                sb.delete(0, sb.length());
+                                selectClosestResultBasedOnTextFieldValue(false, false);
+                            }
+                        }
+                );
 
-        this.comboBox.setOnMouseClicked(event -> selectClosestResultBasedOnTextFieldValue(true, true));
+        this.comboBox.setOnMouseClicked(event ->
+                selectClosestResultBasedOnTextFieldValue(true, true)
+        );
     }
 
     /*
@@ -87,7 +99,7 @@ public class AutoCompleteComboBoxListener<T> {
     private void selectClosestResultBasedOnTextFieldValue(boolean affect, boolean inFocus) {
         ObservableList items = AutoCompleteComboBoxListener.this.comboBox.getItems();
         boolean found = false;
-        for (int i=0; i<items.size(); i++) {
+        for (int i = 0; i < items.size(); i++) {
             if (items.get(i) != null && AutoCompleteComboBoxListener.this.comboBox.getEditor().getText() != null && AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase().equals(items.get(i).toString().toLowerCase())) {
                 try {
                     ListView lv = ((ComboBoxListViewSkin) AutoCompleteComboBoxListener.this.comboBox.getSkin()).getListView();
@@ -95,12 +107,12 @@ public class AutoCompleteComboBoxListener<T> {
                     lv.scrollTo(lv.getSelectionModel().getSelectedIndex());
                     found = true;
                     break;
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
             }
         }
 
         String s = comboBox.getEditor().getText();
-        System.out.println("Found? " + found);
         if (!found && affect) {
             comboBox.getSelectionModel().clearSelection();
             comboBox.getEditor().setText(s);
@@ -116,8 +128,7 @@ public class AutoCompleteComboBoxListener<T> {
         if (!inFocus && comboBox.getEditor().getText() != null && comboBox.getEditor().getText().trim().length() > 0) {
             // press enter key programmatically to have this entry added
 //            KeyEvent ke = new KeyEvent(comboBox, KeyCode.ENTER.toString(), KeyCode.ENTER.getName(), KeyCode.ENTER.impl_getCode(), false, false, false, false, KeyEvent.KEY_RELEASED);
-            KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED, KeyCode.ENTER.toString(), KeyCode.ENTER.toString(), KeyCode.ENTER, false, false, false, false);
-            comboBox.fireEvent(ke);
+            comboBox.fireEvent( new KeyEvent(KEY_RELEASED, ENTER.toString(), ENTER.toString(), ENTER, false, false, false, false));
         }
     }
 

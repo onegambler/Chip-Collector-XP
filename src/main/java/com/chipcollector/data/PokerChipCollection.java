@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.time.LocalDateTime.now;
 
@@ -20,10 +21,12 @@ import static java.time.LocalDateTime.now;
 public class PokerChipCollection {
 
     private final PokerChipDAO pokerChipDAO;
-
     private Query<PokerChip> currentFilter;
-
     private List<Listener> updateListenersList = new ArrayList<>();
+    private Set<String> colors;
+    private Set<String> denoms;
+    private Set<String> inlays;
+    private Set<String> molds;
 
     @Autowired
     public PokerChipCollection(PokerChipDAO pokerChipDAO) {
@@ -100,6 +103,22 @@ public class PokerChipCollection {
 
     public Optional<Country> getCountryFromCasinoBean(CasinoBean casinoBean) {
         return getCountryFromName(casinoBean.getCountry());
+    }
+
+    public List<String> getDenomAutocompleteValues() {
+        return pokerChipDAO.getDenomAutocompleteValues();
+    }
+
+    public List<String> getColorAutocompleteValues() {
+        return pokerChipDAO.getColorAutocompleteValues();
+    }
+
+    public List<String> getInlayAutocompleteValues() {
+        return pokerChipDAO.getInlayAutocompleteValues();
+    }
+
+    public List<String> getMoldAutocompleteValues() {
+        return pokerChipDAO.getMoldAutocompleteValues();
     }
 
     public Optional<Country> getCountryFromName(String name) {

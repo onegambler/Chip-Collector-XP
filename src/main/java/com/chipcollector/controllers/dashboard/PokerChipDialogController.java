@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
 import static com.chipcollector.util.ImageConverter.resizeImage;
 import static javafx.collections.FXCollections.observableArrayList;
+import static javafx.collections.FXCollections.observableList;
 
 @Controller
 public class PokerChipDialogController implements Initializable {
@@ -97,25 +98,32 @@ public class PokerChipDialogController implements Initializable {
         categoryComboBox.setItems(observableArrayList(CATEGORY_VALUES));
         conditionComboBox.setItems(observableArrayList(CONDITION_VALUES));
 
-        //denomComboBox.setItems(observableArrayList(pokerChipCollection.get));
+        inlayComboBox.setItems(observableList(pokerChipCollection.getInlayAutocompleteValues()));
+        colorComboBox.setItems(observableList(pokerChipCollection.getColorAutocompleteValues()));
+        moldComboBox.setItems(observableList(pokerChipCollection.getMoldAutocompleteValues()));
+        denomComboBox.setItems(observableList(pokerChipCollection.getDenomAutocompleteValues()));
+//        new AutoCompleteComboBoxListener<>(inlayComboBox);
+//        new AutoCompleteComboBoxListener<>(colorComboBox);
+//        new AutoCompleteComboBoxListener<>(moldComboBox);
+//        new AutoCompleteComboBoxListener<>(denomComboBox);
     }
 
     public void update() {
 
         yearTextField.textProperty().bindBidirectional(pokerChipBean.yearProperty());
         cancelledToggleButton.selectedProperty().bindBidirectional(pokerChipBean.cancelledProperty());
-        rarityComboBox.valueProperty().bindBidirectional(pokerChipBean.rarityPropertyProperty());
-        colorComboBox.valueProperty().bindBidirectional(pokerChipBean.colorProperty());
-        moldComboBox.valueProperty().bindBidirectional(pokerChipBean.moldProperty());
-        inlayComboBox.valueProperty().bindBidirectional(pokerChipBean.inlayPropertyProperty());
+        rarityComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.rarityPropertyProperty());
+        colorComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.colorProperty());
+        moldComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.moldProperty());
         insertsTextField.textProperty().bindBidirectional(pokerChipBean.insertsProperty());
-        conditionComboBox.valueProperty().bindBidirectional(pokerChipBean.conditionPropertyProperty());
-        categoryComboBox.valueProperty().bindBidirectional(pokerChipBean.categoryProperty());
+        inlayComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.inlayProperty());
+        conditionComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.conditionPropertyProperty());
+        categoryComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.categoryProperty());
         dateOfAcquisitionDatePicker.valueProperty().bindBidirectional(pokerChipBean.dateOfAcquisitionProperty());
         tcrTextField.textProperty().bindBidirectional(pokerChipBean.tcrIdPropertyProperty());
         notesTextArea.textProperty().bindBidirectional(pokerChipBean.notesProperty());
+        denomComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.denomProperty());
         obsoleteToggleButton.selectedProperty().bindBidirectional(pokerChipBean.obsoleteProperty());
-        denomComboBox.valueProperty().bindBidirectional(pokerChipBean.denomProperty());
         issueTextField.textProperty().bindBidirectional(pokerChipBean.issuePropertyProperty());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
         frontImageView.imageProperty().bindBidirectional(pokerChipBean.getFrontImage());
