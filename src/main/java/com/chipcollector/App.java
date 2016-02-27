@@ -25,7 +25,7 @@ import java.time.LocalDate;
 import static com.avaje.ebean.Ebean.getDefaultServer;
 import static org.imgscalr.Scalr.THRESHOLD_QUALITY_BALANCED;
 
-public class ChipCollectorXPApplication extends Application {
+public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -35,11 +35,10 @@ public class ChipCollectorXPApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         try {
-            final ApplicationContext context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
-
             new DatabaseUtil(getDefaultServer()).tryDatabaseUpdate();
 
-            SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
+            SpringFxmlLoader loader = new AnnotationConfigApplicationContext(SpringAppConfig.class)
+                    .getBean(SpringFxmlLoader.class);
             loader.show(DASHBOARD_FX_FILE_LOCATION, MessagesHelper.getString("main.title.text"));
         } catch (Exception e){e.printStackTrace();}
     }

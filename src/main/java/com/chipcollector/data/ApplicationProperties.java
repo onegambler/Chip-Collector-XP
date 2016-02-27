@@ -1,6 +1,6 @@
 package com.chipcollector.data;
 
-import com.chipcollector.ChipCollectorXPApplication;
+import com.chipcollector.App;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -9,7 +9,7 @@ import java.util.prefs.Preferences;
 import static java.util.Optional.ofNullable;
 
 @Repository
-public class AppSettings {
+public class ApplicationProperties {
 
     public double getMainWindowHeigh() {
         return Preference.WINDOW_HEIGHT.getDouble();
@@ -51,7 +51,7 @@ public class AppSettings {
 
         private final String preferenceName;
         private final Object defaultValue;
-        private final Preferences preferences = Preferences.userNodeForPackage(ChipCollectorXPApplication.class);
+        private final Preferences preferences = Preferences.userNodeForPackage(App.class);
 
         Preference(String preferenceName, Object defaultValue) {
             this.preferenceName = preferenceName;

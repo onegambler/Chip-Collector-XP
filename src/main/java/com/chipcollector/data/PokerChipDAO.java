@@ -66,23 +66,7 @@ public class PokerChipDAO {
         pokerChip.resetDirty();
     }
 
-    public List<String> getDenomAutocompleteValues() {
-        return getDistinctValueSet("denom", PokerChip::getDenom);
-    }
-
-    public List<String> getInlayAutocompleteValues() {
-        return getDistinctValueSet("inlay", PokerChip::getInlay);
-    }
-
-    public List<String> getColorAutocompleteValues() {
-        return getDistinctValueSet("color", PokerChip::getColor);
-    }
-
-    public List<String> getMoldAutocompleteValues() {
-        return getDistinctValueSet("mold", PokerChip::getMold);
-    }
-
-    private List<String> getDistinctValueSet(String propertyName, Function<PokerChip, String> propertyGetter) {
+    public List<String> getDistinctValueSet(String propertyName, Function<PokerChip, String> propertyGetter) {
         return ebeanServer.find(PokerChip.class)
                 .select(propertyName)
                 .setDistinct(true)

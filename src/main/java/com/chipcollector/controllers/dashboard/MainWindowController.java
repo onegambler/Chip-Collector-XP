@@ -1,6 +1,6 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.data.AppSettings;
+import com.chipcollector.data.ApplicationProperties;
 import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.PokerChip;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.chipcollector.util.EventUtils.isDoubleClick;
@@ -36,7 +35,7 @@ import static javafx.scene.control.SelectionMode.SINGLE;
 public class MainWindowController implements Initializable {
 
     private PokerChipCollection pokerChipCollection;
-    private AppSettings settings;
+    private ApplicationProperties settings;
     private SpringFxmlLoader loader;
 
     @FXML
@@ -55,7 +54,7 @@ public class MainWindowController implements Initializable {
     private TitledPane showAllPokerChipTitledPane;
 
     @Autowired
-    public MainWindowController(PokerChipCollection pokerChipCollection, AppSettings configuration, SpringFxmlLoader loader) {
+    public MainWindowController(PokerChipCollection pokerChipCollection, ApplicationProperties configuration, SpringFxmlLoader loader) {
         this.pokerChipCollection = pokerChipCollection;
         this.settings = configuration;
         this.loader = loader;

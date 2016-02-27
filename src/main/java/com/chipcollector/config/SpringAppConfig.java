@@ -4,7 +4,7 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
-import com.chipcollector.data.AppSettings;
+import com.chipcollector.data.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +17,7 @@ import static java.lang.String.format;
 public class SpringAppConfig {
 
     @Autowired
-    private AppSettings appSettings;
+    private ApplicationProperties appSettings;
 
     @Bean
     public EbeanServer ebeanServer() {

@@ -8,6 +8,7 @@ import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,16 +18,12 @@ import java.util.Set;
 
 import static java.time.LocalDateTime.now;
 
-@Repository
+@Component
 public class PokerChipCollection {
 
     private final PokerChipDAO pokerChipDAO;
     private Query<PokerChip> currentFilter;
     private List<Listener> updateListenersList = new ArrayList<>();
-    private Set<String> colors;
-    private Set<String> denoms;
-    private Set<String> inlays;
-    private Set<String> molds;
 
     @Autowired
     public PokerChipCollection(PokerChipDAO pokerChipDAO) {
@@ -106,19 +103,19 @@ public class PokerChipCollection {
     }
 
     public List<String> getDenomAutocompleteValues() {
-        return pokerChipDAO.getDenomAutocompleteValues();
-    }
-
-    public List<String> getColorAutocompleteValues() {
-        return pokerChipDAO.getColorAutocompleteValues();
+        return pokerChipDAO.getDistinctValueSet("denom", PokerChip::getDenom);
     }
 
     public List<String> getInlayAutocompleteValues() {
-        return pokerChipDAO.getInlayAutocompleteValues();
+        return pokerChipDAO.getDistinctValueSet("inlay", PokerChip::getInlay);
+    }
+
+    public List<String> getColorAutocompleteValues() {
+        return pokerChipDAO.getDistinctValueSet("color", PokerChip::getColor);
     }
 
     public List<String> getMoldAutocompleteValues() {
-        return pokerChipDAO.getMoldAutocompleteValues();
+        return pokerChipDAO.getDistinctValueSet("mold", PokerChip::getMold);
     }
 
     public Optional<Country> getCountryFromName(String name) {
