@@ -14,8 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -44,7 +44,7 @@ public class PokerChipBean {
     private StringProperty categoryProperty;
     private BigDecimalProperty valueProperty;
     private BigDecimalProperty paidProperty;
-    private SimpleObjectProperty<LocalDate> dateOfAcquisition;
+    private SimpleObjectProperty<LocalDate> dateOfAcquisitionProperty;
     private StringProperty notesProperty;
     private StringProperty issueProperty;
     private byte[] frontImage;
@@ -71,7 +71,7 @@ public class PokerChipBean {
         conditionProperty = new SimpleStringProperty(pokerChip.getCondition());
         categoryProperty = new SimpleStringProperty(pokerChip.getCategory());
         notesProperty = new SimpleStringProperty(pokerChip.getNotes());
-        dateOfAcquisition = new SimpleObjectProperty<>(pokerChip.getAcquisitionDate());
+        dateOfAcquisitionProperty = new SimpleObjectProperty<>(pokerChip.getAcquisitionDate());
         issueProperty = new SimpleStringProperty(String.valueOf(pokerChip.getIssue()));
         frontImageThumbnailView = new ImageView();
         backImageThumbnailView = new ImageView();
@@ -109,7 +109,7 @@ public class PokerChipBean {
         conditionProperty = new SimpleStringProperty(builder.condition);
         categoryProperty = new SimpleStringProperty(builder.category);
         rarityProperty = new SimpleStringProperty(builder.rarity);
-        dateOfAcquisition = new SimpleObjectProperty<>(builder.dateOfAcquisition);
+        dateOfAcquisitionProperty = new SimpleObjectProperty<>(builder.dateOfAcquisition);
         //TODO: VALUE PROPERTY
         valueProperty = new BigDecimalProperty(builder.value);
         paidProperty = new BigDecimalProperty(builder.paid);
@@ -140,6 +140,7 @@ public class PokerChipBean {
         addPropertyListener(paidProperty, bigDecimal -> pokerChip.getAmountPaid().setAmount(bigDecimal));
         addPropertyListener(issueProperty, pokerChip::setIssue);
         addPropertyListener(notesProperty, pokerChip::setNotes);
+        addPropertyListener(dateOfAcquisitionProperty, pokerChip::setAcquisitionDate);
     }
 
     private <T> void addPropertyListener(Property<T> property, Consumer<T> propertySetter) {
@@ -151,7 +152,7 @@ public class PokerChipBean {
     }
 
     private <T> boolean isValueChanged(T oldValue, T newValue) {
-        return oldValue != null && !oldValue.equals(newValue);
+        return !Objects.equals(oldValue, newValue);
     }
 
     @NotNull
@@ -190,7 +191,7 @@ public class PokerChipBean {
         return moldProperty;
     }
 
-    public StringProperty tcrIdPropertyProperty() {
+    public StringProperty tcrIdProperty() {
         return tcrIdProperty;
     }
 
@@ -219,7 +220,7 @@ public class PokerChipBean {
         return obsoleteProperty;
     }
 
-    public StringProperty rarityPropertyProperty() {
+    public StringProperty rarityProperty() {
         return rarityProperty;
     }
 
@@ -256,7 +257,7 @@ public class PokerChipBean {
         return casinoBean.getName();
     }
 
-    public StringProperty conditionPropertyProperty() {
+    public StringProperty conditionProperty() {
         return conditionProperty;
     }
 
@@ -273,14 +274,14 @@ public class PokerChipBean {
     }
 
     public SimpleObjectProperty<LocalDate> dateOfAcquisitionProperty() {
-        return dateOfAcquisition;
+        return dateOfAcquisitionProperty;
     }
 
     public StringProperty notesProperty() {
         return notesProperty;
     }
 
-    public StringProperty issuePropertyProperty() {
+    public StringProperty issueProperty() {
         return issueProperty;
     }
 

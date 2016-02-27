@@ -112,19 +112,19 @@ public class PokerChipDialogController implements Initializable {
 
         yearTextField.textProperty().bindBidirectional(pokerChipBean.yearProperty());
         cancelledToggleButton.selectedProperty().bindBidirectional(pokerChipBean.cancelledProperty());
-        rarityComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.rarityPropertyProperty());
+        rarityComboBox.valueProperty().bindBidirectional(pokerChipBean.rarityProperty());
         colorComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.colorProperty());
         moldComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.moldProperty());
         insertsTextField.textProperty().bindBidirectional(pokerChipBean.insertsProperty());
         inlayComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.inlayProperty());
-        conditionComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.conditionPropertyProperty());
-        categoryComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.categoryProperty());
+        conditionComboBox.valueProperty().bindBidirectional(pokerChipBean.conditionProperty());
+        categoryComboBox.valueProperty().bindBidirectional(pokerChipBean.categoryProperty());
         dateOfAcquisitionDatePicker.valueProperty().bindBidirectional(pokerChipBean.dateOfAcquisitionProperty());
-        tcrTextField.textProperty().bindBidirectional(pokerChipBean.tcrIdPropertyProperty());
+        tcrTextField.textProperty().bindBidirectional(pokerChipBean.tcrIdProperty());
         notesTextArea.textProperty().bindBidirectional(pokerChipBean.notesProperty());
         denomComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.denomProperty());
         obsoleteToggleButton.selectedProperty().bindBidirectional(pokerChipBean.obsoleteProperty());
-        issueTextField.textProperty().bindBidirectional(pokerChipBean.issuePropertyProperty());
+        issueTextField.textProperty().bindBidirectional(pokerChipBean.issueProperty());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
         frontImageView.imageProperty().bindBidirectional(pokerChipBean.getFrontImage());
         backImageView.imageProperty().bindBidirectional(pokerChipBean.getBackImage());
