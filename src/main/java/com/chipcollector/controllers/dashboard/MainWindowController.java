@@ -93,7 +93,7 @@ public class MainWindowController implements Initializable {
     private void setUpTablePagination() {
         pokerChipsPaginatedTable.setPageFactory(this::getPokerChipTablePage);
 
-        int pokerChipCount = pokerChipCollection.getPokerChipCount();
+        int pokerChipCount = pokerChipCollection.getFilteredPokerChipCount();
         int numPages = (int) max(1, ceil(pokerChipCount / settings.getPaginationSize())); //we want at least a page
 
         pokerChipsPaginatedTable.setPageCount(numPages);

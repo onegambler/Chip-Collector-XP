@@ -1,5 +1,5 @@
 package com.chipcollector.domain;
-
+//TODO
 public enum Rarity {
     R_1("R-1"),
     R_2("R-2"),

@@ -51,7 +51,7 @@ public class DashboardController implements Initializable {
         numPokerChipsValue.setText(String.valueOf(pokerChipCollection.getAllPokerChipsCount()));
         numPokerChipsBoughtInLast7DaysValue.setText(String.valueOf(pokerChipCollection.getPokerChipCountForLast7Days()));
         numPokerChipsBoughtInLastMonthValue.setText(String.valueOf(pokerChipCollection.getPokerChipCountForLastMonth()));
-        numDifferentCasinosValue.setText(String.valueOf(pokerChipCollection.getNumDifferentCasinos()));
+        numDifferentCasinosValue.setText(String.valueOf(pokerChipCollection.getAllCasinosCount()));
     }
 
     @Override

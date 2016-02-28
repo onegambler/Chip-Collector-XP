@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.NONE;
+import static lombok.AccessLevel.PACKAGE;
 
 @Data
 @Entity
@@ -15,7 +15,7 @@ import static lombok.AccessLevel.NONE;
 public class BlobImage {
 
     @Id
-    @Setter(NONE)
+    @Setter(PACKAGE)
     private long id;
 
     @Lob

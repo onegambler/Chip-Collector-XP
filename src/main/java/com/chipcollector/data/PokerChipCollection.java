@@ -39,7 +39,7 @@ public class PokerChipCollection {
         return this.pokerChipDAO.getPokerChipList(currentFilter);
     }
 
-    public int getPokerChipCount() {
+    public int getFilteredPokerChipCount() {
         return pokerChipDAO.getPokerChipCount(currentFilter);
     }
 
@@ -55,7 +55,7 @@ public class PokerChipCollection {
         return pokerChipDAO.getPokerChipCount(pokerChipDAO.createPokerChipFilter().where().gt("acquisitionDate", now().minusMonths(1)).query());
     }
 
-    public int getNumDifferentCasinos() {
+    public int getAllCasinosCount() {
         return pokerChipDAO.getAllCasinos().size();
     }
 
@@ -116,6 +116,22 @@ public class PokerChipCollection {
 
     public List<String> getMoldAutocompleteValues() {
         return pokerChipDAO.getDistinctValueSet("mold", PokerChip::getMold);
+    }
+
+    /**
+     * Method created for test purposes
+     * @return the current filter
+     */
+    Query<PokerChip> getCurrentFilter() {
+        return currentFilter;
+    }
+
+    /**
+     * Method created for test purposes
+     * @param currentFilter the filter to set
+     */
+    void setCurrentFilter(Query<PokerChip> currentFilter) {
+        this.currentFilter = currentFilter;
     }
 
     public Optional<Country> getCountryFromName(String name) {
