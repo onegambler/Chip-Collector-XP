@@ -14,10 +14,6 @@ import java.util.Set;
 
 public class TheMoghCasinoScraper {
 
-    public static final int TIMEOUT = 5000;
-    public static final String SEARCH_URL = "http://www.themogh.org/cg_casino_search.php";
-    public static final String CASINO_LIST_QUERY = "td.casinolist:not([align]) tr:has(td[class~=casinolist?]";
-
     public List<CasinoBean> searchItems(String query) throws IOException {
         String nameString, cityString, stateString, websiteString, countryString, detailsPageUrl;
 
@@ -63,17 +59,6 @@ public class TheMoghCasinoScraper {
         return USA_STATES.contains(state);
     }
 
-    public static void main(String[] args) throws Throwable {
-        new TheMoghCasinoScraper().searchItems("bellagio");
-    }
-
-    public static final String POST_PARAM_KEYWORD = "keywords";
-    public static final String POST_PARAM_SEARCH = "search";
-    public static final String POST_PARAM_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0";
-    public static final String HREF_ATTRIBUTE_KEY = "href";
-
-    public static final String USA_COUNTRY = "United States";
-
     private enum CasinoElement {
         COUNTRY(0),
         NAME(1),
@@ -94,6 +79,15 @@ public class TheMoghCasinoScraper {
             return element.child(index).getElementsByAttribute(attribute).attr(attribute);
         }
     }
+    public static final String POST_PARAM_KEYWORD = "keywords";
+    public static final String POST_PARAM_SEARCH = "search";
+    public static final String POST_PARAM_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0";
+    public static final String HREF_ATTRIBUTE_KEY = "href";
+    public static final String USA_COUNTRY = "United States";
+
+    public static final int TIMEOUT = 5000;
+    public static final String SEARCH_URL = "http://www.themogh.org/cg_casino_search.php";
+    public static final String CASINO_LIST_QUERY = "td.casinolist:not([align]) tr:has(td[class~=casinolist?]";
 
     public static final Set<String> USA_STATES = ImmutableSet.of(
             "Delaware", "Pennsylvania", "New Jersey", "Georgia", "Connecticut", "Massachusetts", "Maryland", "South Carolina", "New Hampshire", "Virginia",

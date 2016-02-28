@@ -9,12 +9,10 @@ import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static java.time.LocalDateTime.now;
 
@@ -120,6 +118,7 @@ public class PokerChipCollection {
 
     /**
      * Method created for test purposes
+     *
      * @return the current filter
      */
     Query<PokerChip> getCurrentFilter() {
@@ -128,6 +127,7 @@ public class PokerChipCollection {
 
     /**
      * Method created for test purposes
+     *
      * @param currentFilter the filter to set
      */
     void setCurrentFilter(Query<PokerChip> currentFilter) {

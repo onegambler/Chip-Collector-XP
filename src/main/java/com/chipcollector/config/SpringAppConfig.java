@@ -22,9 +22,9 @@ public class SpringAppConfig {
     @Bean
     public EbeanServer ebeanServer() {
         ServerConfig serverConfig = serverConfig();
-        if (appSettings.getLastUsedDatabase().isPresent()) {
-            serverConfig.getDataSourceConfig().setUrl(format("jdbc:sqlite:%s", appSettings.getLastUsedDatabase().get()));
-        }
+        appSettings.getLastUsedDatabase()
+                .ifPresent(lastUsedDatabase ->
+                        serverConfig.getDataSourceConfig().setUrl(format("jdbc:sqlite:%s", lastUsedDatabase)));
 
         EbeanServer ebeanServer = EbeanServerFactory.create(serverConfig);
         Ebean.register(ebeanServer, true);

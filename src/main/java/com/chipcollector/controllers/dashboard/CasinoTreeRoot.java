@@ -7,16 +7,15 @@ import com.chipcollector.util.MessagesHelper;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class CasinoTreeRoot extends TreeItem<Object> {
+import static java.util.Objects.requireNonNull;
 
-    public static final String CASINO_OTHER_KEY = "domain.casino.other";
+public class CasinoTreeRoot extends TreeItem<Object> {
 
     public CasinoTreeRoot(List<Casino> casinos) {
         this.setValue(MessagesHelper.getString(CASINO_STRING_KEY));
@@ -31,7 +30,9 @@ public class CasinoTreeRoot extends TreeItem<Object> {
                 String cityName = location.get().getCity();
 
                 Item countryItem = casinoTreeMap.computeIfAbsent(country.getId(), id -> createCountryItem(country));
-                Item cityItem = countryItem.getChildren().computeIfAbsent(cityName, name -> createCityItem(name, countryItem));
+                Item cityItem = countryItem
+                        .getChildren()
+                        .computeIfAbsent(cityName, name -> createCityItem(name, countryItem));
 
                 cityItem.getNode().getChildren().add(new TreeItem<>(casino));
 
@@ -40,7 +41,7 @@ public class CasinoTreeRoot extends TreeItem<Object> {
             }
         }
 
-        if(others.getChildren().size() != 0) {
+        if (others.getChildren().size() > 0) {
             this.getChildren().add(others);
         }
     }
@@ -62,12 +63,12 @@ public class CasinoTreeRoot extends TreeItem<Object> {
         private final TreeItem<Object> node;
         private final Map<String, Item> children = new HashMap<>();
 
-        public Item(@NonNull Object nodeValue) {
-            this.node = new TreeItem<>(nodeValue);
+        public Item(Object nodeValue) {
+            this.node = new TreeItem<>(requireNonNull(nodeValue));
         }
 
-        public Item(@NonNull Object nodeValue, ImageView image) {
-            this.node = new TreeItem<>(nodeValue, image);
+        public Item(Object nodeValue, ImageView image) {
+            this.node = new TreeItem<>(requireNonNull(nodeValue), image);
         }
 
         @Override
@@ -76,5 +77,6 @@ public class CasinoTreeRoot extends TreeItem<Object> {
         }
     }
 
+    private static final String CASINO_OTHER_KEY = "domain.casino.other";
     private static final String CASINO_STRING_KEY = "dashboard.casinotree.node.allcasinos";
 }

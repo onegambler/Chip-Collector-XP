@@ -241,6 +241,15 @@ public class PokerChipCollectionTest {
     @Test
     public void getCountryFromCasinoBeanCallsCorrectlyTheDatabase() {
         final String countryName = "countryName";
+        CasinoBean casinoBean = new CasinoBean();
+        casinoBean.setCountry(countryName);
+        underTest.getCountryFromCasinoBean(casinoBean);
+        verify(pokerChipDAO).getCountry(countryName);
+    }
+
+    @Test
+    public void getCountryFromNameCallsCorrectlyTheDatabase() {
+        final String countryName = "countryName";
         underTest.getCountryFromName(countryName);
         verify(pokerChipDAO).getCountry(countryName);
     }
