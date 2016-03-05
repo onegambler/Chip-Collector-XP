@@ -125,7 +125,7 @@ public class MainWindowController implements Initializable {
         if (isMousePrimaryButtonPressed(event)) {
             TreeItem<Object> selectedItem = casinoTreeView.getSelectionModel().getSelectedItem();
             if (nonNull(selectedItem)) {
-                if(isNull(selectedItem.getParent())) {
+                if (isNull(selectedItem.getParent())) {
                     pokerChipCollection.resetCasinoFilter();
                     setUpTablePagination();
                 } else if (selectedItem.isLeaf()) {
@@ -162,10 +162,7 @@ public class MainWindowController implements Initializable {
         loader.<PokerChipDialogController>showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION,
                 "Add PokerChip",
                 parent,
-                false, controller -> {
-                    controller.setPokerChipBean(pokerChipBean);
-                    controller.update();
-                });
+                false, controller -> controller.setPokerChipBean(pokerChipBean));
     }
 
     public void quitApplication() {

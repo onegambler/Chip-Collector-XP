@@ -7,6 +7,7 @@ import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.util.ImageConverter;
+import com.chipcollector.views.util.AutoCompleteComboBoxListener;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -15,7 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import lombok.Setter;
 import org.controlsfx.validation.ValidationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,14 +75,10 @@ public class PokerChipDialogController implements Initializable {
     @FXML
     private ImageView casinoCountryFlag;
     @FXML
-    private Button cancelButton;
-    @FXML
-    private Button okButton;
-    @FXML
     private ImageView frontImageView;
     @FXML
     private ImageView backImageView;
-    @Setter
+
     private PokerChipBean pokerChipBean;
 
     private PokerChipCollection pokerChipCollection;
@@ -102,32 +98,36 @@ public class PokerChipDialogController implements Initializable {
         colorComboBox.setItems(observableList(pokerChipCollection.getColorAutocompleteValues()));
         moldComboBox.setItems(observableList(pokerChipCollection.getMoldAutocompleteValues()));
         denomComboBox.setItems(observableList(pokerChipCollection.getDenomAutocompleteValues()));
-//        new AutoCompleteComboBoxListener<>(inlayComboBox);
-//        new AutoCompleteComboBoxListener<>(colorComboBox);
-//        new AutoCompleteComboBoxListener<>(moldComboBox);
-//        new AutoCompleteComboBoxListener<>(denomComboBox);
+        new AutoCompleteComboBoxListener<>(inlayComboBox);
+        new AutoCompleteComboBoxListener<>(colorComboBox);
+        new AutoCompleteComboBoxListener<>(moldComboBox);
+        new AutoCompleteComboBoxListener<>(denomComboBox);
     }
 
-    public void update() {
+    public void setPokerChipBean(PokerChipBean pokerChipBean) {
+        this.pokerChipBean = pokerChipBean;
+        fillUpFields(pokerChipBean);
+    }
 
-        yearTextField.textProperty().bindBidirectional(pokerChipBean.yearProperty());
-        cancelledToggleButton.selectedProperty().bindBidirectional(pokerChipBean.cancelledProperty());
-        rarityComboBox.valueProperty().bindBidirectional(pokerChipBean.rarityProperty());
-        colorComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.colorProperty());
-        moldComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.moldProperty());
-        insertsTextField.textProperty().bindBidirectional(pokerChipBean.insertsProperty());
-        inlayComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.inlayProperty());
-        conditionComboBox.valueProperty().bindBidirectional(pokerChipBean.conditionProperty());
-        categoryComboBox.valueProperty().bindBidirectional(pokerChipBean.categoryProperty());
-        dateOfAcquisitionDatePicker.valueProperty().bindBidirectional(pokerChipBean.dateOfAcquisitionProperty());
-        tcrTextField.textProperty().bindBidirectional(pokerChipBean.tcrIdProperty());
-        notesTextArea.textProperty().bindBidirectional(pokerChipBean.notesProperty());
-        denomComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.denomProperty());
-        obsoleteToggleButton.selectedProperty().bindBidirectional(pokerChipBean.obsoleteProperty());
-        issueTextField.textProperty().bindBidirectional(pokerChipBean.issueProperty());
+    private void fillUpFields(PokerChipBean pokerChipBean) {
+        yearTextField.textProperty().set(pokerChipBean.yearProperty().get());
+        cancelledToggleButton.selectedProperty().set(pokerChipBean.cancelledProperty().get());
+        rarityComboBox.valueProperty().set(pokerChipBean.rarityProperty().get());
+        colorComboBox.getEditor().textProperty().set(pokerChipBean.colorProperty().get());
+        moldComboBox.getEditor().textProperty().set(pokerChipBean.moldProperty().get());
+        insertsTextField.textProperty().set(pokerChipBean.insertsProperty().get());
+        inlayComboBox.getEditor().textProperty().set(pokerChipBean.inlayProperty().get());
+        conditionComboBox.valueProperty().set(pokerChipBean.conditionProperty().get());
+        categoryComboBox.valueProperty().set(pokerChipBean.categoryProperty().get());
+        dateOfAcquisitionDatePicker.valueProperty().set(pokerChipBean.dateOfAcquisitionProperty().get());
+        tcrTextField.textProperty().set(pokerChipBean.tcrIdProperty().get());
+        notesTextArea.textProperty().set(pokerChipBean.notesProperty().get());
+        denomComboBox.getEditor().textProperty().set(pokerChipBean.denomProperty().get());
+        obsoleteToggleButton.selectedProperty().set(pokerChipBean.obsoleteProperty().get());
+        issueTextField.textProperty().set(pokerChipBean.issueProperty().get());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
-        frontImageView.imageProperty().bindBidirectional(pokerChipBean.getFrontImage());
-        backImageView.imageProperty().bindBidirectional(pokerChipBean.getBackImage());
+        frontImageView.imageProperty().set(pokerChipBean.getFrontImage().get());
+        backImageView.imageProperty().set(pokerChipBean.getBackImage().get());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
         //TODO:
         //ofNullable(pokerChipBean.getValue()).map(BigDecimal::toString).ifPresent(valueTextField::setText);
@@ -157,7 +157,29 @@ public class PokerChipDialogController implements Initializable {
     }
 
     private void updateExistingPokerChip() {
+        updatePokerChipBeanFromUIProperties();
         pokerChipCollection.update(pokerChipBean.getPokerChip());
+    }
+
+    private void updatePokerChipBeanFromUIProperties() {
+        pokerChipBean.yearProperty().set(yearTextField.textProperty().get());
+        pokerChipBean.cancelledProperty().set(cancelledToggleButton.selectedProperty().get());
+        pokerChipBean.rarityProperty().set(rarityComboBox.valueProperty().get());
+        pokerChipBean.colorProperty().set(colorComboBox.getEditor().textProperty().get());
+        pokerChipBean.moldProperty().set(moldComboBox.getEditor().textProperty().get());
+        pokerChipBean.insertsProperty().set(insertsTextField.textProperty().get());
+        pokerChipBean.inlayProperty().set(inlayComboBox.getEditor().textProperty().get());
+        pokerChipBean.conditionProperty().set(conditionComboBox.valueProperty().get());
+        pokerChipBean.categoryProperty().set(categoryComboBox.valueProperty().get());
+        pokerChipBean.dateOfAcquisitionProperty().set(dateOfAcquisitionDatePicker.valueProperty().get());
+        pokerChipBean.tcrIdProperty().set(tcrTextField.textProperty().get());
+        pokerChipBean.notesProperty().set(notesTextArea.textProperty().get());
+        pokerChipBean.denomProperty().set(denomComboBox.getEditor().textProperty().get());
+        pokerChipBean.obsoleteProperty().set(obsoleteToggleButton.selectedProperty().get());
+        pokerChipBean.issueProperty().set(issueTextField.textProperty().get());
+        //TODO:casino
+        pokerChipBean.getFrontImage().set(frontImageView.imageProperty().get());
+        pokerChipBean.getBackImage().set(backImageView.imageProperty().get());
     }
 
     private void createNewPokerChip() throws IOException {

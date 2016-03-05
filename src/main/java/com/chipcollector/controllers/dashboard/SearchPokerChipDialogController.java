@@ -1,9 +1,9 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.ScraperEngine;
+import com.chipcollector.spring.SpringFxmlLoader;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +27,7 @@ import static com.chipcollector.controllers.dashboard.MainWindowController.POKER
 import static com.chipcollector.util.EventUtils.isKeyboardEnterPressed;
 import static com.chipcollector.util.EventUtils.isMousePrimaryButtonPressed;
 import static java.util.Objects.nonNull;
+import static javafx.collections.FXCollections.observableArrayList;
 
 @Controller
 public class SearchPokerChipDialogController implements Initializable {
@@ -82,13 +83,13 @@ public class SearchPokerChipDialogController implements Initializable {
         if (nonNull(selectedCasino) && !selectedCasino.equals(currentlySelectedCasino)) {
             currentlySelectedCasino = selectedCasino;
             List<PokerChipBean> pokerChips = engine.searchPokerChip(selectedCasino);
-            pokerChipsTableView.setItems(FXCollections.observableArrayList(pokerChips));
+            pokerChipsTableView.setItems(observableArrayList(pokerChips));
         }
     }
 
     private void searchCasino() throws IOException {
         List<CasinoBean> casinoBeanList = engine.searchCasinos(searchTextField.getText());
-        casinosTableView.setItems(FXCollections.observableArrayList(casinoBeanList));
+        casinosTableView.setItems(observableArrayList(casinoBeanList));
     }
 
     @FXML
@@ -109,10 +110,7 @@ public class SearchPokerChipDialogController implements Initializable {
 
     private void openNewPokerChipDialog(Window owner, PokerChipBean selectedPokerChip) {
         springFxmlLoader.<PokerChipDialogController>showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION,
-                "Add new Poker Chip", owner, false, controller -> {
-                    controller.setPokerChipBean(selectedPokerChip);
-                    controller.update();
-                });
+                "Add new Poker Chip", owner, false, controller -> controller.setPokerChipBean(selectedPokerChip));
     }
 
     private boolean isMouseDoubleClicked(MouseEvent event) {

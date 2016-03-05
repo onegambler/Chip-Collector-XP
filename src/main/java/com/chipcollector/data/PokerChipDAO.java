@@ -5,6 +5,7 @@ import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Transactional;
 import com.chipcollector.domain.*;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -67,8 +68,9 @@ public class PokerChipDAO {
     }
 
     public List<String> getDistinctValueSet(String propertyName, Function<PokerChip, String> propertyGetter) {
+        final String whereClause = String.format("%s is not null and %s <> ''", propertyName, propertyName);
         return ebeanServer.find(PokerChip.class)
-                .select(propertyName)
+                .select(propertyName).where(whereClause)
                 .setDistinct(true)
                 .setUseCache(true)
                 .findSet()
@@ -83,8 +85,8 @@ public class PokerChipDAO {
         Set<Long> validIds = new HashSet<>();
         if (pokerChip.isImagesChanged()) {
             PokerChip oldPokerChip = getPokerChip(pokerChip.getId());
-            oldFrontImageId = oldPokerChip.getFrontImage().map(BlobImage::getId).orElse(-1l);
-            oldBackImageId = oldPokerChip.getBackImage().map(BlobImage::getId).orElse(-1l);
+            oldFrontImageId = oldPokerChip.getFrontImage().map(BlobImage::getId).orElse(-1L);
+            oldBackImageId = oldPokerChip.getBackImage().map(BlobImage::getId).orElse(-1L);
             pokerChip.getFrontImage().map(BlobImage::getId).ifPresent(validIds::add);
             pokerChip.getBackImage().map(BlobImage::getId).ifPresent(validIds::add);
         }
