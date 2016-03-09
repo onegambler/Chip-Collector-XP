@@ -1,4 +1,4 @@
-package com.chipcollector.views.util;
+package com.chipcollector.views.control;
 
 import com.chipcollector.util.MessagesHelper;
 import com.chipcollector.views.validation.Constraint;
@@ -18,9 +18,6 @@ public class ValidatableTextField extends TextField {
 
     @FXML
     private List<Constraint<String>> constraints;
-
-    @FXML
-    private String errorMessageKey;
 
     private final PopOver popOver = new PopOver();
     private final Label errorMessageLabel = new Label();
@@ -67,16 +64,12 @@ public class ValidatableTextField extends TextField {
                     .findFirst();
 
             if (notValidConstraint.isPresent()) {
-                errorMessageLabel.setText(MessagesHelper.getString(errorMessageKey));
+                errorMessageLabel.setText(MessagesHelper.getString(notValidConstraint.get().getValidationErrorMessageId()));
                 popOver.show(this);
                 return false;
             }
         }
 
         return true;
-    }
-
-    public void setErrorMessageKey(String errorMessageKey) {
-        this.errorMessageKey = errorMessageKey;
     }
 }

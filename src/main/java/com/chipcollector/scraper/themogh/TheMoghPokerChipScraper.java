@@ -6,12 +6,12 @@ import com.chipcollector.models.dashboard.PokerChipBean.PokerChipBeanBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
@@ -29,6 +29,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.stream.Collectors.toList;
 
+@Component
 public class TheMoghPokerChipScraper {
 
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -36,7 +37,7 @@ public class TheMoghPokerChipScraper {
     public List<PokerChipBean> searchItems(CasinoBean casinoBean) throws IOException {
         checkArgument(casinoBean instanceof TheMoghCasino, "CasinoBean it's not of the expected instance {}", TheMoghCasino.class.getSimpleName());
 
-        String casinoDetailsPageURL = WEBSITE_ROOT + ((TheMoghCasino) casinoBean).getDetailPageUrl();
+        String casinoDetailsPageURL = WEBSITE_HOST + ((TheMoghCasino) casinoBean).getDetailPageUrl();
 
         Elements pokerChipElementList = Jsoup.connect(casinoDetailsPageURL).get().select(POKER_CHIPS_QUERY);
 
@@ -177,8 +178,8 @@ public class TheMoghPokerChipScraper {
 
     private byte[] getImageFromUrl(String url) {
         requireNonNull(url, "Image url cannot be null");
-        if (!url.startsWith(WEBSITE_ROOT)) {
-            url = WEBSITE_ROOT + url;
+        if (!url.startsWith(WEBSITE_HOST)) {
+            url = WEBSITE_HOST + url;
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -195,7 +196,6 @@ public class TheMoghPokerChipScraper {
             return null;
         }
         return outputStream.toByteArray();
-        //TODO: improve image resize
     }
 
     private final Pattern HTML_TAG_PATTERN = Pattern.compile("<[^>]*>", DOTALL);
@@ -215,7 +215,7 @@ public class TheMoghPokerChipScraper {
     private final Pattern CASINO_STATUS_PATTERN = Pattern.compile("\\s*Status\\s*:\\s+");
 
     private static final String IMAGE_QUERY = "td.chippics img";
-    private static final String WEBSITE_ROOT = "http://www.themogh.org/";
+    private static final String WEBSITE_HOST = "http://www.themogh.org/";
     private static final String POKER_CHIPS_QUERY = "table.chips tr:has(td.chipinfo[valign=top])";
     private static final String CASINO_INFO_QUERY = "td.chipinfo";
     private static final String CASINO_WEBSITE_QUERY = "a[title=Link to Website]";

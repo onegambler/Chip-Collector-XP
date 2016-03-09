@@ -4,11 +4,12 @@ import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.ScraperEngine;
 import com.chipcollector.spring.SpringFxmlLoader;
-import javafx.collections.FXCollections;
+import com.chipcollector.util.MessagesHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -58,6 +59,8 @@ public class SearchPokerChipDialogController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        casinosTableView.setPlaceholder(new Label());
+        pokerChipsTableView.setPlaceholder(new Label());
     }
 
     @FXML
@@ -89,13 +92,18 @@ public class SearchPokerChipDialogController implements Initializable {
 
     private void searchCasino() throws IOException {
         List<CasinoBean> casinoBeanList = engine.searchCasinos(searchTextField.getText());
+        if (casinoBeanList.isEmpty()) {
+            casinosTableView.setPlaceholder(new Label(MessagesHelper.getString("search.table.noresults")));
+        }
         casinosTableView.setItems(observableArrayList(casinoBeanList));
     }
 
     @FXML
     public void onKeyPressed(KeyEvent event) throws IOException {
         if (isKeyboardEnterPressed(event)) {
+            searchTextField.setDisable(true);
             searchCasino();
+            searchTextField.setDisable(false);
         }
     }
 

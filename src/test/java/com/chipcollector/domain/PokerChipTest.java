@@ -3,8 +3,8 @@ package com.chipcollector.domain;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.Currency;
 
-import static com.chipcollector.domain.MoneyAmount.Currency.DOLLAR;
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -213,8 +213,8 @@ public class PokerChipTest {
     }
 
     private static final LocalDate TEST_ACQISITION_DATE = LocalDate.now();
-    private static final MoneyAmount TEST_AMOUNT_PAID = new MoneyAmount(DOLLAR, ONE);
-    private static final MoneyAmount TEST_VALUE = new MoneyAmount(DOLLAR, TEN);
+    private static final MoneyAmount TEST_AMOUNT_PAID = new MoneyAmount(MoneyAmount.Currency.DOLLAR, ONE);
+    private static final MoneyAmount TEST_VALUE = new MoneyAmount(MoneyAmount.Currency.EURO, TEN);
     private static final BlobImage TEST_FRONT_IMAGE = new BlobImage();
     private static final BlobImage TEST_BACK_IMAGE = new BlobImage();
     private static final boolean TEST_CANCELLED = false;

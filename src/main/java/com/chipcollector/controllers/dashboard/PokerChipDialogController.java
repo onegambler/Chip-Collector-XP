@@ -7,7 +7,10 @@ import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.util.ImageConverter;
-import com.chipcollector.views.util.AutoCompleteComboBoxListener;
+import com.chipcollector.views.control.AutoCompleteComboBoxListener;
+import com.chipcollector.views.control.moneyfield.MoneyField;
+import com.chipcollector.views.control.moneyfield.MoneyFilter;
+import com.chipcollector.views.control.moneyfield.MoneyStringConverter;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -16,7 +19,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.controlsfx.validation.ValidationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -33,8 +35,6 @@ import static javafx.collections.FXCollections.observableList;
 
 @Controller
 public class PokerChipDialogController implements Initializable {
-
-    private final ValidationSupport validationSupport = new ValidationSupport();
 
     @FXML
     public TextField yearTextField;
@@ -102,6 +102,9 @@ public class PokerChipDialogController implements Initializable {
         new AutoCompleteComboBoxListener<>(colorComboBox);
         new AutoCompleteComboBoxListener<>(moldComboBox);
         new AutoCompleteComboBoxListener<>(denomComboBox);
+
+        paidTextField.setTextFormatter(new TextFormatter<>(new MoneyStringConverter(), null, new MoneyFilter()));
+        valueTextField.setTextFormatter(new TextFormatter<>(new MoneyStringConverter(), null, new MoneyFilter()));
     }
 
     public void setPokerChipBean(PokerChipBean pokerChipBean) {

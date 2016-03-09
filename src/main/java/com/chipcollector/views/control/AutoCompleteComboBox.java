@@ -1,4 +1,4 @@
-package com.chipcollector.views.util;
+package com.chipcollector.views.control;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.collections.ObservableList;

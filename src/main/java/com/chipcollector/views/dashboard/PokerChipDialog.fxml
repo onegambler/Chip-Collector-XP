@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import com.chipcollector.views.util.ValidatableTextField?>
+<?import com.chipcollector.views.control.ValidatableTextField?>
 <?import com.chipcollector.views.validation.RegexConstraint?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import java.util.ArrayList?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0"
             prefWidth="620.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.chipcollector.controllers.dashboard.PokerChipDialogController">
@@ -119,10 +120,10 @@
                 <Label text="Issue" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <Label text="Year" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <TextField id="issueTextField" fx:id="issueTextField" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-                <ValidatableTextField fx:id="yearTextField" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                <ValidatableTextField fx:id="yearTextField" GridPane.columnIndex="4" GridPane.rowIndex="3" >
                     <constraints>
                         <ArrayList>
-                            <RegexConstraint regex="\\d+"/>
+                            <RegexConstraint regex="\\d+" validationErrorMessageId="validation.field.year"/>
                         </ArrayList>
                     </constraints>
                 </ValidatableTextField>
@@ -171,7 +172,7 @@
                           GridPane.rowIndex="9"/>
                 <Label text="TCR #" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.rowIndex="2"
                        GridPane.valignment="BOTTOM"/>
-                <TextField fx:id="valueTextField" GridPane.columnIndex="2" GridPane.columnSpan="4"
+                <TextField id="valueTextField" GridPane.columnIndex="2" GridPane.columnSpan="4"
                            GridPane.rowIndex="11"/>
                 <Label text="Date of Acquisition" GridPane.rowIndex="10" GridPane.valignment="BOTTOM"/>
                 <Label text="Notes" GridPane.rowIndex="12"/>
@@ -193,7 +194,7 @@
                 </VBox>
                 <Label text="Paid" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="10"/>
                 <TextField fx:id="paidTextField" GridPane.columnIndex="7" GridPane.columnSpan="2"
-                           GridPane.rowIndex="11"/>
+                           editable="true" GridPane.rowIndex="11"/>
             </children>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>

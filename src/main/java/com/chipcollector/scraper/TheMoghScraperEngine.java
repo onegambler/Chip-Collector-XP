@@ -4,6 +4,7 @@ import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.themogh.TheMoghCasinoScraper;
 import com.chipcollector.scraper.themogh.TheMoghPokerChipScraper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,9 +16,10 @@ public class TheMoghScraperEngine implements ScraperEngine {
     private TheMoghCasinoScraper casinoScraper;
     private TheMoghPokerChipScraper pokerChipScraper;
 
-    public TheMoghScraperEngine() {
-        casinoScraper = new TheMoghCasinoScraper();
-        pokerChipScraper = new TheMoghPokerChipScraper();
+    @Autowired
+    public TheMoghScraperEngine(TheMoghCasinoScraper casinoScraper, TheMoghPokerChipScraper pokerChipScraper) {
+        this.casinoScraper = casinoScraper;
+        this.pokerChipScraper = pokerChipScraper;
     }
 
     @Override

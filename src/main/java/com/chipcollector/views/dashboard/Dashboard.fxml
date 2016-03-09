@@ -75,9 +75,9 @@
         </HBox>
         <HBox alignment="BOTTOM_CENTER" spacing="10" VBox.vgrow="ALWAYS">
             <children>
-                <Button id="showAllButton" contentDisplay="TOP" onMouseClicked="#onViewAllButtonPressed" prefHeight="150.0" prefWidth="150.0" text="View All" />
-                <Button id="searchButton" contentDisplay="TOP" prefHeight="150.0" prefWidth="150.0" />
-                <Button id="addNewButton" contentDisplay="TOP" onMouseClicked="#onAddButtonPressed" prefHeight="150.0" prefWidth="150.0" text="Add" />
+                <Button id="showAllButton" contentDisplay="TOP" onMouseClicked="#onViewAllButtonPressed" prefHeight="150.0" prefWidth="150.0" text="%dashboard.button.viewAll" />
+                <Button id="searchButton" contentDisplay="TOP" prefHeight="150.0" prefWidth="150.0" text="%dashboard.button.search"/>
+                <Button id="addNewButton" contentDisplay="TOP" onMouseClicked="#onAddButtonPressed" prefHeight="150.0" prefWidth="150.0" text="%dashboard.button.add" />
             <MenuButton id="addNewMenuButton" contentDisplay="TOP" popupSide="TOP" prefHeight="150.0" prefWidth="150.0" text="Add New">
               <items>
                 <MenuItem text="Manually add new Poker Chip" />

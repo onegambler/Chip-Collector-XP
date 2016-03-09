@@ -10,6 +10,15 @@ public class TheMoghCasino extends CasinoBean {
 
     private StringProperty detailPageUrl = new SimpleStringProperty();
 
+    private TheMoghCasino(TheMoghCasinoBuilder builder) {
+        setName(builder.name);
+        setDetailPageUrl(builder.detailPageUrl);
+        setWebsite(builder.websiteUrl);
+        setCity(builder.city);
+        setState(builder.state);
+        setCountry(builder.country);
+    }
+
     public void setDetailPageUrl(String detailPageUrl) {
         this.detailPageUrl.setValue(detailPageUrl);
     }
@@ -18,7 +27,7 @@ public class TheMoghCasino extends CasinoBean {
         return detailPageUrl.get();
     }
 
-    public static TheMoghCasinoBuilder moghCasinoBuilder() {
+    public static TheMoghCasinoBuilder build() {
         return new TheMoghCasinoBuilder();
     }
 
@@ -61,19 +70,12 @@ public class TheMoghCasino extends CasinoBean {
         }
 
         public TheMoghCasino build() {
-            requireNonNull(name);
-            requireNonNull(detailPageUrl);
-            requireNonNull(websiteUrl);
-            requireNonNull(city);
-            requireNonNull(country);
-
-            TheMoghCasino theMoghCasino = new TheMoghCasino();
-            theMoghCasino.setName(name);
-            theMoghCasino.setDetailPageUrl(detailPageUrl);
-            theMoghCasino.setWebsite(websiteUrl);
-            theMoghCasino.setCity(city);
-            theMoghCasino.setState(state);
-            theMoghCasino.setCountry(country);
+            TheMoghCasino theMoghCasino = new TheMoghCasino(this);
+            requireNonNull(theMoghCasino.getName());
+            requireNonNull(theMoghCasino.getDetailPageUrl());
+            requireNonNull(theMoghCasino.getWebsite());
+            requireNonNull(theMoghCasino.getCity());
+            requireNonNull(theMoghCasino.getCountry());
             return theMoghCasino;
         }
     }

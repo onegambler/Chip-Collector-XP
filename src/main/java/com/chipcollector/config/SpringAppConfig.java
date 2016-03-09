@@ -17,12 +17,12 @@ import static java.lang.String.format;
 public class SpringAppConfig {
 
     @Autowired
-    private ApplicationProperties appSettings;
+    private ApplicationProperties applicationProperties;
 
     @Bean
     public EbeanServer ebeanServer() {
         ServerConfig serverConfig = serverConfig();
-        appSettings.getLastUsedDatabase()
+        applicationProperties.getLastUsedDatabase()
                 .ifPresent(lastUsedDatabase ->
                         serverConfig.getDataSourceConfig().setUrl(format("jdbc:sqlite:%s", lastUsedDatabase)));
 
