@@ -5,7 +5,6 @@ import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Transactional;
 import com.chipcollector.domain.*;
-import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -141,10 +140,6 @@ public class PokerChipDAO {
         return ebeanServer.createQuery(PokerChip.class);
     }
 
-    public void createDB() {
-
-    }
-
     public LocationFinder getLocationFinder() {
         return new LocationFinder();
     }
@@ -204,5 +199,17 @@ public class PokerChipDAO {
             Location uniqueLocation = ebeanServer.findUnique(query.query(), ebeanServer.currentTransaction());
             return ofNullable(uniqueLocation);
         }
+    }
+
+    public Optional<String> getCurrencySymbolFromCode(String code) {
+
+        final Country currencyCode = ebeanServer.createQuery(Country.class)
+                .setUseCache(true)
+                .setUseQueryCache(true)
+                .where().eq("currencyCode", code)
+                .findUnique();
+
+        return Optional.ofNullable(currencyCode)
+                .map(Country::getCurrencySymbol);
     }
 }

@@ -3,7 +3,6 @@ package com.chipcollector.domain;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.Currency;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
@@ -198,8 +197,8 @@ public class PokerChipTest {
     public void whenSetValueThenUpdateValueAndSetDirty() {
         PokerChip pokerChip = PokerChip.builder().build();
         assertThat(pokerChip.isDirty()).isFalse();
-        pokerChip.setValue(TEST_VALUE);
-        assertThat(pokerChip.getValue()).isEqualTo(TEST_VALUE);
+        pokerChip.setAmountValue(TEST_VALUE);
+        assertThat(pokerChip.getAmountValue()).isEqualTo(TEST_VALUE);
         assertThat(pokerChip.isDirty()).isTrue();
     }
 

@@ -9,14 +9,14 @@ import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
 
+import static com.chipcollector.domain.MoneyAmount.Currency.DOLLAR;
+import static java.math.BigDecimal.ONE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Ignore
@@ -153,7 +153,7 @@ public class PokerChipDAOTest {
 
         return PokerChip.builder()
                 .acquisitionDate(LocalDate.now())
-                .amountPaid(new MoneyAmount(MoneyAmount.Currency.DOLLAR, new BigDecimal(3)))
+                .amountPaid(new MoneyAmount(DOLLAR, ONE))
                 .tcrID("tcr_" + tcrIdSequence++)
                 .casino(casino);
     }

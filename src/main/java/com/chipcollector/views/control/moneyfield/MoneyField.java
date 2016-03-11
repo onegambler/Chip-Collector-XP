@@ -53,7 +53,7 @@ import java.math.BigDecimal;
  * create a simple MoneyField and explicitly set its value.</p>
  * <pre><code>
  *     MoneyField field = new MoneyField();
- *     field.setValue(new BigDecimal(100));
+ *     field.setAmountValue(new BigDecimal(100));
  * </code></pre>
  * <p>
  * <h3>Bidirectionally Binding With A Data Model</h3>

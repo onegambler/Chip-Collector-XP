@@ -1,5 +1,6 @@
 package com.chipcollector.domain;
 
+import com.avaje.ebean.annotation.EmbeddedColumns;
 import lombok.*;
 
 import javax.persistence.*;
@@ -64,7 +65,11 @@ public class PokerChip {
     @Column
     private String notes;
 
-    private MoneyAmount value;
+    @Embedded
+    @EmbeddedColumns(columns = "currency=valueCurrency, amount=value")
+    private MoneyAmount amountValue;
+    @Embedded
+    @EmbeddedColumns(columns = "currency=paidCurrency, amount=paid")
     private MoneyAmount amountPaid;
 
     @Getter(NONE)
@@ -150,8 +155,8 @@ public class PokerChip {
         this.notes = updateDirty(this.notes, notes);
     }
 
-    public void setValue(MoneyAmount value) {
-        this.value = updateDirty(this.value, value);
+    public void setAmountValue(MoneyAmount amountValue) {
+        this.amountValue = updateDirty(this.amountValue, amountValue);
     }
 
     public void setAmountPaid(MoneyAmount amountPaid) {

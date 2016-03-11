@@ -8,7 +8,6 @@ import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.util.ImageConverter;
 import com.chipcollector.views.control.AutoCompleteComboBoxListener;
-import com.chipcollector.views.control.moneyfield.MoneyField;
 import com.chipcollector.views.control.moneyfield.MoneyFilter;
 import com.chipcollector.views.control.moneyfield.MoneyStringConverter;
 import javafx.event.ActionEvent;
@@ -30,6 +29,7 @@ import java.util.ResourceBundle;
 
 import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
 import static com.chipcollector.util.ImageConverter.resizeImage;
+import static java.util.Optional.ofNullable;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.collections.FXCollections.observableList;
 
@@ -133,8 +133,8 @@ public class PokerChipDialogController implements Initializable {
         backImageView.imageProperty().set(pokerChipBean.getBackImage().get());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
         //TODO:
-        //ofNullable(pokerChipBean.getValue()).map(BigDecimal::toString).ifPresent(valueTextField::setText);
-        //ofNullable(pokerChipBean.getPaid()).map(BigDecimal::toString).ifPresent(paidTextField::setText);
+        ofNullable(pokerChipBean.valueProperty().get()).map(MoneyAmount::toString).ifPresent(valueTextField::setText);
+        ofNullable(pokerChipBean.paidProperty().get()).map(MoneyAmount::toString).ifPresent(paidTextField::setText);
         Optional<Country> country = pokerChipCollection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
         country.ifPresent(value -> {
             casinoCountryFlag.setImage(value.getFlagImage());
@@ -180,7 +180,8 @@ public class PokerChipDialogController implements Initializable {
         pokerChipBean.denomProperty().set(denomComboBox.getEditor().textProperty().get());
         pokerChipBean.obsoleteProperty().set(obsoleteToggleButton.selectedProperty().get());
         pokerChipBean.issueProperty().set(issueTextField.textProperty().get());
-        //TODO:casino
+        pokerChipBean.valueProperty().set(MoneyAmount.parse(valueTextField.getText()));
+        pokerChipBean.paidProperty().set(MoneyAmount.parse(paidTextField.getText()));
         pokerChipBean.getFrontImage().set(frontImageView.imageProperty().get());
         pokerChipBean.getBackImage().set(backImageView.imageProperty().get());
     }
@@ -194,23 +195,23 @@ public class PokerChipDialogController implements Initializable {
         });
 
         PokerChipBuilder pokerChipBuilder = PokerChip.builder()
-                .category(categoryComboBox.getValue())
+                .category(categoryComboBox.getEditor().getText())
                 .acquisitionDate(dateOfAcquisitionDatePicker.getValue())
-                .color(colorComboBox.getValue())
-                .condition(conditionComboBox.getValue())
-                .denom(denomComboBox.getValue())
+                .color(colorComboBox.getEditor().getText())
+                .condition(conditionComboBox.getEditor().getText())
+                .denom(denomComboBox.getEditor().getText())
                 .inserts(insertsTextField.getText())
-                .mold(moldComboBox.getValue())
+                .mold(moldComboBox.getEditor().getText())
                 .notes(notesTextArea.getText())
                 .obsolete(obsoleteToggleButton.isSelected())
-                .rarity(rarityComboBox.getValue())
+                .rarity(rarityComboBox.getEditor().getText())
                 .tcrID(tcrTextField.getText())
                 .year(yearTextField.getText())
                 .issue(issueTextField.getText())
-                //TODO: amounts
-                //.amountPaid(paidTextField.getText())
-                //.value()
                 .casino(casino);
+
+        pokerChipBuilder.amountPaid(MoneyAmount.parse(paidTextField.getText()));
+        pokerChipBuilder.amountValue(MoneyAmount.parse(valueTextField.getText()));
 
         Image frontImage = frontImageView.getImage();
         BlobImage frontBlobImage = null;

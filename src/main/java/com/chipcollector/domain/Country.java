@@ -31,6 +31,12 @@ public final class Country {
     @Column
     private String name;
 
+    @Column(name = "currency_code")
+    private String currencyCode;
+
+    @Column(name = "currrency_symbol")
+    private String currencySymbol;
+
     @Column(name = "FLAG_IMAGE")
     private String flagImageName;
 

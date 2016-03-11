@@ -37,6 +37,8 @@
         <jsoup.version>1.8.3</jsoup.version>
         <spring.version>4.2.2.RELEASE</spring.version>
         <flyway.version>3.2.1</flyway.version>
+        <money-api.version>1.0.1</money-api.version>
+        <moneta.version>1.0</moneta.version>
     </properties>
 
     <dependencies>
@@ -118,6 +120,16 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.money</groupId>
+            <artifactId>money-api</artifactId>
+            <version>${money-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javamoney</groupId>
+            <artifactId>moneta</artifactId>
+            <version>${moneta.version}</version>
         </dependency>
     </dependencies>
     <build>

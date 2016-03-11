@@ -1,7 +1,8 @@
 package com.chipcollector.models.dashboard;
 
+import com.chipcollector.domain.MoneyAmount;
 import com.chipcollector.domain.PokerChip;
-import com.chipcollector.models.core.BigDecimalProperty;
+import com.chipcollector.models.core.MoneyAmountProperty;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -12,14 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.math.BigDecimal.ZERO;
 import static java.util.Objects.*;
 
 @Slf4j
@@ -42,8 +41,8 @@ public class PokerChipBean {
     private StringProperty rarityProperty;
     private StringProperty conditionProperty;
     private StringProperty categoryProperty;
-    private BigDecimalProperty valueProperty;
-    private BigDecimalProperty paidProperty;
+    private MoneyAmountProperty valueProperty;
+    private MoneyAmountProperty paidProperty;
     private SimpleObjectProperty<LocalDate> dateOfAcquisitionProperty;
     private StringProperty notesProperty;
     private StringProperty issueProperty;
@@ -75,9 +74,8 @@ public class PokerChipBean {
         issueProperty = new SimpleStringProperty(String.valueOf(pokerChip.getIssue()));
         frontImageThumbnailView = new ImageView();
         backImageThumbnailView = new ImageView();
-        //TODO: values and paidProperty
-        valueProperty = new BigDecimalProperty(ZERO);
-        paidProperty = new BigDecimalProperty(ZERO);
+        valueProperty = new MoneyAmountProperty();
+        paidProperty = new MoneyAmountProperty();
 
         pokerChip.getFrontImage().ifPresent(frontBlobImage ->
         {
@@ -110,9 +108,8 @@ public class PokerChipBean {
         categoryProperty = new SimpleStringProperty(builder.category);
         rarityProperty = new SimpleStringProperty(builder.rarity);
         dateOfAcquisitionProperty = new SimpleObjectProperty<>(builder.dateOfAcquisition);
-        //TODO: VALUE PROPERTY
-        valueProperty = new BigDecimalProperty(builder.value);
-        paidProperty = new BigDecimalProperty(builder.paid);
+        valueProperty = new MoneyAmountProperty(builder.value);
+        paidProperty = new MoneyAmountProperty(builder.paid);
         issueProperty = new SimpleStringProperty(builder.issue);
         notesProperty = new SimpleStringProperty(builder.notes);
         frontImageThumbnailView = new ImageView();
@@ -136,8 +133,8 @@ public class PokerChipBean {
         addPropertyListener(obsoleteProperty, pokerChip::setObsolete);
         addPropertyListener(conditionProperty, pokerChip::setCondition);
         addPropertyListener(rarityProperty, pokerChip::setRarity);
-        addPropertyListener(valueProperty, bigDecimal -> pokerChip.getValue().setAmount(bigDecimal));
-        addPropertyListener(paidProperty, bigDecimal -> pokerChip.getAmountPaid().setAmount(bigDecimal));
+        addPropertyListener(valueProperty, pokerChip::setAmountValue);
+        addPropertyListener(paidProperty, pokerChip::setAmountPaid);
         addPropertyListener(issueProperty, pokerChip::setIssue);
         addPropertyListener(notesProperty, pokerChip::setNotes);
         addPropertyListener(dateOfAcquisitionProperty, pokerChip::setAcquisitionDate);
@@ -265,12 +262,12 @@ public class PokerChipBean {
         return categoryProperty;
     }
 
-    public BigDecimal getValue() {
-        return valueProperty.get();
+    public MoneyAmountProperty valueProperty() {
+        return valueProperty;
     }
 
-    public BigDecimal getPaid() {
-        return paidProperty.get();
+    public MoneyAmountProperty paidProperty() {
+        return paidProperty;
     }
 
     public SimpleObjectProperty<LocalDate> dateOfAcquisitionProperty() {
@@ -309,8 +306,8 @@ public class PokerChipBean {
         private byte[] backImage;
         private boolean obsolete;
         private boolean cancelled;
-        private BigDecimal value;
-        private BigDecimal paid;
+        private MoneyAmount value;
+        private MoneyAmount paid;
         private LocalDate dateOfAcquisition;
         private String issue;
         private String notes;
@@ -400,12 +397,12 @@ public class PokerChipBean {
             return this;
         }
 
-        public PokerChipBeanBuilder value(BigDecimal value) {
+        public PokerChipBeanBuilder value(MoneyAmount value) {
             this.value = value;
             return this;
         }
 
-        public PokerChipBeanBuilder paid(BigDecimal paid) {
+        public PokerChipBeanBuilder paid(MoneyAmount paid) {
             this.paid = paid;
             return this;
         }

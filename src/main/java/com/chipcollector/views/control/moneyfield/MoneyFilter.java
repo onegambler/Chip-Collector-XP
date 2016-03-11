@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 public class MoneyFilter implements UnaryOperator<TextFormatter.Change> {
 
-//    private static final Pattern AMOUNT_PATTERN = Pattern.compile("^(\\$|)?([1-9]\\d{0,2}(,\\d{3})*|([1-9]\\d*))(\\.\\d{2})?$");
     private static final Pattern AMOUNT_PATTERN = Pattern.compile("(\\$|€|£|\\d|\\s)\\s*(\\d|,|.)*");
 
     @Override
