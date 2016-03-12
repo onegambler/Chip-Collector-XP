@@ -44,9 +44,25 @@ public class MoneyAmountTest {
     @Test
     public void parseThrowAnExceptionIfAmountCanNotBeParsed() {
         Locale.setDefault(Locale.US);
-        assertThatThrownBy(() -> MoneyAmount.parse("5,,678.22"))
+        assertThatThrownBy(() -> MoneyAmount.parse("56A78.22"))
                 .isInstanceOf(ParseException.class)
                 .hasMessage("Impossible to parse amount");
+    }
+
+    @Test
+    public void parseThrowAnExceptionIfAmountCanNotBeParsed_2() {
+        Locale.setDefault(Locale.US);
+        assertThatThrownBy(() -> MoneyAmount.parse("5678.22,"))
+                .isInstanceOf(ParseException.class)
+                .hasMessage("Impossible to parse amount");
+    }
+
+    @Test
+    public void whenTooManySeparationMarksArePresentParseAnyway() {
+        Locale.setDefault(Locale.US);
+        final MoneyAmount moneyAmount = MoneyAmount.parse("£ 5,,678.22");
+        assertThat(moneyAmount.getAmount()).isEqualTo(new BigDecimal("5678.22"));
+        assertThat(moneyAmount.getCurrency()).isEqualTo(Currency.POUND);
     }
 
     @Test

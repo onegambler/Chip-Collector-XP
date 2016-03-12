@@ -2,6 +2,7 @@ package com.chipcollector.models.dashboard;
 
 import com.chipcollector.domain.MoneyAmount;
 import com.chipcollector.domain.PokerChip;
+import com.chipcollector.domain.Rarity;
 import com.chipcollector.models.core.MoneyAmountProperty;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -38,7 +39,7 @@ public class PokerChipBean {
     private ImageView backImageThumbnailView;
     private BooleanProperty obsoleteProperty;
     private BooleanProperty cancelledProperty;
-    private StringProperty rarityProperty;
+    private SimpleObjectProperty<Rarity> rarityProperty;
     private StringProperty conditionProperty;
     private StringProperty categoryProperty;
     private MoneyAmountProperty valueProperty;
@@ -66,7 +67,7 @@ public class PokerChipBean {
         tcrIdProperty = new SimpleStringProperty(pokerChip.getTcrID());
         obsoleteProperty = new SimpleBooleanProperty(pokerChip.isObsolete());
         cancelledProperty = new SimpleBooleanProperty(pokerChip.isCancelled());
-        rarityProperty = new SimpleStringProperty(pokerChip.getRarity());
+        rarityProperty = new SimpleObjectProperty<>(pokerChip.getRarity());
         conditionProperty = new SimpleStringProperty(pokerChip.getCondition());
         categoryProperty = new SimpleStringProperty(pokerChip.getCategory());
         notesProperty = new SimpleStringProperty(pokerChip.getNotes());
@@ -106,7 +107,7 @@ public class PokerChipBean {
         cancelledProperty = new SimpleBooleanProperty(builder.cancelled);
         conditionProperty = new SimpleStringProperty(builder.condition);
         categoryProperty = new SimpleStringProperty(builder.category);
-        rarityProperty = new SimpleStringProperty(builder.rarity);
+        rarityProperty = new SimpleObjectProperty<>(builder.rarity);
         dateOfAcquisitionProperty = new SimpleObjectProperty<>(builder.dateOfAcquisition);
         valueProperty = new MoneyAmountProperty(builder.value);
         paidProperty = new MoneyAmountProperty(builder.paid);
@@ -217,7 +218,7 @@ public class PokerChipBean {
         return obsoleteProperty;
     }
 
-    public StringProperty rarityProperty() {
+    public SimpleObjectProperty<Rarity> rarityProperty() {
         return rarityProperty;
     }
 
@@ -301,7 +302,7 @@ public class PokerChipBean {
         private String year;
         private String category;
         private String condition;
-        private String rarity;
+        private Rarity rarity;
         private byte[] frontImage;
         private byte[] backImage;
         private boolean obsolete;
@@ -382,7 +383,7 @@ public class PokerChipBean {
             return this;
         }
 
-        public PokerChipBeanBuilder rarity(String rarity) {
+        public PokerChipBeanBuilder rarity(Rarity rarity) {
             this.rarity = rarity;
             return this;
         }

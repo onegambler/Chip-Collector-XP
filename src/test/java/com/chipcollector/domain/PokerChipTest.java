@@ -233,7 +233,7 @@ public class PokerChipTest {
                 .mold("old_".concat(TEST_MOLD))
                 .notes("old_".concat(TEST_NOTES))
                 .obsolete(!TEST_OBSOLETE)
-                .rarity("old_".concat(TEST_RARITY))
+                .rarity(Rarity.R_2)
                 .tcrID("old_".concat(TEST_TCRID))
                 .year("old_".concat(TEST_YEAR))
                 .build();
@@ -257,7 +257,7 @@ public class PokerChipTest {
     public static final String TEST_ISSUE = "issue";
     public static final String TEST_MOLD = "mold";
     public static final String TEST_NOTES = "notes";
-    public static final String TEST_RARITY = "rarity";
+    public static final Rarity TEST_RARITY = Rarity.R_1;
     public static final String TEST_TCRID = "tcrid";
     public static final String TEST_YEAR = "1990";
 

@@ -59,5 +59,5 @@ public class MoneyAmount {
         FORMATTER.setParseBigDecimal(true);
     }
 
-    private static final Pattern CURRENCY_PATTERN = Pattern.compile("^\\D\\s*");
+    private static final Pattern CURRENCY_PATTERN = Pattern.compile("^\\W\\s*");
 }

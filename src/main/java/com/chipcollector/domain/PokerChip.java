@@ -51,7 +51,7 @@ public class PokerChip {
     private String inlay;
 
     @Column
-    private String rarity;
+    private Rarity rarity;
 
     @Column
     private String condition;
@@ -135,7 +135,7 @@ public class PokerChip {
         this.inlay = updateDirty(this.inlay, inlay);
     }
 
-    public void setRarity(String rarity) {
+    public void setRarity(Rarity rarity) {
         this.rarity = updateDirty(this.rarity, rarity);
     }
 

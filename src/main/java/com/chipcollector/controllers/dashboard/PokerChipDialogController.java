@@ -52,7 +52,7 @@ public class PokerChipDialogController implements Initializable {
     @FXML
     public ComboBox<String> categoryComboBox;
     @FXML
-    public ComboBox<String> rarityComboBox;
+    public ComboBox<Rarity> rarityComboBox;
     @FXML
     public TextField valueTextField;
     @FXML
@@ -91,7 +91,7 @@ public class PokerChipDialogController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        rarityComboBox.setItems(observableArrayList(RARITY_VALUES));
+        rarityComboBox.setItems(observableArrayList(Rarity.values()));
         categoryComboBox.setItems(observableArrayList(CATEGORY_VALUES));
         conditionComboBox.setItems(observableArrayList(CONDITION_VALUES));
 
@@ -209,7 +209,7 @@ public class PokerChipDialogController implements Initializable {
                 .mold(moldComboBox.getEditor().getText())
                 .notes(notesTextArea.getText())
                 .obsolete(obsoleteToggleButton.isSelected())
-                .rarity(rarityComboBox.getEditor().getText())
+                .rarity(rarityComboBox.getValue())
                 .tcrID(tcrTextField.getText())
                 .year(yearTextField.getText())
                 .issue(issueTextField.getText())
@@ -272,7 +272,6 @@ public class PokerChipDialogController implements Initializable {
     }
 
     public static final String PNG_FORMAT = "png";
-    private static final String[] RARITY_VALUES = new String[]{"R-1", "R-2", "R-3", "R-4", "R-5", "R-6", "R-7", "R-8", "R-9", "R-10", "Unknown"};
     public static String[] CONDITION_VALUES = new String[]{"Uncirculated", "Slightly Used", "Average", "Well Used", "Poor", "Cancelled"};
     public static String[] CATEGORY_VALUES = new String[]{"Baccarat", "Error", "Faro", "Free Play", "Match Play", "No Cash Value", "No Denomination", "Non-Negotiable", "Poker", "Roulette", "Race and Sport"};
 
