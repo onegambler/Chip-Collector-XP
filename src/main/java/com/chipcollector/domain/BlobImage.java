@@ -26,6 +26,13 @@ public class BlobImage {
     @Basic(optional = false, fetch = EAGER)
     private byte[] thumbnail;
 
+    public BlobImage() {
+    }
+
+    BlobImage(long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -195,7 +195,7 @@ public class PokerChip {
     }
 
     private <T> T updateDirty(T oldValue, T newValue) {
-        dirty = nonNull(oldValue) ? oldValue.equals(newValue) : nonNull(newValue);
+        dirty = nonNull(oldValue) ? !oldValue.equals(newValue) : nonNull(newValue);
         return newValue;
     }
 

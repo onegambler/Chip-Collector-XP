@@ -74,8 +74,8 @@ public class PokerChipBean {
         issueProperty = new SimpleStringProperty(String.valueOf(pokerChip.getIssue()));
         frontImageThumbnailView = new ImageView();
         backImageThumbnailView = new ImageView();
-        valueProperty = new MoneyAmountProperty();
-        paidProperty = new MoneyAmountProperty();
+        valueProperty = new MoneyAmountProperty(pokerChip.getAmountValue());
+        paidProperty = new MoneyAmountProperty(pokerChip.getAmountPaid());
 
         pokerChip.getFrontImage().ifPresent(frontBlobImage ->
         {

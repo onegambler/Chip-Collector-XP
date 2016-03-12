@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.chipcollector.domain.MoneyAmount.Currency.DOLLAR;
+import static com.chipcollector.domain.Currency.DOLLAR;
 import static java.math.BigDecimal.ONE;
 import static org.assertj.core.api.Assertions.assertThat;
 

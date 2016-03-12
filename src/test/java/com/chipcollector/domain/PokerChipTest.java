@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
+import static com.chipcollector.domain.Currency.DOLLAR;
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,23 +13,24 @@ public class PokerChipTest {
 
     @Test
     public void whenResetDirtyIsInvokedThenDirtyIsSetToFalse() {
-        PokerChip pokerChip = PokerChip.builder().dirty(true).build();
+        PokerChip pokerChip = buildTestInstance();
+        pokerChip.setCancelled(true);
         pokerChip.resetDirty();
         assertThat(pokerChip.isDirty()).isFalse();
     }
 
     @Test
     public void whenSetAcquisitionDateThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
-        pokerChip.setAcquisitionDate(TEST_ACQISITION_DATE);
-        assertThat(pokerChip.getAcquisitionDate()).isEqualTo(TEST_ACQISITION_DATE);
+        pokerChip.setAcquisitionDate(TEST_ACQUISITION_DATE);
+        assertThat(pokerChip.getAcquisitionDate()).isEqualTo(TEST_ACQUISITION_DATE);
         assertThat(pokerChip.isDirty()).isTrue();
     }
 
     @Test
     public void whenSetAmountPaidThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setAmountPaid(TEST_AMOUNT_PAID);
         assertThat(pokerChip.getAmountPaid()).isEqualTo(TEST_AMOUNT_PAID);
@@ -37,7 +39,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetBackImageThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         assertThat(pokerChip.isImagesChanged()).isFalse();
         pokerChip.setBackImage(TEST_BACK_IMAGE);
@@ -50,7 +52,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetCancelledThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setCancelled(TEST_CANCELLED);
         assertThat(pokerChip.isCancelled()).isEqualTo(TEST_CANCELLED);
@@ -59,7 +61,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetCasinoThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setCasino(TEST_CASINO);
         assertThat(pokerChip.getCasino()).isEqualTo(TEST_CASINO);
@@ -68,7 +70,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetCategoryThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setCategory(TEST_CATEGORY);
         assertThat(pokerChip.getCategory()).isEqualTo(TEST_CATEGORY);
@@ -77,7 +79,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetColorThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setColor(TEST_COLOR);
         assertThat(pokerChip.getColor()).isEqualTo(TEST_COLOR);
@@ -86,7 +88,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetConditionThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setCondition(TEST_CONDITION);
         assertThat(pokerChip.getCondition()).isEqualTo(TEST_CONDITION);
@@ -95,7 +97,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetDenomThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setDenom(TEST_DENOM);
         assertThat(pokerChip.getDenom()).isEqualTo(TEST_DENOM);
@@ -104,7 +106,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetFrontImageThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setFrontImage(TEST_FRONT_IMAGE);
         assertThat(pokerChip.getFrontImage()).isPresent()
@@ -114,7 +116,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetIdThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setId(TEST_ID);
         assertThat(pokerChip.getId()).isEqualTo(TEST_ID);
@@ -123,7 +125,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetInlayThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setInlay(TEST_INLAY);
         assertThat(pokerChip.getInlay()).isEqualTo(TEST_INLAY);
@@ -132,7 +134,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetInsertsThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setInserts(TEST_INSERTS);
         assertThat(pokerChip.getInserts()).isEqualTo(TEST_INSERTS);
@@ -141,7 +143,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetIssueThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setIssue(TEST_ISSUE);
         assertThat(pokerChip.getIssue()).isEqualTo(TEST_ISSUE);
@@ -150,7 +152,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetMoldThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setMold(TEST_MOLD);
         assertThat(pokerChip.getMold()).isEqualTo(TEST_MOLD);
@@ -159,7 +161,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetNotesThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setNotes(TEST_NOTES);
         assertThat(pokerChip.getNotes()).isEqualTo(TEST_NOTES);
@@ -168,7 +170,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetObsoleteThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setObsolete(TEST_OBSOLETE);
         assertThat(pokerChip.isObsolete()).isEqualTo(TEST_OBSOLETE);
@@ -177,7 +179,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetRarityThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setRarity(TEST_RARITY);
         assertThat(pokerChip.getRarity()).isEqualTo(TEST_RARITY);
@@ -186,7 +188,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetTcrIdThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setTcrID(TEST_TCRID);
         assertThat(pokerChip.getTcrID()).isEqualTo(TEST_TCRID);
@@ -195,7 +197,7 @@ public class PokerChipTest {
 
     @Test
     public void whenSetValueThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setAmountValue(TEST_VALUE);
         assertThat(pokerChip.getAmountValue()).isEqualTo(TEST_VALUE);
@@ -204,20 +206,46 @@ public class PokerChipTest {
 
     @Test
     public void whenSetYearThenUpdateValueAndSetDirty() {
-        PokerChip pokerChip = PokerChip.builder().build();
+        PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setYear(TEST_YEAR);
         assertThat(pokerChip.getYear()).isEqualTo(TEST_YEAR);
         assertThat(pokerChip.isDirty()).isTrue();
     }
 
-    private static final LocalDate TEST_ACQISITION_DATE = LocalDate.now();
-    private static final MoneyAmount TEST_AMOUNT_PAID = new MoneyAmount(MoneyAmount.Currency.DOLLAR, ONE);
-    private static final MoneyAmount TEST_VALUE = new MoneyAmount(MoneyAmount.Currency.EURO, TEN);
+    private PokerChip buildTestInstance() {
+        return PokerChip.builder()
+                .acquisitionDate(LocalDate.MIN)
+                .amountPaid(new MoneyAmount(DOLLAR, TEN))
+                .amountValue(new MoneyAmount(DOLLAR, TEN))
+                .backImage(new BlobImage(5L))
+                .frontImage(new BlobImage(6L))
+                .cancelled(!TEST_CANCELLED)
+                .casino(Casino.builder().name("test").build())
+                .category("old_".concat(TEST_CATEGORY))
+                .color("old_".concat(TEST_COLOR))
+                .condition("old_".concat(TEST_CONDITION))
+                .denom("old_".concat(TEST_DENOM))
+                .id(-1L)
+                .inlay("old_".concat(TEST_INLAY))
+                .inserts("old_".concat(TEST_INSERTS))
+                .issue("old_".concat(TEST_ISSUE))
+                .mold("old_".concat(TEST_MOLD))
+                .notes("old_".concat(TEST_NOTES))
+                .obsolete(!TEST_OBSOLETE)
+                .rarity("old_".concat(TEST_RARITY))
+                .tcrID("old_".concat(TEST_TCRID))
+                .year("old_".concat(TEST_YEAR))
+                .build();
+    }
+
+    private static final LocalDate TEST_ACQUISITION_DATE = LocalDate.now();
+    private static final MoneyAmount TEST_AMOUNT_PAID = new MoneyAmount(DOLLAR, ONE);
+    private static final MoneyAmount TEST_VALUE = new MoneyAmount(Currency.EURO, TEN);
     private static final BlobImage TEST_FRONT_IMAGE = new BlobImage();
     private static final BlobImage TEST_BACK_IMAGE = new BlobImage();
-    private static final boolean TEST_CANCELLED = false;
-    private static final boolean TEST_OBSOLETE = false;
+    private static final boolean TEST_CANCELLED = true;
+    private static final boolean TEST_OBSOLETE = true;
     private static final Casino TEST_CASINO = Casino.builder().build();
     private static final String TEST_CATEGORY = "category";
     private static final String TEST_COLOR = "color";

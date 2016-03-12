@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 
 import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
 import static com.chipcollector.util.ImageConverter.resizeImage;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.Optional.ofNullable;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.collections.FXCollections.observableList;
@@ -132,7 +133,6 @@ public class PokerChipDialogController implements Initializable {
         frontImageView.imageProperty().set(pokerChipBean.getFrontImage().get());
         backImageView.imageProperty().set(pokerChipBean.getBackImage().get());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
-        //TODO:
         ofNullable(pokerChipBean.valueProperty().get()).map(MoneyAmount::toString).ifPresent(valueTextField::setText);
         ofNullable(pokerChipBean.paidProperty().get()).map(MoneyAmount::toString).ifPresent(paidTextField::setText);
         Optional<Country> country = pokerChipCollection.getCountryFromName(pokerChipBean.getCasinoBean().getCountry());
@@ -180,8 +180,12 @@ public class PokerChipDialogController implements Initializable {
         pokerChipBean.denomProperty().set(denomComboBox.getEditor().textProperty().get());
         pokerChipBean.obsoleteProperty().set(obsoleteToggleButton.selectedProperty().get());
         pokerChipBean.issueProperty().set(issueTextField.textProperty().get());
-        pokerChipBean.valueProperty().set(MoneyAmount.parse(valueTextField.getText()));
-        pokerChipBean.paidProperty().set(MoneyAmount.parse(paidTextField.getText()));
+        if (!isNullOrEmpty(paidTextField.getText())) {
+            pokerChipBean.paidProperty().set(MoneyAmount.parse(paidTextField.getText()));
+        }
+        if (!isNullOrEmpty(valueTextField.getText())) {
+            pokerChipBean.valueProperty().set(MoneyAmount.parse(valueTextField.getText()));
+        }
         pokerChipBean.getFrontImage().set(frontImageView.imageProperty().get());
         pokerChipBean.getBackImage().set(backImageView.imageProperty().get());
     }
@@ -198,6 +202,7 @@ public class PokerChipDialogController implements Initializable {
                 .category(categoryComboBox.getEditor().getText())
                 .acquisitionDate(dateOfAcquisitionDatePicker.getValue())
                 .color(colorComboBox.getEditor().getText())
+                .inlay(inlayComboBox.getEditor().getText())
                 .condition(conditionComboBox.getEditor().getText())
                 .denom(denomComboBox.getEditor().getText())
                 .inserts(insertsTextField.getText())
@@ -210,8 +215,12 @@ public class PokerChipDialogController implements Initializable {
                 .issue(issueTextField.getText())
                 .casino(casino);
 
-        pokerChipBuilder.amountPaid(MoneyAmount.parse(paidTextField.getText()));
-        pokerChipBuilder.amountValue(MoneyAmount.parse(valueTextField.getText()));
+        if (!isNullOrEmpty(paidTextField.getText())) {
+            pokerChipBuilder.amountPaid(MoneyAmount.parse(paidTextField.getText()));
+        }
+        if (!isNullOrEmpty(valueTextField.getText())) {
+            pokerChipBuilder.amountValue(MoneyAmount.parse(valueTextField.getText()));
+        }
 
         Image frontImage = frontImageView.getImage();
         BlobImage frontBlobImage = null;
