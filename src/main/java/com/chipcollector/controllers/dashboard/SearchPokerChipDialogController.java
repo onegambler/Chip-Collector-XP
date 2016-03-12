@@ -5,6 +5,7 @@ import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.ScraperEngine;
 import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.util.MessagesHelper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -16,7 +17,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class SearchPokerChipDialogController implements Initializable {
     private TextField searchTextField;
 
     @FXML
-    private ComboBox<String> searchSourceCombobox;
+    private ComboBox<ScraperEngine> searchSourceCombobox;
 
     @FXML
     private TableView<CasinoBean> casinosTableView;
@@ -45,15 +45,17 @@ public class SearchPokerChipDialogController implements Initializable {
     @FXML
     private TableView<PokerChipBean> pokerChipsTableView;
 
-    //TODO: selezione sulla base della combobox
-    private ScraperEngine engine;
+    private final List<ScraperEngine> engines;
+
+    private SimpleObjectProperty<ScraperEngine> selectedEngine = new SimpleObjectProperty<>();
+
     private final SpringFxmlLoader springFxmlLoader;
 
     private CasinoBean currentlySelectedCasino;
 
     @Autowired
-    public SearchPokerChipDialogController(@Qualifier("theMogh") ScraperEngine engine, SpringFxmlLoader springFxmlLoader) {
-        this.engine = engine;
+    public SearchPokerChipDialogController(List<ScraperEngine> engines, SpringFxmlLoader springFxmlLoader) {
+        this.engines = engines;
         this.springFxmlLoader = springFxmlLoader;
     }
 
@@ -61,6 +63,9 @@ public class SearchPokerChipDialogController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         casinosTableView.setPlaceholder(new Label());
         pokerChipsTableView.setPlaceholder(new Label());
+        searchSourceCombobox.setItems(observableArrayList(engines));
+        searchSourceCombobox.valueProperty().bindBidirectional(selectedEngine);
+        searchSourceCombobox.setValue(engines.get(0));
     }
 
     @FXML
@@ -85,13 +90,13 @@ public class SearchPokerChipDialogController implements Initializable {
         CasinoBean selectedCasino = casinosTableView.getSelectionModel().getSelectedItem();
         if (nonNull(selectedCasino) && !selectedCasino.equals(currentlySelectedCasino)) {
             currentlySelectedCasino = selectedCasino;
-            List<PokerChipBean> pokerChips = engine.searchPokerChip(selectedCasino);
+            List<PokerChipBean> pokerChips = selectedEngine.get().searchPokerChip(selectedCasino);
             pokerChipsTableView.setItems(observableArrayList(pokerChips));
         }
     }
 
     private void searchCasino() throws IOException {
-        List<CasinoBean> casinoBeanList = engine.searchCasinos(searchTextField.getText());
+        List<CasinoBean> casinoBeanList = selectedEngine.get().searchCasinos(searchTextField.getText());
         if (casinoBeanList.isEmpty()) {
             casinosTableView.setPlaceholder(new Label(MessagesHelper.getString("search.table.noresults")));
         }

@@ -31,4 +31,9 @@ public class TheMoghScraperEngine implements ScraperEngine {
     public List<PokerChipBean> searchPokerChip(CasinoBean casino) throws IOException {
         return pokerChipScraper.searchItems(casino);
     }
+
+    @Override
+    public String toString() {
+        return "The Mogh";
+    }
 }
