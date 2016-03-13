@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-@Order(0)
+@Order(ScraperEngine.DEFAULT_ENGINE)
 public class TheMoghScraperEngine implements ScraperEngine {
 
     private TheMoghCasinoScraper casinoScraper;

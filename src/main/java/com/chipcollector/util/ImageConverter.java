@@ -1,7 +1,7 @@
 package com.chipcollector.util;
 
+import com.chipcollector.domain.BlobImage;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Dimension2D;
 import javafx.scene.image.Image;
 import org.imgscalr.Scalr;
 
@@ -50,5 +50,17 @@ public class ImageConverter {
     public static BufferedImage imageToBufferedImage(Image image) {
         return SwingFXUtils.fromFXImage(image, null);
     }
+
+    public static BlobImage getBlobImageFromImage(Image image) throws IOException {
+        BufferedImage originalImage = ImageConverter.imageToBufferedImage(image);
+        byte[] thumbnail = bufferedImageToRawBytes(resizeImage(originalImage, 90), PNG_FORMAT);
+        byte[] resizedImage = bufferedImageToRawBytes(resizeImage(originalImage, 120), PNG_FORMAT);
+        BlobImage blobImage = new BlobImage();
+        blobImage.setImage(resizedImage);
+        blobImage.setThumbnail(thumbnail);
+        return blobImage;
+    }
+
+    public static final String PNG_FORMAT = "png";
 }
 

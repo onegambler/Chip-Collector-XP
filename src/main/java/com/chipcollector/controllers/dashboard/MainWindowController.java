@@ -3,7 +3,6 @@ package com.chipcollector.controllers.dashboard;
 import com.chipcollector.data.ApplicationProperties;
 import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.domain.Casino;
-import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.spring.SpringFxmlLoader;
 import javafx.collections.FXCollections;
@@ -112,9 +111,7 @@ public class MainWindowController implements Initializable {
 
     private Node getPokerChipTablePage(int pageIndex) {
         pokerChipsTable.getItems().clear();
-        List<PokerChip> pagedPokerChips = pokerChipCollection.getPagedPokerChips(pageIndex, settings.getPaginationSize());
-        pagedPokerChips.stream()
-                .map(PokerChipBean::new)
+        pokerChipCollection.getPagedPokerChips(pageIndex, settings.getPaginationSize())
                 .forEach(pokerChipsTable.getItems()::add);
 
         return pokerChipsTable;

@@ -1,9 +1,12 @@
 package com.chipcollector.models.dashboard;
 
+import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.MoneyAmount;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.domain.Rarity;
 import com.chipcollector.models.core.MoneyAmountProperty;
+import com.chipcollector.util.ImageConverter;
+import com.google.common.base.Throwables;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -13,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -134,6 +138,24 @@ public class PokerChipBean {
         addPropertyListener(issueProperty, pokerChip::setIssue);
         addPropertyListener(notesProperty, pokerChip::setNotes);
         addPropertyListener(dateOfAcquisitionProperty, pokerChip::setAcquisitionDate);
+
+        addPropertyListener(frontImageProperty, image ->
+                pokerChip.setFrontImage(getBlobImageFromImageAndHandleException(image))
+        );
+
+        addPropertyListener(backImageProperty, image ->
+                pokerChip.setBackImage(getBlobImageFromImageAndHandleException(image))
+        );
+
+
+    }
+
+    private BlobImage getBlobImageFromImageAndHandleException(Image image) {
+        try {
+            return ImageConverter.getBlobImageFromImage(image);
+        } catch (IOException e) {
+            throw Throwables.propagate(e);
+        }
     }
 
     private <T> void addPropertyListener(Property<T> property, Consumer<T> propertySetter) {

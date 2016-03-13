@@ -7,6 +7,7 @@ import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
+import com.chipcollector.models.dashboard.PokerChipBean;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +61,7 @@ public class PokerChipCollectionTest {
         PokerChip pokerChipTestInstance = getPokerChipTestInstance();
         Listener listener = mock(Listener.class);
         underTest.addUpdateListener(listener);
-        underTest.update(pokerChipTestInstance);
+        underTest.update(new PokerChipBean(pokerChipTestInstance));
         verify(listener).action();
     }
 

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.chipcollector.controllers.dashboard.MainWindowController.POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION;
+import static com.chipcollector.scraper.ScraperEngine.DEFAULT_ENGINE;
 import static com.chipcollector.util.EventUtils.isKeyboardEnterPressed;
 import static com.chipcollector.util.EventUtils.isMousePrimaryButtonPressed;
 import static java.util.Objects.nonNull;
@@ -65,7 +66,7 @@ public class SearchPokerChipDialogController implements Initializable {
         pokerChipsTableView.setPlaceholder(new Label());
         searchSourceCombobox.setItems(observableArrayList(engines));
         searchSourceCombobox.valueProperty().bindBidirectional(selectedEngine);
-        searchSourceCombobox.setValue(engines.get(0));
+        searchSourceCombobox.setValue(engines.get(DEFAULT_ENGINE));
     }
 
     @FXML

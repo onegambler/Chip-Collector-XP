@@ -1,12 +1,16 @@
 package com.chipcollector.domain;
 
 import com.avaje.ebean.annotation.EmbeddedColumns;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.NONE;
@@ -168,16 +172,34 @@ public class PokerChip {
     }
 
     public void setCancelled(boolean cancelled) {
-        this.cancelled =  updateDirty(this.cancelled, cancelled);
+        this.cancelled = updateDirty(this.cancelled, cancelled);
     }
 
     public void setFrontImage(BlobImage image) {
-        this.frontImage = updateDirty(this.frontImage, image);
+        this.frontImage = image;
+        imagesChanged = true;
+    }
+
+    public void setFrontImage(byte[] imageByteArray, byte[] thumbnailByteArray) {
+        if (isNull(frontImage)) {
+            frontImage = new BlobImage();
+        }
+        this.frontImage.setImage(imageByteArray);
+        this.frontImage.setThumbnail(thumbnailByteArray);
         imagesChanged = true;
     }
 
     public void setBackImage(BlobImage image) {
         this.backImage = updateDirty(this.backImage, image);
+        imagesChanged = true;
+    }
+
+    public void setBackImage(byte[] imageByteArray, byte[] thumbnailByteArray) {
+        if (isNull(backImage)) {
+            backImage = new BlobImage();
+        }
+        this.backImage.setImage(imageByteArray);
+        this.backImage.setThumbnail(thumbnailByteArray);
         imagesChanged = true;
     }
 

@@ -7,12 +7,14 @@ import com.chipcollector.domain.Country;
 import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
+import com.chipcollector.models.dashboard.PokerChipBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.now;
 
@@ -57,8 +59,9 @@ public class PokerChipCollection {
         return pokerChipDAO.getAllCasinos().size();
     }
 
-    public List<PokerChip> getPagedPokerChips(int pageIndex, int pageSize) {
-        return pokerChipDAO.getPagedPokerChips(currentFilter, pageIndex, pageSize);
+    public Stream<PokerChipBean> getPagedPokerChips(int pageIndex, int pageSize) {
+        return pokerChipDAO.getPagedPokerChips(currentFilter, pageIndex, pageSize).
+                stream().map(PokerChipBean::new);
     }
 
     public void setCasinoFilter(Casino casino) {
@@ -74,8 +77,8 @@ public class PokerChipCollection {
         updateListenersList.forEach(Listener::action);
     }
 
-    public void update(PokerChip pokerChip) {
-        pokerChipDAO.updatePokerChip(pokerChip);
+    public void update(PokerChipBean pokerChipBean) {
+        pokerChipDAO.updatePokerChip(pokerChipBean.getPokerChip());
         updateListenersList.forEach(Listener::action);
     }
 
