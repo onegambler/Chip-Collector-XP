@@ -116,7 +116,7 @@ public class TheMoghPokerChipScraper {
         executor.execute(() -> {
             for (Entry<PokerChipBean, List<String>> entry : pokerChipBeanWithPictureUrlsSet) {
                 final List<byte[]> images = entry.getValue().stream().map(this::getImageFromUrl).collect(toList());
-                entry.getKey().setImageThumbnails(images);
+                entry.getKey().setImages(images);
             }
         });
     }

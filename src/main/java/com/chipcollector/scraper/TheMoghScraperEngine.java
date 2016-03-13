@@ -5,12 +5,14 @@ import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.scraper.themogh.TheMoghCasinoScraper;
 import com.chipcollector.scraper.themogh.TheMoghPokerChipScraper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 
-@Component("theMogh")
+@Component
+@Order(0)
 public class TheMoghScraperEngine implements ScraperEngine {
 
     private TheMoghCasinoScraper casinoScraper;

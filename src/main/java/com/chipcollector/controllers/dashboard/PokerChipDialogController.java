@@ -7,6 +7,7 @@ import com.chipcollector.domain.PokerChip.PokerChipBuilder;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.util.ImageConverter;
+import com.chipcollector.util.MessagesHelper;
 import com.chipcollector.views.control.AutoCompleteComboBoxListener;
 import com.chipcollector.views.control.moneyfield.MoneyFilter;
 import com.chipcollector.views.control.moneyfield.MoneyStringConverter;
@@ -18,21 +19,30 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
+import static com.chipcollector.util.EventUtils.isDoubleClick;
 import static com.chipcollector.util.ImageConverter.bufferedImageToRawBytes;
 import static com.chipcollector.util.ImageConverter.resizeImage;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.Optional.ofNullable;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.collections.FXCollections.observableList;
+import static javafx.scene.control.Alert.AlertType.ERROR;
 
 @Controller
 public class PokerChipDialogController implements Initializable {
@@ -106,6 +116,28 @@ public class PokerChipDialogController implements Initializable {
 
         paidTextField.setTextFormatter(new TextFormatter<>(new MoneyStringConverter(), null, new MoneyFilter()));
         valueTextField.setTextFormatter(new TextFormatter<>(new MoneyStringConverter(), null, new MoneyFilter()));
+
+        frontImageView.setOnMouseClicked(event -> chooseImage(event, image -> frontImageView.setImage(image)));
+        backImageView.setOnMouseClicked(event -> chooseImage(event, image -> backImageView.setImage(image)));
+    }
+
+    private void chooseImage(MouseEvent event, Consumer<Image> imageSetter) {
+        if (isDoubleClick(event)) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle(MessagesHelper.getString(IMAGE_FILE_CHOOSER_TITLE));
+            final File file = fileChooser.showOpenDialog(((ImageView) event.getSource()).getScene().getWindow());
+            if (Objects.nonNull(file)) {
+                try {
+                    imageSetter.accept(new Image(new FileInputStream(file)));
+                } catch (FileNotFoundException e) {
+                    Alert alert = new Alert(ERROR);
+                    alert.setTitle(MessagesHelper.getString(IMAGE_ERROR_ALERT_TITLE));
+                    alert.setHeaderText(MessagesHelper.getString(IMAGE_ERROR_ALERT_HEADER));
+                    alert.setContentText(MessagesHelper.getString(IMAGE_ERROR_ALERT_CONTENT));
+                    alert.showAndWait();
+                }
+            }
+        }
     }
 
     public void setPokerChipBean(PokerChipBean pokerChipBean) {
@@ -130,8 +162,8 @@ public class PokerChipDialogController implements Initializable {
         obsoleteToggleButton.selectedProperty().set(pokerChipBean.obsoleteProperty().get());
         issueTextField.textProperty().set(pokerChipBean.issueProperty().get());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
-        frontImageView.imageProperty().set(pokerChipBean.getFrontImage().get());
-        backImageView.imageProperty().set(pokerChipBean.getBackImage().get());
+        frontImageView.imageProperty().set(pokerChipBean.getFrontImageProperty().get());
+        backImageView.imageProperty().set(pokerChipBean.getBackImageProperty().get());
         casinoContent.setText(pokerChipBean.getCasinoBean().toString());
         ofNullable(pokerChipBean.valueProperty().get()).map(MoneyAmount::toString).ifPresent(valueTextField::setText);
         ofNullable(pokerChipBean.paidProperty().get()).map(MoneyAmount::toString).ifPresent(paidTextField::setText);
@@ -186,8 +218,8 @@ public class PokerChipDialogController implements Initializable {
         if (!isNullOrEmpty(valueTextField.getText())) {
             pokerChipBean.valueProperty().set(MoneyAmount.parse(valueTextField.getText()));
         }
-        pokerChipBean.getFrontImage().set(frontImageView.imageProperty().get());
-        pokerChipBean.getBackImage().set(backImageView.imageProperty().get());
+        pokerChipBean.getFrontImageProperty().set(frontImageView.imageProperty().get());
+        pokerChipBean.getBackImageProperty().set(backImageView.imageProperty().get());
     }
 
     private void createNewPokerChip() throws IOException {
@@ -275,4 +307,8 @@ public class PokerChipDialogController implements Initializable {
     public static String[] CONDITION_VALUES = new String[]{"Uncirculated", "Slightly Used", "Average", "Well Used", "Poor", "Cancelled"};
     public static String[] CATEGORY_VALUES = new String[]{"Baccarat", "Error", "Faro", "Free Play", "Match Play", "No Cash Value", "No Denomination", "Non-Negotiable", "Poker", "Roulette", "Race and Sport"};
 
+    public static final String IMAGE_ERROR_ALERT_TITLE = "dialog.poker.chip.image.error.alert.title";
+    public static final String IMAGE_FILE_CHOOSER_TITLE = "dialog.poker.chip.image.file.chooser.title";
+    public static final String IMAGE_ERROR_ALERT_HEADER = "dialog.poker.chip.image.error.alert.header";
+    public static final String IMAGE_ERROR_ALERT_CONTENT = "dialog.poker.chip.image.error.alert.content";
 }

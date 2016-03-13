@@ -47,10 +47,9 @@ public class PokerChipBean {
     private SimpleObjectProperty<LocalDate> dateOfAcquisitionProperty;
     private StringProperty notesProperty;
     private StringProperty issueProperty;
-    private byte[] frontImage;
-    private byte[] backImage;
+    private SimpleObjectProperty<Image> frontImageProperty;
+    private SimpleObjectProperty<Image> backImageProperty;
 
-    private String casinoFlagImageString;
 
     private PokerChip pokerChip;
 
@@ -80,12 +79,12 @@ public class PokerChipBean {
 
         pokerChip.getFrontImage().ifPresent(frontBlobImage ->
         {
-            frontImage = frontBlobImage.getImage();
+            frontImageProperty = getImageFromByteArray(frontBlobImage.getImage(), 120, 120);
             frontImageThumbnailView.setImage(getImageFromByteArray(frontBlobImage.getThumbnail()));
         });
         pokerChip.getBackImage().ifPresent(backBlobImage ->
         {
-            backImage = backBlobImage.getImage();
+            backImageProperty = getImageFromByteArray(backBlobImage.getImage(), 120, 120);
             backImageThumbnailView.setImage(getImageFromByteArray(backBlobImage.getThumbnail()));
         });
         initialisePropertiesListeners();
@@ -113,12 +112,8 @@ public class PokerChipBean {
         paidProperty = new MoneyAmountProperty(builder.paid);
         issueProperty = new SimpleStringProperty(builder.issue);
         notesProperty = new SimpleStringProperty(builder.notes);
-        frontImageThumbnailView = new ImageView();
-        backImageThumbnailView = new ImageView();
-        frontImage = builder.frontImage;
-        backImage = builder.backImage;
 
-        setImageThumbnails(newArrayList(frontImage, backImage));
+        setImages(newArrayList(builder.frontImage, builder.backImage));
     }
 
     private void initialisePropertiesListeners() {
@@ -197,12 +192,12 @@ public class PokerChipBean {
         return yearProperty;
     }
 
-    public SimpleObjectProperty<Image> getFrontImage() {
-        return getImageFromByteArray(frontImage, 120, 120);
+    public SimpleObjectProperty<Image> getFrontImageProperty() {
+        return frontImageProperty;
     }
 
-    public SimpleObjectProperty<Image> getBackImage() {
-        return getImageFromByteArray(backImage, 120, 120);
+    public SimpleObjectProperty<Image> getBackImageProperty() {
+        return backImageProperty;
     }
 
     private SimpleObjectProperty<Image> getImageFromByteArray(byte[] imageBytes, double requestedWidth, double requestedHeight) {
@@ -222,18 +217,29 @@ public class PokerChipBean {
         return rarityProperty;
     }
 
-    public void setImageThumbnails(List<byte[]> pictures) {
+    public void setImages(List<byte[]> pictures) {
         requireNonNull(pictures);
         if (pictures.size() >= 1) {
-            frontImage = pictures.get(0);
-            setImageThumbnailIfNotNull(frontImage, frontImageThumbnailView);
 
-            if (pictures.size() >= 2) {
-                backImage = pictures.get(1);
-            } else {
-                backImage = frontImage;
+            if (!pictures.isEmpty()) {
+                final byte[] frontImageByteArray;
+                final byte[] backImageByteArray;
+                if (pictures.size() >= 2) {
+                    frontImageByteArray = pictures.get(0);
+                    backImageByteArray = pictures.get(1);
+                } else {
+                    backImageByteArray = pictures.get(0);
+                    frontImageByteArray = pictures.get(0);
+                }
+
+                frontImageProperty.set(getImageFromByteArray(frontImageByteArray));
+                backImageProperty.set(getImageFromByteArray(backImageByteArray));
+                setImageThumbnailIfNotNull(frontImageByteArray, frontImageThumbnailView);
+                setImageThumbnailIfNotNull(backImageByteArray, backImageThumbnailView);
             }
-            setImageThumbnailIfNotNull(backImage, backImageThumbnailView);
+        } else {
+            frontImageProperty = new SimpleObjectProperty<>();
+            backImageProperty = new SimpleObjectProperty<>();
         }
     }
 
