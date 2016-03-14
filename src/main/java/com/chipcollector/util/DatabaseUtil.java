@@ -1,6 +1,8 @@
 package com.chipcollector.util;
 
 import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.config.ServerConfig;
+import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebean.dbmigration.DdlGenerator;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.chipcollector.domain.Property;
@@ -21,7 +23,9 @@ public class DatabaseUtil {
 
     public DatabaseUtil(EbeanServer server) {
         this.server = server;
-        generator = ((SpiEbeanServer) server).getDdlGenerator();
+        final ServerConfig serverConfig = new ServerConfig();
+        serverConfig.setDatabasePlatform(new SQLitePlatform());
+        generator = new DdlGenerator((SpiEbeanServer) server, serverConfig);
     }
 
     public void tryDatabaseUpdate() {
@@ -44,9 +48,8 @@ public class DatabaseUtil {
         for (int i = currentVersion + 1; i <= latestVersion; i++) {
             String updateScript = format("migration/%s.sql", i);
             String databaseUpdateString = new String(toByteArray(getResource(updateScript)));
-            generator.runScript(false, databaseUpdateString);
+            generator.runScript(false, databaseUpdateString, updateScript);
         }
-
     }
 
     private boolean databaseExists() {

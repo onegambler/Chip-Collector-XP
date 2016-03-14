@@ -31,8 +31,8 @@ public class SpringAppConfig {
         return ebeanServer;
     }
 
-    @Bean
-    public ServerConfig serverConfig() {
+
+    private ServerConfig serverConfig() {
         ServerConfig serverConfig = new ServerConfig();
         serverConfig.setName("sqlite");
         serverConfig.loadFromProperties();

@@ -1,175 +1,224 @@
 package com.chipcollector.data;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
-import com.chipcollector.domain.*;
-import com.chipcollector.domain.PokerChip.PokerChipBuilder;
+import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.config.ServerConfig;
+import com.chipcollector.domain.BlobImage;
+import com.chipcollector.domain.Casino;
+import com.chipcollector.domain.Country;
+import com.chipcollector.domain.PokerChip;
+import com.chipcollector.util.DatabaseUtil;
 import com.google.common.io.Resources;
 import org.junit.After;
-import org.junit.Ignore;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
-import static com.chipcollector.domain.Currency.DOLLAR;
-import static java.math.BigDecimal.ONE;
+import static com.chipcollector.test.util.PokerChipTestUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore
 public class PokerChipDAOTest {
 
-    private static final EbeanServer defaultServer = Ebean.getDefaultServer();
+    private static EbeanServer testServer;
+    private final PokerChipDAO pokerChipDAO = new PokerChipDAO(testServer);
 
-    private final PokerChipDAO pokerChipDAO = new PokerChipDAO(defaultServer);
+    @BeforeClass
+    public static void setUpDatabase() throws IOException {
+        ServerConfig config = new ServerConfig();
+        config.setName("sqlite");
 
-    private int tcrIdSequence = 0;
+        Properties properties = new Properties();
+        properties.load(Resources.getResource("test-ebean.properties").openStream());
 
-    @Test
-    public void testSavePokerChip() {
-        final Country country = new Country("Name");
-        final Location location = Location.builder()
-                .city("city")
-                .country(country)
-                .state("state")
-                .build();
-        final Casino casino = Casino.builder()
-                .closeDate(LocalDate.now().toString())
-                .location(location)
-                .name("name")
-                .openDate(LocalDate.now().toString())
-                .type("type")
-                .website("website")
-                .build();
+        config.loadFromProperties(properties);
+        config.setDefaultServer(true);
+        config.setRegister(true);
 
-        PokerChip chip_1 = getTestPokerChipBuilder(casino).build();
-        pokerChipDAO.savePokerChip(chip_1);
+        testServer = EbeanServerFactory.create(config);
 
-        PokerChip chip_2 = getTestPokerChipBuilder(casino).build();
-        pokerChipDAO.savePokerChip(chip_2);
-
-        List<PokerChip> allPokerChips = pokerChipDAO.getAllPokerChips();
-
-        assertThat(allPokerChips).hasSize(2)
-                .containsExactly(chip_1, chip_2);
-
-        assertThat(allPokerChips.get(0).getCasino())
-                .isEqualTo(allPokerChips.get(1).getCasino())
-                .isEqualTo(casino);
-
-        assertThat(casino.getId()).isNotNull();
-
-        pokerChipDAO.deletePokerChip(chip_1);
-
-        allPokerChips = pokerChipDAO.getAllPokerChips();
-
-        assertThat(allPokerChips).hasSize(1).containsOnly(chip_2);
-
-        assertThat(allPokerChips.get(0).getCasino()).isEqualTo(casino);
-
-        pokerChipDAO.deletePokerChip(chip_2);
-
-        allPokerChips = pokerChipDAO.getAllPokerChips();
-
-        assertThat(allPokerChips).isEmpty();
+        new DatabaseUtil(testServer).tryDatabaseUpdate();
     }
 
     @Test
-    public void testSavePokerChipWithImage() throws Exception {
-        BlobImage image = new BlobImage();
-        image.setImage(Files.readAllBytes(Paths.get(Resources.getResource("images/java_logo.png").toURI())));
-        PokerChip chip = getTestPokerChipBuilder()
-                .frontImage(image)
-                .backImage(image)
-                .build();
+    public void getPagedPokerChipsReturnsASubSetOfPokerChips() {
+        for (int i = 0; i < 20; i++) {
+            testServer.save(createTestPokerChipBuilder(createTestCasino(), "tcr_" + i).build());
+        }
+        int pageSize = 5;
+        List<PokerChip> retrieved = new ArrayList<>();
 
-        pokerChipDAO.savePokerChip(chip);
-
-        PokerChip savedPokerChip = Ebean.find(PokerChip.class).findUnique();
-        assertThat(savedPokerChip).isNotNull();
-
-        BlobImage savedImage = Ebean.find(BlobImage.class).findUnique();
-        assertThat(savedImage).isEqualTo(image);
-
-        pokerChipDAO.deletePokerChip(savedPokerChip);
-
-        savedImage = Ebean.find(BlobImage.class).findUnique();
-
-        assertThat(savedImage).isNull();
-    }
-
-    @Test
-    public void testPokerChipUpdate() throws Exception {
-        BlobImage image_1 = new BlobImage();
-        image_1.setImage(Files.readAllBytes(Paths.get(Resources.getResource("images/java_logo.png").toURI())));
-        PokerChip chip = getTestPokerChipBuilder()
-                .frontImage(image_1)
-                .backImage(image_1)
-                .build();
-
-        pokerChipDAO.savePokerChip(chip);
-
-        BlobImage image_2 = new BlobImage();
-
-        chip.setBackImage(image_2);
-
-        pokerChipDAO.updatePokerChip(chip);
-
-        List<BlobImage> savedImageList = Ebean.find(BlobImage.class).findList();
-        assertThat(savedImageList).hasSize(2);
-
-        assertThat(chip.getFrontImage()).isPresent()
-                .contains(image_1);
-
-        assertThat(chip.getBackImage()).isPresent()
-                .contains(image_2);
-
-        chip.setFrontImage(image_2);
-
-        pokerChipDAO.updatePokerChip(chip);
-
-        BlobImage savedImage = Ebean.find(BlobImage.class).findUnique();
-        assertThat(savedImage).isNotNull();
-
-        pokerChipDAO.deletePokerChip(chip);
-
-        assertThat(pokerChipDAO.getAllPokerChips()).isEmpty();
-
-        savedImage = Ebean.find(BlobImage.class).findUnique();
-        assertThat(savedImage).isNull();
-
-    }
-
-    private PokerChipBuilder getTestPokerChipBuilder() {
-        return getTestPokerChipBuilder(null);
-    }
-
-    private PokerChipBuilder getTestPokerChipBuilder(Casino inputCasino) {
-        Casino casino = Optional.ofNullable(inputCasino)
-                .orElse(Casino.builder().name("casino").build());
-
-        return PokerChip.builder()
-                .acquisitionDate(LocalDate.now())
-                .amountPaid(new MoneyAmount(DOLLAR, ONE))
-                .tcrID("tcr_" + tcrIdSequence++)
-                .casino(casino);
-    }
-
-    @After
-    public void afterTest() {
-        try {
-            defaultServer.beginTransaction();
-
-            defaultServer.createQuery(PokerChip.class).delete();
-            defaultServer.createQuery(BlobImage.class).delete();
-            defaultServer.createQuery(Casino.class).delete();
-            defaultServer.commitTransaction();
-        } finally {
-            defaultServer.endTransaction();
+        for (int i = 0; i < 4; i++) {
+            List<PokerChip> chips = pokerChipDAO.getPagedPokerChips(testServer.createQuery(PokerChip.class), i, pageSize);
+            assertThat(chips).hasSize(pageSize);
+            assertThat(retrieved).doesNotContain(chips.toArray(new PokerChip[chips.size()]));
+            retrieved.addAll(chips);
         }
     }
 
+    @Test
+    public void savePokerChipAndSavesAllFieldsCorrectly() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        pokerChipDAO.savePokerChip(testPokerChip);
+        final PokerChip pokerChipList = testServer.find(PokerChip.class).findUnique();
+        assertThat(pokerChipList).isEqualTo(testPokerChip);
+
+        final Casino casino = testServer.find(Casino.class).findUnique();
+        assertThat(casino).isEqualTo(testPokerChip.getCasino());
+    }
+
+    @Test
+    public void updatePokerChipSavesNewFieldsCorrectly() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        testServer.save(testPokerChip);
+        testPokerChip.setColor("new Color");
+        pokerChipDAO.updatePokerChip(testPokerChip);
+        final PokerChip pokerChipList = testServer.find(PokerChip.class).findUnique();
+        assertThat(pokerChipList).isEqualTo(testPokerChip);
+    }
+
+    @Test
+    public void deletePokerChipDeletesCorrectly() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        testServer.save(testPokerChip);
+
+        pokerChipDAO.deletePokerChip(testPokerChip);
+
+        PokerChip pokerChipList = testServer.find(PokerChip.class).findUnique();
+        assertThat(pokerChipList).isNull();
+    }
+
+    @Test
+    public void whenUpdateFrontImageOnlyThenBackImageWillMaintainItsImage() {
+        final PokerChip testPokerChip = createTestPokerChip();
+
+        pokerChipDAO.savePokerChip(testPokerChip);
+        pokerChipDAO.updatePokerChip(testPokerChip);
+
+        final BlobImage blobImage = new BlobImage();
+        final byte[] image = {'3', '3', '3'};
+        final byte[] thumbnail = {'2', '2', '2'};
+        blobImage.setImage(image);
+        blobImage.setThumbnail(thumbnail);
+        testPokerChip.setFrontImage(blobImage);
+
+        pokerChipDAO.updatePokerChip(testPokerChip);
+
+        PokerChip result = testServer.find(PokerChip.class).findUnique();
+
+        assertThat(result).isNotNull();
+
+        assertThat(result.getFrontImage()).contains(blobImage);
+        assertThat(result.getBackImage()).isEqualTo(testPokerChip.getBackImage());
+
+        final List<BlobImage> images = testServer.find(BlobImage.class).findList();
+        assertThat(images).hasSize(2);
+    }
+
+    @Test
+    public void whenUpdateBothFrontAndBackImageThenOldImagesAreDeleted() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        testServer.save(testPokerChip);
+
+        BlobImage frontBlobImage = new BlobImage();
+        byte[] image = {'3', '3', '3'};
+        byte[] thumbnail = {'2', '2', '2'};
+        frontBlobImage.setImage(image);
+        frontBlobImage.setThumbnail(thumbnail);
+        testPokerChip.setFrontImage(frontBlobImage);
+
+        BlobImage backBlobImage = new BlobImage();
+        image = new byte[]{'4', '4', '4'};
+        thumbnail = new byte[]{'5', '5', '5'};
+        backBlobImage.setImage(image);
+        backBlobImage.setThumbnail(thumbnail);
+        testPokerChip.setBackImage(backBlobImage);
+
+        pokerChipDAO.updatePokerChip(testPokerChip);
+
+        PokerChip result = testServer.find(PokerChip.class).findUnique();
+
+        assertThat(result).isNotNull();
+
+        assertThat(result.getFrontImage()).contains(frontBlobImage);
+        assertThat(result.getBackImage()).contains(backBlobImage);
+
+        final List<BlobImage> images = testServer.find(BlobImage.class).findList();
+        assertThat(images).hasSize(2);
+    }
+
+    @Test
+    public void whenFrontAndBackImageAreTheSameThenSaveOnlyOnceAndReuseValue() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        testServer.save(testPokerChip);
+
+        final BlobImage blobImage = new BlobImage();
+        final byte[] image = {'3', '3', '3'};
+        final byte[] thumbnail = {'2', '2', '2'};
+        blobImage.setImage(image);
+        blobImage.setThumbnail(thumbnail);
+        testPokerChip.setFrontImage(blobImage);
+        testPokerChip.setBackImage(blobImage);
+
+        pokerChipDAO.updatePokerChip(testPokerChip);
+        PokerChip result = testServer.find(PokerChip.class).findUnique();
+        assertThat(result).isNotNull();
+        assertThat(result.getFrontImage()).contains(blobImage);
+        assertThat(result.getBackImage()).contains(blobImage);
+
+        final List<BlobImage> images = testServer.find(BlobImage.class).findList();
+        assertThat(images).containsExactly(blobImage);
+    }
+
+    @Test
+    public void getAllCasinosReturnsCorrectValues() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        testServer.save(testPokerChip);
+        final Casino otherCasino = createTestCasino("other");
+        testServer.save(otherCasino);
+        final List<Casino> allCasinos = pokerChipDAO.getAllCasinos();
+        assertThat(allCasinos).containsOnly(otherCasino, testPokerChip.getCasino());
+    }
+
+    @Test
+    public void getCountryReturnsCorrectValue() {
+        final String countryName = "Italy";
+        final Optional<Country> country = pokerChipDAO.getCountry(countryName);
+        assertThat(country).isPresent();
+        assertThat(country.get().getName()).isEqualTo(countryName);
+        assertThat(country.get().getCurrencyCode()).isEqualTo("EUR");
+    }
+
+    @Test
+    public void whenCountryDoesNotExistsThenReturnEmptyOptionalValue() {
+        final String countryName = "Not Valid Country";
+        final Optional<Country> country = pokerChipDAO.getCountry(countryName);
+        assertThat(country).isEmpty();
+    }
+
+    @After
+    public void tearDown() {
+        try {
+            testServer.beginTransaction();
+            testServer.find(BlobImage.class).findEach(testServer::deletePermanent);
+            testServer.find(PokerChip.class).findEach(testServer::deletePermanent);
+            testServer.find(Casino.class).findEach(testServer::deletePermanent);
+            testServer.commitTransaction();
+        } finally {
+            testServer.endTransaction();
+        }
+    }
+
+    @AfterClass
+    public static void tearDownDatabase() {
+        testServer.shutdown(true, true);
+        final boolean delete = new File("integration-test.db").delete();
+        assertThat(delete).isTrue();
+    }
 }

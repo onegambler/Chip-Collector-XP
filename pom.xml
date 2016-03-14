@@ -24,7 +24,7 @@
         <junit.version>4.12</junit.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <ebean.version>6.9.1</ebean.version>
+        <ebean.version>7.1.1</ebean.version>
         <miglayout.version>5.0</miglayout.version>
         <taskdialog.version>1.0.0</taskdialog.version>
         <h2.version>1.4.186</h2.version>

@@ -27,10 +27,6 @@ public class PokerChipDAO {
         this.ebeanServer = ebeanServer;
     }
 
-    public List<PokerChip> getAllPokerChips() {
-        return ebeanServer.find(PokerChip.class).findList();
-    }
-
     public List<PokerChip> getPagedPokerChips(Query<PokerChip> currentFilter, int pagedIndex, int pageSize) {
         return ebeanServer.
                 findPagedList(currentFilter, ebeanServer.currentTransaction(), pagedIndex, pageSize)
@@ -43,13 +39,6 @@ public class PokerChipDAO {
 
     public CasinoFinder getCasinoFinder() {
         return new CasinoFinder();
-    }
-
-    public List<Country> getAllCountries() {
-        return ebeanServer.find(Country.class)
-                .setUseCache(true)
-                .setReadOnly(false)
-                .findList();
     }
 
     public Optional<Country> getCountry(String name) {
@@ -199,17 +188,5 @@ public class PokerChipDAO {
             Location uniqueLocation = ebeanServer.findUnique(query.query(), ebeanServer.currentTransaction());
             return ofNullable(uniqueLocation);
         }
-    }
-
-    public Optional<String> getCurrencySymbolFromCode(String code) {
-
-        final Country currencyCode = ebeanServer.createQuery(Country.class)
-                .setUseCache(true)
-                .setUseQueryCache(true)
-                .where().eq("currencyCode", code)
-                .findUnique();
-
-        return Optional.ofNullable(currencyCode)
-                .map(Country::getCurrencySymbol);
     }
 }
