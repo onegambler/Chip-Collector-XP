@@ -30,9 +30,13 @@ public class PokerChipTestUtil {
     }
 
     public static Casino createTestCasino(String casinoName) {
+        return createTestCasino(casinoName, createTestLocation());
+    }
+
+    public static Casino createTestCasino(String casinoName, Location location) {
         return Casino.builder()
                 .closeDate(LocalDate.now().toString())
-                .location(createTestLocation())
+                .location(location)
                 .name(casinoName)
                 .openDate(TEST_CASINO_OPEN_DATE.toString())
                 .type(TEST_CASINO_TYPE)

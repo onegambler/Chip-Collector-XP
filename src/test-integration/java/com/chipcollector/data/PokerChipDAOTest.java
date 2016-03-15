@@ -2,11 +2,9 @@ package com.chipcollector.data;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.Query;
 import com.avaje.ebean.config.ServerConfig;
-import com.chipcollector.domain.BlobImage;
-import com.chipcollector.domain.Casino;
-import com.chipcollector.domain.Country;
-import com.chipcollector.domain.PokerChip;
+import com.chipcollector.domain.*;
 import com.chipcollector.util.DatabaseUtil;
 import com.google.common.io.Resources;
 import org.junit.After;
@@ -81,6 +79,21 @@ public class PokerChipDAOTest {
         pokerChipDAO.updatePokerChip(testPokerChip);
         final PokerChip pokerChipList = testServer.find(PokerChip.class).findUnique();
         assertThat(pokerChipList).isEqualTo(testPokerChip);
+    }
+
+    @Test
+    public void whenImageChangedIsFalseThenUpdatePokerChipDoesNotUpdateImages() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        testServer.save(testPokerChip);
+
+        final BlobImage testBlobImage = createTestBlobImage();
+        testBlobImage.setImage(new byte[]{'9'});
+        testPokerChip.setImagesChanged(false);
+        testPokerChip.setFrontImage(testBlobImage);
+        pokerChipDAO.updatePokerChip(testPokerChip);
+        final PokerChip pokerChip = testServer.find(PokerChip.class).findUnique();
+        assertThat(pokerChip).isNotNull();
+        assertThat(pokerChip.getFrontImage()).isNotEqualTo(testBlobImage);
     }
 
     @Test
@@ -201,6 +214,107 @@ public class PokerChipDAOTest {
         final Optional<Country> country = pokerChipDAO.getCountry(countryName);
         assertThat(country).isEmpty();
     }
+
+    @Test
+    public void getPokerChipReturnsCorrectValue() {
+        PokerChip pokerChip = createTestPokerChip();
+        pokerChipDAO.savePokerChip(pokerChip);
+
+        assertThat(pokerChip.getId()).isGreaterThan(0);
+        Optional<PokerChip> other = pokerChipDAO.getPokerChip(pokerChip.getId());
+
+        assertThat(other).contains(pokerChip);
+    }
+
+    @Test
+    public void whenPokerChipDoesNotExistsThenGetPokerChipReturnsNull() {
+        Optional<PokerChip> other = pokerChipDAO.getPokerChip(10L);
+        assertThat(other).isEmpty();
+    }
+
+    @Test
+    public void getPokerChipListWithQueryReturnCorrectValues() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        final PokerChip testPokerChip1 = createTestPokerChip();
+        final PokerChip testPokerChip2 = createTestPokerChip();
+        testPokerChip.setColor("blue");
+        testPokerChip1.setColor("blue");
+        pokerChipDAO.savePokerChip(testPokerChip);
+        pokerChipDAO.savePokerChip(testPokerChip1);
+        pokerChipDAO.savePokerChip(testPokerChip2);
+
+        final Query<PokerChip> query = testServer.createQuery(PokerChip.class).where("color = 'blue'");
+        List<PokerChip> pokerChipList = pokerChipDAO.getPokerChipList(query);
+        assertThat(pokerChipList).containsOnly(testPokerChip, testPokerChip1);
+    }
+
+    @Test
+    public void getPokerChipCountWithQueryReturnCorrectValue() {
+        final PokerChip testPokerChip = createTestPokerChip();
+        final PokerChip testPokerChip1 = createTestPokerChip();
+        final PokerChip testPokerChip2 = createTestPokerChip();
+        testPokerChip.setColor("blue");
+        testPokerChip1.setColor("blue");
+        pokerChipDAO.savePokerChip(testPokerChip);
+        pokerChipDAO.savePokerChip(testPokerChip1);
+        pokerChipDAO.savePokerChip(testPokerChip2);
+
+        final Query<PokerChip> query = testServer.createQuery(PokerChip.class).where("color = 'blue'");
+        int pokerChipCount = pokerChipDAO.getPokerChipCount(query);
+        assertThat(pokerChipCount).isEqualTo(2);
+    }
+
+    @Test
+    public void getAllPokerChipCountReturnsCorrectCount() {
+        pokerChipDAO.savePokerChip(createTestPokerChip());
+        pokerChipDAO.savePokerChip(createTestPokerChip());
+        pokerChipDAO.savePokerChip(createTestPokerChip());
+
+        int pokerChipList = pokerChipDAO.getAllPokerChipsCount();
+        assertThat(pokerChipList).isEqualTo(3);
+    }
+
+    @Test
+    public void locationFinderWorksCorrectly() {
+        final Location testLocation1 = createTestLocation();
+        testServer.save(testLocation1);
+        final Location testLocation2 = createTestLocation();
+        testLocation2.setCity("filterCity");
+        testLocation2.setCountry(new Country("filterCountry"));
+        testLocation2.setState("filterState");
+        testServer.save(testLocation2);
+        Optional<Location> found = pokerChipDAO.getLocationFinder()
+                .withCity("filterCity")
+                .withCountry("filterCountry")
+                .withState("filterState")
+                .findSingle();
+
+        assertThat(found).contains(testLocation2);
+    }
+
+    @Test
+    public void casinoFinderWorksCorrectly() {
+        final Casino casinoNotToBeFound = createTestCasino();
+        testServer.save(casinoNotToBeFound);
+
+        Location locationToBeFound = createTestLocation();
+        locationToBeFound.setCity("filterCity");
+        locationToBeFound.setCountry(new Country("filterCountry"));
+        locationToBeFound.setState("filterState");
+        Casino casinoToBeFound = createTestCasino("filterName", locationToBeFound);
+
+        testServer.save(casinoToBeFound);
+        Optional<Casino> found = pokerChipDAO.getCasinoFinder()
+                .withCity("filterCity")
+                .withName("filterName")
+                .withCountry("filterCountry")
+                .withState("filterState")
+                .findSingle();
+
+        assertThat(found).contains(casinoToBeFound);
+    }
+
+
 
     @After
     public void tearDown() {

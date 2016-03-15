@@ -72,7 +72,9 @@ public class PokerChipDAO {
         long oldBackImageId = -1;
         Set<Long> validIds = new HashSet<>();
         if (pokerChip.isImagesChanged()) {
-            PokerChip oldPokerChip = getPokerChip(pokerChip.getId());
+            PokerChip oldPokerChip = getPokerChip(pokerChip.getId())
+                    .orElseThrow(() ->
+                            new IllegalStateException("Impossible to find PokerChip with id" + pokerChip.getId()));
             oldFrontImageId = oldPokerChip.getFrontImage().map(BlobImage::getId).orElse(-1L);
             oldBackImageId = oldPokerChip.getBackImage().map(BlobImage::getId).orElse(-1L);
             pokerChip.getFrontImage().map(BlobImage::getId).ifPresent(validIds::add);
@@ -90,10 +92,6 @@ public class PokerChipDAO {
         pokerChip.resetDirty();
     }
 
-    public String[] getDenomValues() {
-        return null;
-    }
-
     @Transactional
     public void deletePokerChip(PokerChip pokerChip) {
         ebeanServer.delete(pokerChip);
@@ -109,8 +107,8 @@ public class PokerChipDAO {
         ebeanServer.delete(BlobImage.class, imageId);
     }
 
-    public PokerChip getPokerChip(long chipId) {
-        return ebeanServer.find(PokerChip.class, chipId);
+    public Optional<PokerChip> getPokerChip(long chipId) {
+        return Optional.ofNullable(ebeanServer.find(PokerChip.class, chipId));
     }
 
     public List<PokerChip> getPokerChipList(Query<PokerChip> filter) {
@@ -125,7 +123,7 @@ public class PokerChipDAO {
         return ebeanServer.findRowCount(pokerChipQuery, ebeanServer.currentTransaction());
     }
 
-    public Query<PokerChip> createPokerChipFilter() {
+    Query<PokerChip> createPokerChipFilter() {
         return ebeanServer.createQuery(PokerChip.class);
     }
 
@@ -159,10 +157,6 @@ public class PokerChipDAO {
         public Optional<Casino> findSingle() {
             Casino uniqueCasino = ebeanServer.findUnique(query.query(), ebeanServer.currentTransaction());
             return ofNullable(uniqueCasino);
-        }
-
-        public List<Casino> findList() {
-            return ebeanServer.findList(query.query(), ebeanServer.currentTransaction());
         }
     }
 
