@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Objects.*;
 
 @Slf4j
@@ -116,8 +115,11 @@ public class PokerChipBean {
         paidProperty = new MoneyAmountProperty(builder.paid);
         issueProperty = new SimpleStringProperty(builder.issue);
         notesProperty = new SimpleStringProperty(builder.notes);
-
-        setImages(newArrayList(builder.frontImage, builder.backImage));
+        frontImageProperty = new SimpleObjectProperty<>();
+        backImageProperty = new SimpleObjectProperty<>();
+        frontImageThumbnailView = new ImageView();
+        backImageThumbnailView = new ImageView();
+        backImageProperty = new SimpleObjectProperty<>();
     }
 
     private void initialisePropertiesListeners() {

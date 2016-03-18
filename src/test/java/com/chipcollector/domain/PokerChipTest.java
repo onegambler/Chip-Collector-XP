@@ -105,13 +105,13 @@ public class PokerChipTest {
     }
 
     @Test
-    public void whenSetFrontImageThenUpdateValueAndSetDirty() {
+    public void whenSetFrontImageThenUpdateValueAndSetImageChanged() {
         PokerChip pokerChip = buildTestInstance();
         assertThat(pokerChip.isDirty()).isFalse();
         pokerChip.setFrontImage(TEST_FRONT_IMAGE);
         assertThat(pokerChip.getFrontImage()).isPresent()
                 .contains(TEST_FRONT_IMAGE);
-        assertThat(pokerChip.isDirty()).isTrue();
+        assertThat(pokerChip.isImagesChanged()).isTrue();
     }
 
     @Test

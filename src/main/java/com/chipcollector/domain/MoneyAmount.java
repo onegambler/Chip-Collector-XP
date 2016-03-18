@@ -53,7 +53,7 @@ public class MoneyAmount {
         return String.format("%s %s", this.getCurrency().getSymbol(), FORMATTER.format(this.getAmount()));
     }
 
-    private static final DecimalFormat FORMATTER = new DecimalFormat("###,###.##", DecimalFormatSymbols.getInstance());
+    private static final DecimalFormat FORMATTER = new DecimalFormat("###,###.###", DecimalFormatSymbols.getInstance());
 
     static {
         FORMATTER.setParseBigDecimal(true);

@@ -19,6 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.chipcollector.test.util.PokerChipTestUtil.createTestPokerChip;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -42,14 +43,14 @@ public class PokerChipCollectionTest {
 
     @Test
     public void whenAddPokerChipThenWillPersistIt() {
-        PokerChip pokerChipTestInstance = getPokerChipTestInstance();
+        PokerChip pokerChipTestInstance = createTestPokerChip();
         underTest.add(pokerChipTestInstance);
         verify(pokerChipDAO).savePokerChip(pokerChipTestInstance);
     }
 
     @Test
     public void whenListenerIsRegisteredAndPokerChipIsAddedThenListenerIsNotified() {
-        PokerChip pokerChipTestInstance = getPokerChipTestInstance();
+        PokerChip pokerChipTestInstance = createTestPokerChip();
         Listener listener = mock(Listener.class);
         underTest.addUpdateListener(listener);
         underTest.add(pokerChipTestInstance);
@@ -58,7 +59,7 @@ public class PokerChipCollectionTest {
 
     @Test
     public void whenListenerIsRegisteredAndPokerChipIsUpdatedThenListenerIsNotified() {
-        PokerChip pokerChipTestInstance = getPokerChipTestInstance();
+        PokerChip pokerChipTestInstance = createTestPokerChip();
         Listener listener = mock(Listener.class);
         underTest.addUpdateListener(listener);
         underTest.update(new PokerChipBean(pokerChipTestInstance));
@@ -253,10 +254,6 @@ public class PokerChipCollectionTest {
         final String countryName = "countryName";
         underTest.getCountryFromName(countryName);
         verify(pokerChipDAO).getCountry(countryName);
-    }
-
-    public PokerChip getPokerChipTestInstance() {
-        return PokerChip.builder().build();
     }
 
     public Casino getCasinoTestInstance() {

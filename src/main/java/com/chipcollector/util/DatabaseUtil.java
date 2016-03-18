@@ -16,13 +16,19 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 public class DatabaseUtil {
-    private static final int LATEST_DATABASE_VERSION = 1;
+    private static final int DEFAULT_DATABASE_VERSION = 1;
 
     private final DdlGenerator generator;
     private EbeanServer server;
+    private int latestDatabaseVersion;
 
     public DatabaseUtil(EbeanServer server) {
+        this(server, DEFAULT_DATABASE_VERSION);
+    }
+
+    DatabaseUtil(EbeanServer server, int latestDatabaseVersion) {
         this.server = server;
+        this.latestDatabaseVersion = latestDatabaseVersion;
         final ServerConfig serverConfig = new ServerConfig();
         serverConfig.setDatabasePlatform(new SQLitePlatform());
         generator = new DdlGenerator((SpiEbeanServer) server, serverConfig);
@@ -30,7 +36,7 @@ public class DatabaseUtil {
 
     public void tryDatabaseUpdate() {
         try {
-            updateDatabase(LATEST_DATABASE_VERSION);
+            updateDatabase(latestDatabaseVersion);
         } catch (IOException e) {
             Throwables.propagate(e);
         }

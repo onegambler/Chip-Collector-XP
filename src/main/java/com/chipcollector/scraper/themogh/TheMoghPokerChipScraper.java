@@ -12,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -161,15 +160,6 @@ public class TheMoghPokerChipScraper {
                 }
             }
         }
-    }
-
-    private LocalDate parseDate(String stringDate) {
-        requireNonNull(stringDate, "Date cannot be null");
-        if (stringDate.matches(MM_DD_YYYY_DATE_MATCHING_REGEX)) {
-            return LocalDate.parse(stringDate, DATE_FORMAT);
-        }
-
-        return null;
     }
 
     private String convertToCamelCase(Matcher matcher) {

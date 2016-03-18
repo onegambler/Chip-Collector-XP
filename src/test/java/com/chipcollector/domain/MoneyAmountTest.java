@@ -19,7 +19,6 @@ public class MoneyAmountTest {
 
     @Test
     public void parseReturnsCorrectMoneyAmountInstanceWithUSLocale() {
-        Locale.setDefault(Locale.US);
         final MoneyAmount moneyAmount = MoneyAmount.parse("£ 5,678.22");
         assertThat(moneyAmount.getAmount()).isEqualTo(new BigDecimal("5678.22"));
         assertThat(moneyAmount.getCurrency()).isEqualTo(Currency.POUND);
@@ -27,7 +26,7 @@ public class MoneyAmountTest {
 
     @Test
     public void parseWithoutCurrencyReturnsMoneyAmountWithDefaultCurrency() {
-        Locale.setDefault(Locale.US);
+
         final MoneyAmount moneyAmount = MoneyAmount.parse("5,678.22");
         assertThat(moneyAmount.getAmount()).isEqualTo(new BigDecimal("5678.22"));
         assertThat(moneyAmount.getCurrency()).isEqualTo(Currency.DOLLAR);
@@ -35,7 +34,7 @@ public class MoneyAmountTest {
 
     @Test
     public void parseWithoutCommasReturnsCorrectValue() {
-        Locale.setDefault(Locale.US);
+
         final MoneyAmount moneyAmount = MoneyAmount.parse("£ 5678.22");
         assertThat(moneyAmount.getAmount()).isEqualTo(new BigDecimal("5678.22"));
         assertThat(moneyAmount.getCurrency()).isEqualTo(Currency.POUND);

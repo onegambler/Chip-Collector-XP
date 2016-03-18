@@ -16,7 +16,7 @@ public class MoneyStringConverterTest {
     private MoneyStringConverter converter = new MoneyStringConverter();
 
     @BeforeClass
-    public void setUp() {
+    public static void setUp() {
         Locale.setDefault(Locale.US);
     }
 
