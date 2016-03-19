@@ -5,6 +5,10 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class MoneyAmountProperty extends SimpleObjectProperty<MoneyAmount> {
 
+    public MoneyAmountProperty() {
+        super();
+    }
+
     public MoneyAmountProperty(MoneyAmount initialValue) {
         super(initialValue);
     }

@@ -105,16 +105,16 @@ public class PokerChipBean {
         yearProperty = new SimpleStringProperty(builder.year);
 
         tcrIdProperty = new SimpleStringProperty(builder.tcrId);
-        obsoleteProperty = new SimpleBooleanProperty(builder.obsolete);
-        cancelledProperty = new SimpleBooleanProperty(builder.cancelled);
-        conditionProperty = new SimpleStringProperty(builder.condition);
-        categoryProperty = new SimpleStringProperty(builder.category);
-        rarityProperty = new SimpleObjectProperty<>(builder.rarity);
-        dateOfAcquisitionProperty = new SimpleObjectProperty<>(builder.dateOfAcquisition);
-        valueProperty = new MoneyAmountProperty(builder.value);
-        paidProperty = new MoneyAmountProperty(builder.paid);
-        issueProperty = new SimpleStringProperty(builder.issue);
-        notesProperty = new SimpleStringProperty(builder.notes);
+        obsoleteProperty = new SimpleBooleanProperty();
+        cancelledProperty = new SimpleBooleanProperty();
+        conditionProperty = new SimpleStringProperty();
+        categoryProperty = new SimpleStringProperty();
+        rarityProperty = new SimpleObjectProperty<>();
+        dateOfAcquisitionProperty = new SimpleObjectProperty<>();
+        valueProperty = new MoneyAmountProperty();
+        paidProperty = new MoneyAmountProperty();
+        issueProperty = new SimpleStringProperty();
+        notesProperty = new SimpleStringProperty();
         frontImageProperty = new SimpleObjectProperty<>();
         backImageProperty = new SimpleObjectProperty<>();
         frontImageThumbnailView = new ImageView();
@@ -148,8 +148,6 @@ public class PokerChipBean {
         addPropertyListener(backImageProperty, image ->
                 pokerChip.setBackImage(getBlobImageFromImageAndHandleException(image))
         );
-
-
     }
 
     private BlobImage getBlobImageFromImageAndHandleException(Image image) {
@@ -281,6 +279,7 @@ public class PokerChipBean {
         return casinoBean;
     }
 
+    @FXML
     public String getCasinoName() {
         return casinoBean.getName();
     }
@@ -330,18 +329,6 @@ public class PokerChipBean {
         private String mold;
         private String tcrId;
         private String year;
-        private String category;
-        private String condition;
-        private Rarity rarity;
-        private byte[] frontImage;
-        private byte[] backImage;
-        private boolean obsolete;
-        private boolean cancelled;
-        private MoneyAmount value;
-        private MoneyAmount paid;
-        private LocalDate dateOfAcquisition;
-        private String issue;
-        private String notes;
 
         public PokerChipBeanBuilder casino(CasinoBean casino) {
             this.casinoBean = casino;
@@ -380,66 +367,6 @@ public class PokerChipBean {
 
         public PokerChipBeanBuilder year(String year) {
             this.year = year;
-            return this;
-        }
-
-        public PokerChipBeanBuilder frontImage(byte[] frontImage) {
-            this.frontImage = frontImage;
-            return this;
-        }
-
-        public PokerChipBeanBuilder backImage(byte[] backImage) {
-            this.backImage = backImage;
-            return this;
-        }
-
-        public PokerChipBeanBuilder obsolete(boolean obsolete) {
-            this.obsolete = obsolete;
-            return this;
-        }
-
-        public PokerChipBeanBuilder cancelled(boolean cancelled) {
-            this.cancelled = cancelled;
-            return this;
-        }
-
-        public PokerChipBeanBuilder category(String category) {
-            this.category = category;
-            return this;
-        }
-
-        public PokerChipBeanBuilder condition(String condition) {
-            this.condition = condition;
-            return this;
-        }
-
-        public PokerChipBeanBuilder rarity(Rarity rarity) {
-            this.rarity = rarity;
-            return this;
-        }
-
-        public PokerChipBeanBuilder notes(String notes) {
-            this.notes = notes;
-            return this;
-        }
-
-        public PokerChipBeanBuilder issue(String issue) {
-            this.issue = issue;
-            return this;
-        }
-
-        public PokerChipBeanBuilder value(MoneyAmount value) {
-            this.value = value;
-            return this;
-        }
-
-        public PokerChipBeanBuilder paid(MoneyAmount paid) {
-            this.paid = paid;
-            return this;
-        }
-
-        public PokerChipBeanBuilder dateOfAcquisition(LocalDate dateOfAcquisition) {
-            this.dateOfAcquisition = dateOfAcquisition;
             return this;
         }
 

@@ -69,12 +69,12 @@ public class Casino {
     }
 
     public String getState() {
-        return getLocation().map(Location::getState).orElse("-");
+        return getLocation().map(Location::getState).orElse(DASH_STRING);
     }
 
 
     public String getCity() {
-        return getLocation().map(Location::getCity).orElse("-");
+        return getLocation().map(Location::getCity).orElse(DASH_STRING);
     }
 
     public String toString() {
@@ -82,4 +82,5 @@ public class Casino {
     }
 
     static String UNKNOWN_COUNTRY_KEY = "domain.country.unknown";
+    private static final String DASH_STRING = "-";
 }

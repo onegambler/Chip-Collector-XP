@@ -1,6 +1,8 @@
 package com.chipcollector.util;
 
 import com.google.common.collect.ImmutableSet;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
@@ -10,6 +12,7 @@ import static java.util.Objects.isNull;
 
 public class StringUtils {
 
+    @Nullable
     public static String toCamelCase(final String string, Character... camelCaseDelimiter) {
         if (isNull(string)) {
             return null;

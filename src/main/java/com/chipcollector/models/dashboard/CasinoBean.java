@@ -1,13 +1,8 @@
 package com.chipcollector.models.dashboard;
 
 import com.chipcollector.domain.Casino;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 public class CasinoBean {
 
@@ -22,8 +17,6 @@ public class CasinoBean {
 
     private SimpleStringProperty openDate;
     private SimpleStringProperty closeDate;
-
-    private String infoPageUrl;
 
     public CasinoBean() {
         name = new SimpleStringProperty();
@@ -55,10 +48,6 @@ public class CasinoBean {
         return name.get();
     }
 
-    public StringProperty nameProperty() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name.set(name);
     }
@@ -67,17 +56,8 @@ public class CasinoBean {
         return city.get();
     }
 
-    public StringProperty cityProperty() {
-        return city;
-    }
-
     public void setCity(String city) {
         this.city.set(city);
-    }
-
-
-    public StringProperty stateProperty() {
-        return state;
     }
 
     public void setState(String state) {
@@ -88,10 +68,6 @@ public class CasinoBean {
         return country.get();
     }
 
-    public StringProperty countryProperty() {
-        return country;
-    }
-
     public void setCountry(String country) {
         this.country.set(country);
     }
@@ -100,20 +76,8 @@ public class CasinoBean {
         return website.get();
     }
 
-    public StringProperty websiteProperty() {
-        return website;
-    }
-
     public void setWebsite(String website) {
         this.website.set(website);
-    }
-
-    public String getInfoPageUrl() {
-        return infoPageUrl;
-    }
-
-    public void setInfoPageUrl(String infoPageUrl) {
-        this.infoPageUrl = infoPageUrl;
     }
 
     public String getState() {
@@ -127,10 +91,6 @@ public class CasinoBean {
 
     public void setOldName(String oldName) {
         this.oldName.setValue(oldName);
-    }
-
-    public String getOldName() {
-        return oldName.get();
     }
 
     public void setOpenDate(String openDate) {

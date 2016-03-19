@@ -11,8 +11,8 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class CasinoTreeRoot extends TreeItem<Object> {
@@ -24,10 +24,9 @@ public class CasinoTreeRoot extends TreeItem<Object> {
         final Map<Long, Item> casinoTreeMap = new HashMap<>();
 
         for (Casino casino : casinos) {
-            Optional<Location> location = casino.getLocation();
-            if (location.isPresent()) {
-                Country country = location.get().getCountry();
-                String cityName = location.get().getCity();
+            Country country = casino.getLocation().map(Location::getCountry).orElse(null);
+            String cityName = casino.getLocation().map(Location::getCity).orElse(null);
+            if (nonNull(country) && nonNull(cityName)) {
 
                 Item countryItem = casinoTreeMap.computeIfAbsent(country.getId(), id -> createCountryItem(country));
                 Item cityItem = countryItem

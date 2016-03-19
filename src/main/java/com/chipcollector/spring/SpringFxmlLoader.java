@@ -23,7 +23,7 @@ public class SpringFxmlLoader implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
-    private final ResourceBundle bundle = ResourceBundle.getBundle("DisplayStrings", Locale.ENGLISH);
+    private final ResourceBundle bundle = ResourceBundle.getBundle("DisplayStrings", Locale.getDefault());
 
     public <T> T load(String url) {
         try {
