@@ -1,9 +1,9 @@
-package com.chipcollector.models.dashboard;
+package com.chipcollector.model.dashboard;
 
 import com.chipcollector.domain.BlobImage;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.domain.Rarity;
-import com.chipcollector.models.core.MoneyAmountProperty;
+import com.chipcollector.model.core.MoneyAmountProperty;
 import com.chipcollector.util.ImageConverter;
 import com.google.common.base.Throwables;
 import javafx.beans.property.*;

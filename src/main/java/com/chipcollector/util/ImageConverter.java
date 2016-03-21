@@ -7,21 +7,12 @@ import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static java.util.Objects.requireNonNull;
 
 public class ImageConverter {
-
-    public static BufferedImage rawBytesToBufferedImage(byte[] bytes) throws IOException {
-        requireNonNull(bytes, "Image byte array cannot be null");
-        try (InputStream inputStream = new ByteArrayInputStream(bytes)) {
-            return ImageIO.read(inputStream);
-        }
-    }
 
     public static byte[] bufferedImageToRawBytes(BufferedImage image, String format) throws IOException {
         requireNonNull(image, "Image cannot be null");
@@ -30,17 +21,6 @@ public class ImageConverter {
             ImageIO.write(image, format, baos);
             return baos.toByteArray();
         }
-    }
-
-    public static byte[] imageToRawBytes(Image image, String format) throws IOException {
-        requireNonNull(image, "Image cannot be null");
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        return bufferedImageToRawBytes(bufferedImage, format);
-    }
-
-
-    public static Image rawBytesToImage(byte[] imageByteArray) throws IOException {
-        return SwingFXUtils.toFXImage(rawBytesToBufferedImage(imageByteArray), null);
     }
 
     public static BufferedImage resizeImage(BufferedImage bufferedImage, int targetSize) {

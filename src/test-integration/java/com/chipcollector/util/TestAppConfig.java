@@ -1,4 +1,4 @@
-package com.chipcollector.test.util;
+package com.chipcollector.util;
 
 import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.spring.TestProfile;

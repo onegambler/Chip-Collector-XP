@@ -1,4 +1,4 @@
-package com.chipcollector.models.core;
+package com.chipcollector.model.core;
 
 import com.chipcollector.domain.MoneyAmount;
 import javafx.beans.property.SimpleObjectProperty;

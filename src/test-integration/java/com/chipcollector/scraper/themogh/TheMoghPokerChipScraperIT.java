@@ -1,6 +1,6 @@
 package com.chipcollector.scraper.themogh;
 
-import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.model.dashboard.PokerChipBean;
 import org.junit.Test;
 
 import java.util.List;

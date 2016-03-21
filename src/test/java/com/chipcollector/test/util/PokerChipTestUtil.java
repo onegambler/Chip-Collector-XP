@@ -51,7 +51,7 @@ public class PokerChipTestUtil {
     public static PokerChip.PokerChipBuilder createTestPokerChipBuilder(Casino casino, String tcrId) {
 
         return PokerChip.builder()
-                .acquisitionDate(LocalDate.now())
+                .acquisitionDate(TEST_ACQUISITION_DATE)
                 .amountPaid(TEST_POKER_CHIP_AMOUNT_PAID)
                 .amountValue(TEST_POKER_CHIP_AMOUNT_VALUE)
                 .backImage(createTestBlobImage())
@@ -115,6 +115,7 @@ public class PokerChipTestUtil {
     public static final boolean TEST_POKER_CHIP_OBSOLETE = true;
     public static final Rarity TEST_POKER_CHIP_RARITY = R_1;
     public static final String TEST_POKER_CHIP_YEAR = "1900";
+    public static final LocalDate TEST_ACQUISITION_DATE = LocalDate.now();
 
     public static final String TEST_IMAGE = "images/java_logo.png";
 }

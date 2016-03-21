@@ -1,7 +1,7 @@
 package com.chipcollector.scraper;
 
-import com.chipcollector.models.dashboard.CasinoBean;
-import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.model.dashboard.CasinoBean;
+import com.chipcollector.model.dashboard.PokerChipBean;
 import com.chipcollector.scraper.themogh.TheMoghCasinoScraper;
 import com.chipcollector.scraper.themogh.TheMoghPokerChipScraper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 

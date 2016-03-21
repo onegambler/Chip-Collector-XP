@@ -1,6 +1,6 @@
 package com.chipcollector.scraper.themogh;
 
-import com.chipcollector.models.dashboard.CasinoBean;
+import com.chipcollector.model.dashboard.CasinoBean;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

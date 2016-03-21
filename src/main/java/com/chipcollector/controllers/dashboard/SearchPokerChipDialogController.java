@@ -1,7 +1,7 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.models.dashboard.CasinoBean;
-import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.model.dashboard.CasinoBean;
+import com.chipcollector.model.dashboard.PokerChipBean;
 import com.chipcollector.scraper.ScraperEngine;
 import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.util.MessagesHelper;

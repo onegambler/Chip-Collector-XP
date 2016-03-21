@@ -1,6 +1,6 @@
 package com.chipcollector.scraper.themogh;
 
-import com.chipcollector.models.dashboard.CasinoBean;
+import com.chipcollector.model.dashboard.CasinoBean;
 import com.google.common.collect.ImmutableSet;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

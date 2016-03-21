@@ -1,6 +1,6 @@
 package com.chipcollector.scraper;
 
-import com.chipcollector.models.dashboard.CasinoBean;
+import com.chipcollector.model.dashboard.CasinoBean;
 import com.chipcollector.scraper.themogh.TheMoghCasinoScraper;
 import com.chipcollector.scraper.themogh.TheMoghPokerChipScraper;
 import org.junit.Before;

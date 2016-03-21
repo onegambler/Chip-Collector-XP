@@ -3,7 +3,7 @@ package com.chipcollector.controllers.dashboard;
 import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.data.configuration.ApplicationProperties;
 import com.chipcollector.domain.Casino;
-import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.model.dashboard.PokerChipBean;
 import com.chipcollector.spring.SpringFxmlLoader;
 import javafx.collections.FXCollections;
 import javafx.event.Event;

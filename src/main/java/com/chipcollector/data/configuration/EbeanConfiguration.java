@@ -25,7 +25,12 @@ public class EbeanConfiguration extends AbstractConfiguration {
     @Override
     protected void addPropertyDirect(String key, Object value) {
 
-        Property property = ebeanServer.find(Property.class).where().eq(KEY_COLUMN, key).findUnique();
+        Property property = ebeanServer
+                .find(Property.class)
+                .where()
+                .eq(KEY_COLUMN, key)
+                .setUseQueryCache(true)
+                .findUnique();
 
         if (isNull(property)) {
             property = new Property(key);
@@ -37,18 +42,26 @@ public class EbeanConfiguration extends AbstractConfiguration {
 
     @Override
     public boolean isEmpty() {
-        return ebeanServer.createQuery(Property.class).findRowCount() == 0;
+        return ebeanServer.createQuery(Property.class)
+                .setUseQueryCache(true)
+                .findRowCount() == 0;
     }
 
     @Override
     public boolean containsKey(String key) {
-        return ebeanServer.find(Property.class).where().eq(KEY_COLUMN, key).findRowCount() > 0;
+        return ebeanServer.find(Property.class)
+                .where()
+                .eq(KEY_COLUMN, key)
+                .setUseQueryCache(true)
+                .findRowCount() > 0;
     }
 
     @Override
     public Object getProperty(String keyName) {
         final Property property = ebeanServer.createQuery(Property.class)
-                .where().eq(KEY_COLUMN, keyName).findUnique();
+                .where().eq(KEY_COLUMN, keyName)
+                .setUseQueryCache(true)
+                .findUnique();
 
         final List<Object> result = new ArrayList<>();
         Optional.ofNullable(property).map(Property::getValue)

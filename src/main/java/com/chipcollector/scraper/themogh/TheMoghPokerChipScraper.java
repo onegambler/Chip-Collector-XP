@@ -1,8 +1,8 @@
 package com.chipcollector.scraper.themogh;
 
-import com.chipcollector.models.dashboard.CasinoBean;
-import com.chipcollector.models.dashboard.PokerChipBean;
-import com.chipcollector.models.dashboard.PokerChipBean.PokerChipBeanBuilder;
+import com.chipcollector.model.dashboard.CasinoBean;
+import com.chipcollector.model.dashboard.PokerChipBean;
+import com.chipcollector.model.dashboard.PokerChipBean.PokerChipBeanBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

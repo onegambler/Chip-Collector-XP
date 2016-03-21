@@ -1,8 +1,10 @@
-package com.chipcollector.models.dashboard;
+package com.chipcollector.model.dashboard;
 
 import com.chipcollector.domain.Casino;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
+import java.util.Objects;
 
 public class CasinoBean {
 
@@ -123,5 +125,37 @@ public class CasinoBean {
 
     public void setStatus(String status) {
         this.status.setValue(status);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CasinoBean that = (CasinoBean) o;
+        return Objects.equals(name.get(), that.name.get()) &&
+                Objects.equals(city.get(), that.city.get()) &&
+                Objects.equals(state.get(), that.state.get()) &&
+                Objects.equals(country.get(), that.country.get()) &&
+                Objects.equals(website.get(), that.website.get()) &&
+                Objects.equals(oldName.get(), that.oldName.get()) &&
+                Objects.equals(status.get(), that.status.get()) &&
+                Objects.equals(type.get(), that.type.get()) &&
+                Objects.equals(openDate.get(), that.openDate.get()) &&
+                Objects.equals(closeDate.get(), that.closeDate.get());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                name.get(),
+                city.get(),
+                state.get(),
+                country.get(),
+                website.get(),
+                oldName.get(),
+                status.get(),
+                type.get(),
+                openDate.get(),
+                closeDate.get());
     }
 }

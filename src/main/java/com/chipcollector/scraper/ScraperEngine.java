@@ -1,7 +1,7 @@
 package com.chipcollector.scraper;
 
-import com.chipcollector.models.dashboard.CasinoBean;
-import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.model.dashboard.CasinoBean;
+import com.chipcollector.model.dashboard.PokerChipBean;
 
 import java.io.IOException;
 import java.util.List;
