@@ -1,7 +1,6 @@
 package com.chipcollector.models.dashboard;
 
 import com.chipcollector.domain.BlobImage;
-import com.chipcollector.domain.MoneyAmount;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.domain.Rarity;
 import com.chipcollector.models.core.MoneyAmountProperty;
@@ -103,14 +102,13 @@ public class PokerChipBean {
         moldProperty = new SimpleStringProperty(builder.mold);
         tcrIdProperty = new SimpleStringProperty(builder.tcrId);
         yearProperty = new SimpleStringProperty(builder.year);
+        dateOfAcquisitionProperty = new SimpleObjectProperty<>(builder.acquisitionDate);
 
-        tcrIdProperty = new SimpleStringProperty(builder.tcrId);
         obsoleteProperty = new SimpleBooleanProperty();
         cancelledProperty = new SimpleBooleanProperty();
         conditionProperty = new SimpleStringProperty();
         categoryProperty = new SimpleStringProperty();
         rarityProperty = new SimpleObjectProperty<>();
-        dateOfAcquisitionProperty = new SimpleObjectProperty<>();
         valueProperty = new MoneyAmountProperty();
         paidProperty = new MoneyAmountProperty();
         issueProperty = new SimpleStringProperty();
@@ -329,6 +327,7 @@ public class PokerChipBean {
         private String mold;
         private String tcrId;
         private String year;
+        private LocalDate acquisitionDate = LocalDate.now();
 
         public PokerChipBeanBuilder casino(CasinoBean casino) {
             this.casinoBean = casino;

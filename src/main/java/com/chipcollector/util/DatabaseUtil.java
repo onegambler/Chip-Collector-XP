@@ -26,7 +26,7 @@ public class DatabaseUtil {
         this(server, DEFAULT_DATABASE_VERSION);
     }
 
-    DatabaseUtil(EbeanServer server, int latestDatabaseVersion) {
+    public DatabaseUtil(EbeanServer server, int latestDatabaseVersion) {
         this.server = server;
         this.latestDatabaseVersion = latestDatabaseVersion;
         final ServerConfig serverConfig = new ServerConfig();
@@ -45,7 +45,7 @@ public class DatabaseUtil {
     private void updateDatabase(int latestVersion) throws IOException {
         int currentVersion;
         if (databaseExists()) {
-            Property databaseVersion = server.createQuery(Property.class).where("key = 'db_version'").findUnique();
+            Property databaseVersion = server.createQuery(Property.class).where("key = 'db.version'").findUnique();
             requireNonNull(databaseVersion, "Impossible to load current database version");
             currentVersion = Integer.valueOf(databaseVersion.getValue());
         } else {

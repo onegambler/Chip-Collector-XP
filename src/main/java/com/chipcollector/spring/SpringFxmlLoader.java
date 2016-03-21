@@ -5,7 +5,6 @@ import com.google.common.io.Resources;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.springframework.beans.BeansException;
@@ -17,6 +16,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+
+import static javafx.stage.Modality.APPLICATION_MODAL;
 
 @Component
 public class SpringFxmlLoader implements ApplicationContextAware {
@@ -46,7 +47,7 @@ public class SpringFxmlLoader implements ApplicationContextAware {
         FXMLLoader loader = getLoader(dialogFile);
         Stage dialogStage = getStage(loader, title);
         dialogStage.setTitle(title);
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.initModality(APPLICATION_MODAL);
         controllerConsumer.accept(loader.getController());
         dialogStage.initOwner(dialogOwner);
         dialogStage.setResizable(resizeable);
@@ -54,12 +55,13 @@ public class SpringFxmlLoader implements ApplicationContextAware {
     }
 
     public void showDialog(String dialogFile, String title, boolean resizeable, Window dialogOwner) {
-        showDialog(dialogFile, title, dialogOwner, resizeable, o -> {});
+        showDialog(dialogFile, title, dialogOwner, resizeable, o -> {
+        });
     }
 
-    public void show(String fxmlFile, String title) {
+    public Stage getStage(String fxmlFile, String title) {
         FXMLLoader loader = getLoader(fxmlFile);
-        getStage(loader, title).show();
+        return getStage(loader, title);
     }
 
     private Stage getStage(FXMLLoader loader, String title) {

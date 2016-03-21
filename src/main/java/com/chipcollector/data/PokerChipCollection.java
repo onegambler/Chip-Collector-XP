@@ -8,6 +8,7 @@ import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
 import com.chipcollector.models.dashboard.CasinoBean;
 import com.chipcollector.models.dashboard.PokerChipBean;
+import com.chipcollector.spring.MainProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 import static java.time.LocalDateTime.now;
 
 @Component
+@MainProfile
 public class PokerChipCollection {
 
     private final PokerChipDAO pokerChipDAO;
@@ -48,11 +50,17 @@ public class PokerChipCollection {
     }
 
     public int getPokerChipCountForLast7Days() {
-        return pokerChipDAO.getPokerChipCount(pokerChipDAO.createPokerChipFilter().where().gt("acquisitionDate", now().minusDays(7)).query());
+        final Query<PokerChip> last7DaysPokerChipFilter = pokerChipDAO.createPokerChipFilter()
+                .where().gt("acquisitionDate", now().minusDays(7))
+                .query();
+        return pokerChipDAO.getPokerChipCount(last7DaysPokerChipFilter);
     }
 
     public int getPokerChipCountForLastMonth() {
-        return pokerChipDAO.getPokerChipCount(pokerChipDAO.createPokerChipFilter().where().gt("acquisitionDate", now().minusMonths(1)).query());
+        final Query<PokerChip> lastMonthPokerChipFilter = pokerChipDAO.createPokerChipFilter()
+                .where().gt("acquisitionDate", now().minusMonths(1))
+                .query();
+        return pokerChipDAO.getPokerChipCount(lastMonthPokerChipFilter);
     }
 
     public int getAllCasinosCount() {

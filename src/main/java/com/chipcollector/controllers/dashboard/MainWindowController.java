@@ -1,7 +1,7 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.data.ApplicationProperties;
 import com.chipcollector.data.PokerChipCollection;
+import com.chipcollector.data.configuration.ApplicationProperties;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.models.dashboard.PokerChipBean;
 import com.chipcollector.spring.SpringFxmlLoader;
@@ -64,7 +64,6 @@ public class MainWindowController implements Initializable {
         setUpTablePagination();
         setUpPokerChipTable();
         setUpCasinoTreeView();
-        loadDatabase();
         dashboardController.registerViewAllAction(event -> showAllPokerChipsPane());
         pokerChipCollection.addUpdateListener(this::updateWindow);
         showDashboardPane();
@@ -75,13 +74,6 @@ public class MainWindowController implements Initializable {
         setUpTablePagination();
         dashboardController.updateWindow();
 
-    }
-
-    private void loadDatabase() {
-        settings.getLastUsedDatabase().ifPresent(s ->
-        {
-            //pokerChipCollection.load();
-        });
     }
 
     private void setUpCasinoTreeView() {

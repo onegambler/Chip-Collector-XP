@@ -295,6 +295,20 @@ public class PokerChipDAOIT extends DatabaseIntegrationTest {
         assertThat(found).contains(casinoToBeFound);
     }
 
+    @Test
+    public void getDistinctValueSetWorksCorrectly() {
+        pokerChipDAO.savePokerChip(createTestPokerChip());
+        pokerChipDAO.savePokerChip(createTestPokerChip());
+        pokerChipDAO.savePokerChip(createTestPokerChip());
+        pokerChipDAO.savePokerChip(createTestPokerChip());
+        pokerChipDAO.savePokerChip(createTestPokerChipBuilder(createTestCasino(), "tcrd").color("GREY").build());
+        final List<String> colorList = pokerChipDAO.getDistinctValueSet("color", PokerChip::getColor);
+
+        assertThat(colorList).hasSize(2).containsOnly("GREY", "BLUE");
+
+
+    }
+
     @After
     public void tearDown() {
         try {

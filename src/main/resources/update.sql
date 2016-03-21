@@ -1,12 +1,12 @@
 --countries
-alter table countries add column iso_alpha2 							varchar(2);
-alter table countries add column iso_alpha3 							varchar(3);
-alter table countries add column  iso_numeric                       integer(4);
-alter table countries add column  currency_code                     varchar(3);
-alter table countries add column  currency_name                     varchar(32);
-alter table countries add column currrency_symbol                  varchar(3);
+alter table countries add column    iso_alpha2 							varchar(2);
+alter table countries add column    iso_alpha3 							varchar(3);
+alter table countries add column    iso_numeric             integer(4);
+alter table countries add column    currency_code           varchar(3);
+alter table countries add column    currency_name           varchar(32);
+alter table countries add column    currency_symbol         varchar(3);
 alter table countries drop column   flag;
-alter table countries add column   flag_image                        varchar(3);
+alter table countries add column    flag_image              varchar(3);
 
 --poker chip images
 alter table chip_images drop column associations;

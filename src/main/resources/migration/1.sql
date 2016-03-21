@@ -6,7 +6,7 @@ CREATE TABLE countries (
   iso_numeric      INTEGER(4),
   currency_code    VARCHAR(3),
   currency_name    VARCHAR(32),
-  currrency_symbol VARCHAR(3),
+  currency_symbol  VARCHAR(3),
   flag_image       VARCHAR(3)
 );
 
@@ -74,9 +74,9 @@ CREATE TABLE properties (
   value VARCHAR(255)
 );
 
-INSERT INTO properties (id, key, value) VALUES (1, 'db_version', 1);
+INSERT INTO properties (id, key, value) VALUES (1, 'db.version', 1);
 
-INSERT INTO countries (id, name, iso_alpha2, iso_alpha3, iso_numeric, currency_code, currency_name, currrency_symbol, flag_image)
+INSERT INTO countries (id, name, iso_alpha2, iso_alpha3, iso_numeric, currency_code, currency_name, currency_symbol, flag_image)
 VALUES
   (1, 'Afghanistan', 'AF', 'AFG', 4, 'AFN', 'Afghani', '؋', 'AF.png'),
   (2, 'Albania', 'AL', 'ALB', 8, 'ALL', 'Lek', 'Lek', 'AL.png'),

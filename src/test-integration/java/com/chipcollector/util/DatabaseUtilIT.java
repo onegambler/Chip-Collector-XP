@@ -22,7 +22,23 @@ public class DatabaseUtilIT extends DatabaseIntegrationTest {
 
         assertThat(tables).containsOnly("sqlite_sequence", "poker_chips",
                 "casinos", "countries", "poker_chip_images", "locations", "properties");
-        Property databaseVersion = TEST_SERVER.createQuery(Property.class).where("key = 'db_version'").findUnique();
+        Property databaseVersion = TEST_SERVER.createQuery(Property.class).where().eq("key", "db.version").findUnique();
+        assertThat(databaseVersion).isNotNull();
+        assertThat(databaseVersion.getValue()).isEqualTo("1");
+    }
+
+    @Test
+    public void whenDatabaseExistsAndUpToDateThenDoNothing() {
+        databaseUtil.tryDatabaseUpdate();
+        databaseUtil.tryDatabaseUpdate();
+        databaseUtil.tryDatabaseUpdate();
+
+        List<String> tables = TEST_SERVER.createSqlQuery("SELECT name FROM sqlite_master WHERE type='table'")
+                .findSet().stream().map(sqlRow -> sqlRow.getString("name")).collect(Collectors.toList());
+
+        assertThat(tables).containsOnly("sqlite_sequence", "poker_chips",
+                "casinos", "countries", "poker_chip_images", "locations", "properties");
+        Property databaseVersion = TEST_SERVER.createQuery(Property.class).where().eq("key", "db.version").findUnique();
         assertThat(databaseVersion).isNotNull();
         assertThat(databaseVersion.getValue()).isEqualTo("1");
     }

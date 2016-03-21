@@ -5,6 +5,7 @@ import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Transactional;
 import com.chipcollector.domain.*;
+import com.chipcollector.spring.MainProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
 @Repository
+@MainProfile
 public class PokerChipDAO {
 
     private EbeanServer ebeanServer;
