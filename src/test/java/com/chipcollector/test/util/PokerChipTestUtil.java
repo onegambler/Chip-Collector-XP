@@ -102,10 +102,10 @@ public class PokerChipTestUtil {
     public static final MoneyAmount TEST_POKER_CHIP_AMOUNT_PAID = new MoneyAmount(DOLLAR, ONE);
     public static final MoneyAmount TEST_POKER_CHIP_AMOUNT_VALUE = new MoneyAmount(EURO, TEN);
     public static final boolean TEST_POKER_CHIP_CANCELLED = true;
-    public static final String TEST_POKER_CHIP_CATEGORY = "category";
+    public static final String TEST_POKER_CHIP_CATEGORY = "Poker";
 
     public static final String TEST_POKER_CHIP_COLOR = "BLUE";
-    public static final String TEST_POKER_CHIP_CONDITION = "New";
+    public static final String TEST_POKER_CHIP_CONDITION = "Uncirculated";
     public static final String TEST_POKER_CHIP_DENOM = "$ 1,00";
     public static final String TEST_POKER_CHIP_INLAY = "inlay";
     public static final String TEST_POKER_CHIP_INSERTS = "inserts";

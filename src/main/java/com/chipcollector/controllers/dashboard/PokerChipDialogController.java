@@ -200,6 +200,7 @@ public class PokerChipDialogController implements Initializable {
     private void updatePokerChipBeanFromUIProperties() {
         pokerChipBean.yearProperty().set(yearTextField.textProperty().get());
         pokerChipBean.cancelledProperty().set(cancelledToggleButton.selectedProperty().get());
+        pokerChipBean.obsoleteProperty().set(obsoleteToggleButton.selectedProperty().get());
         pokerChipBean.rarityProperty().set(rarityComboBox.valueProperty().get());
         pokerChipBean.colorProperty().set(colorComboBox.getEditor().textProperty().get());
         pokerChipBean.moldProperty().set(moldComboBox.getEditor().textProperty().get());
@@ -211,7 +212,6 @@ public class PokerChipDialogController implements Initializable {
         pokerChipBean.tcrIdProperty().set(tcrTextField.textProperty().get());
         pokerChipBean.notesProperty().set(notesTextArea.textProperty().get());
         pokerChipBean.denomProperty().set(denomComboBox.getEditor().textProperty().get());
-        pokerChipBean.obsoleteProperty().set(obsoleteToggleButton.selectedProperty().get());
         pokerChipBean.issueProperty().set(issueTextField.textProperty().get());
         if (!isNullOrEmpty(paidTextField.getText())) {
             pokerChipBean.paidProperty().set(MoneyAmount.parse(paidTextField.getText()));
@@ -238,16 +238,17 @@ public class PokerChipDialogController implements Initializable {
         });
 
         PokerChipBuilder pokerChipBuilder = PokerChip.builder()
-                .category(categoryComboBox.getEditor().getText())
+                .category(categoryComboBox.getValue())
                 .acquisitionDate(dateOfAcquisitionDatePicker.getValue())
                 .color(colorComboBox.getEditor().getText())
                 .inlay(inlayComboBox.getEditor().getText())
-                .condition(conditionComboBox.getEditor().getText())
+                .condition(conditionComboBox.getValue())
                 .denom(denomComboBox.getEditor().getText())
                 .inserts(insertsTextField.getText())
                 .mold(moldComboBox.getEditor().getText())
                 .notes(notesTextArea.getText())
                 .obsolete(obsoleteToggleButton.isSelected())
+                .cancelled(cancelledToggleButton.isSelected())
                 .rarity(rarityComboBox.getValue())
                 .tcrID(tcrTextField.getText())
                 .year(yearTextField.getText())

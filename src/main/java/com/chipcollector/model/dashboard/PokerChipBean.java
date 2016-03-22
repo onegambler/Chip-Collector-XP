@@ -12,16 +12,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import static com.chipcollector.util.ImageConverter.getImageFromByteArray;
 import static java.util.Objects.*;
 
 @Slf4j
@@ -55,6 +53,10 @@ public class PokerChipBean {
 
     private PokerChip pokerChip;
 
+    public PokerChipBean() {
+        this(PokerChipBean.builder().casino(new CasinoBean()));
+    }
+
     public PokerChipBean(PokerChip pokerChip) {
         this.pokerChip = pokerChip;
         casinoBean = new CasinoBean(pokerChip.getCasino());
@@ -78,15 +80,16 @@ public class PokerChipBean {
         backImageThumbnailView = new ImageView();
         valueProperty = new MoneyAmountProperty(pokerChip.getAmountValue());
         paidProperty = new MoneyAmountProperty(pokerChip.getAmountPaid());
-
+        frontImageProperty = new SimpleObjectProperty<>();
+        backImageProperty = new SimpleObjectProperty<>();
         pokerChip.getFrontImage().ifPresent(frontBlobImage ->
         {
-            frontImageProperty = getImageFromByteArray(frontBlobImage.getImage(), 120, 120);
+            frontImageProperty.set(getImageFromByteArray(frontBlobImage.getImage()));
             frontImageThumbnailView.setImage(getImageFromByteArray(frontBlobImage.getThumbnail()));
         });
         pokerChip.getBackImage().ifPresent(backBlobImage ->
         {
-            backImageProperty = getImageFromByteArray(backBlobImage.getImage(), 120, 120);
+            backImageProperty.set(getImageFromByteArray(backBlobImage.getImage()));
             backImageThumbnailView.setImage(getImageFromByteArray(backBlobImage.getThumbnail()));
         });
         initialisePropertiesListeners();
@@ -117,7 +120,6 @@ public class PokerChipBean {
         backImageProperty = new SimpleObjectProperty<>();
         frontImageThumbnailView = new ImageView();
         backImageThumbnailView = new ImageView();
-        backImageProperty = new SimpleObjectProperty<>();
     }
 
     private void initialisePropertiesListeners() {
@@ -168,12 +170,6 @@ public class PokerChipBean {
         return !Objects.equals(oldValue, newValue);
     }
 
-    @NotNull
-    private Image getImageFromByteArray(byte[] imageByteArray) {
-        InputStream byteArrayInputStream = new ByteArrayInputStream(imageByteArray);
-        return new Image(byteArrayInputStream);
-    }
-
     public StringProperty colorProperty() {
         return colorProperty;
     }
@@ -220,11 +216,6 @@ public class PokerChipBean {
         return backImageProperty;
     }
 
-    private SimpleObjectProperty<Image> getImageFromByteArray(byte[] imageBytes, double requestedWidth, double requestedHeight) {
-        final Image image = new Image(new ByteArrayInputStream(imageBytes), requestedWidth, requestedHeight, true, true);
-        return new SimpleObjectProperty<>(image);
-    }
-
     public BooleanProperty cancelledProperty() {
         return cancelledProperty;
     }
@@ -239,33 +230,28 @@ public class PokerChipBean {
 
     public void setImages(List<byte[]> pictures) {
         requireNonNull(pictures);
-        if (pictures.size() >= 1) {
-
-            if (!pictures.isEmpty()) {
-                final byte[] frontImageByteArray;
-                final byte[] backImageByteArray;
-                if (pictures.size() >= 2) {
-                    frontImageByteArray = pictures.get(0);
-                    backImageByteArray = pictures.get(1);
-                } else {
-                    backImageByteArray = pictures.get(0);
-                    frontImageByteArray = pictures.get(0);
-                }
-
-                frontImageProperty.set(getImageFromByteArray(frontImageByteArray));
-                backImageProperty.set(getImageFromByteArray(backImageByteArray));
-                setImageThumbnailIfNotNull(frontImageByteArray, frontImageThumbnailView);
-                setImageThumbnailIfNotNull(backImageByteArray, backImageThumbnailView);
+        if (!pictures.isEmpty()) {
+            final byte[] frontImageByteArray;
+            final byte[] backImageByteArray;
+            if (pictures.size() >= 2) {
+                frontImageByteArray = pictures.get(0);
+                backImageByteArray = pictures.get(1);
+            } else {
+                backImageByteArray = pictures.get(0);
+                frontImageByteArray = pictures.get(0);
             }
-        } else {
-            frontImageProperty = new SimpleObjectProperty<>();
-            backImageProperty = new SimpleObjectProperty<>();
+
+            frontImageProperty.set(getImageFromByteArray(frontImageByteArray));
+            backImageProperty.set(getImageFromByteArray(backImageByteArray));
+            setImageThumbnailIfNotNull(frontImageByteArray, frontImageThumbnailView);
+            setImageThumbnailIfNotNull(backImageByteArray, backImageThumbnailView);
+
         }
     }
 
     private void setImageThumbnailIfNotNull(byte[] imageByteArray, ImageView imageThumbnailView) {
         if (nonNull(imageByteArray)) {
-            imageThumbnailView.setImage(getImageFromByteArray(imageByteArray, 90, 90).getValue());
+            imageThumbnailView.setImage(getImageFromByteArray(imageByteArray));
         }
     }
 

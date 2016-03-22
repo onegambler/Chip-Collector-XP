@@ -21,6 +21,7 @@ public class AutoCompleteComboBoxListener<T> {
     private int lastLength;
 
     private static final List<KeyCode> IGNORED_KEYS = asList(BACK_SPACE, RIGHT, LEFT, HOME, DELETE, END, TAB);
+    private boolean strict;
 
     public AutoCompleteComboBoxListener(ComboBox<T> comboBox) {
         this.comboBox = comboBox;
@@ -31,9 +32,9 @@ public class AutoCompleteComboBoxListener<T> {
                     // this variable is used to bypass the auto complete process if the length is the same.
                     // this occurs if user types fast, the length of textfield will record after the user
                     // has typed after a certain delay.
-                    lastLength = comboBox.getEditor().getLength() - comboBox.getEditor().getSelectedText().length();
+                    lastLength = comboBox.getEditor().getLength();
 
-                    if (event.isControlDown() || IGNORED_KEYS.contains(event.getCode())) {
+                    if (lastLength < 3 || event.isControlDown() || IGNORED_KEYS.contains(event.getCode())) {
                         return;
                     }
 
@@ -119,7 +120,7 @@ public class AutoCompleteComboBoxListener<T> {
             comboBox.getEditor().end();
         }
 
-        if (!found) {
+        if (!found && strict) {
             comboBox.getEditor().setText(null);
             comboBox.getSelectionModel().select(null);
             comboBox.setValue(null);
@@ -132,4 +133,7 @@ public class AutoCompleteComboBoxListener<T> {
         }
     }
 
+    public void setStrict(boolean strict) {
+        this.strict = strict;
+    }
 }

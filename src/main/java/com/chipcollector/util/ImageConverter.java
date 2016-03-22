@@ -1,20 +1,24 @@
 package com.chipcollector.util;
 
 import com.chipcollector.domain.BlobImage;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import org.imgscalr.Scalr;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static java.util.Objects.requireNonNull;
 
 public class ImageConverter {
 
-    public static byte[] bufferedImageToRawBytes(BufferedImage image, String format) throws IOException {
+    public static byte[] getRawBytesFromBufferedImage(BufferedImage image, String format) throws IOException {
         requireNonNull(image, "Image cannot be null");
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1000)) {
@@ -23,22 +27,28 @@ public class ImageConverter {
         }
     }
 
-    public static BufferedImage resizeImage(BufferedImage bufferedImage, int targetSize) {
+    public static BufferedImage getResizedImage(BufferedImage bufferedImage, int targetSize) {
         return Scalr.resize(bufferedImage, targetSize);
     }
 
-    public static BufferedImage imageToBufferedImage(Image image) {
+    public static BufferedImage getBufferedImageFromImage(Image image) {
         return SwingFXUtils.fromFXImage(image, null);
     }
 
     public static BlobImage getBlobImageFromImage(Image image) throws IOException {
-        BufferedImage originalImage = ImageConverter.imageToBufferedImage(image);
-        byte[] thumbnail = bufferedImageToRawBytes(resizeImage(originalImage, 90), PNG_FORMAT);
-        byte[] resizedImage = bufferedImageToRawBytes(resizeImage(originalImage, 120), PNG_FORMAT);
+        BufferedImage originalImage = ImageConverter.getBufferedImageFromImage(image);
+        byte[] thumbnail = getRawBytesFromBufferedImage(getResizedImage(originalImage, 90), PNG_FORMAT);
+        byte[] resizedImage = getRawBytesFromBufferedImage(getResizedImage(originalImage, 120), PNG_FORMAT);
         BlobImage blobImage = new BlobImage();
         blobImage.setImage(resizedImage);
         blobImage.setThumbnail(thumbnail);
         return blobImage;
+    }
+
+    @NotNull
+    public static Image getImageFromByteArray(byte[] imageByteArray) {
+        InputStream byteArrayInputStream = new ByteArrayInputStream(imageByteArray);
+        return new Image(byteArrayInputStream);
     }
 
     public static final String PNG_FORMAT = "png";

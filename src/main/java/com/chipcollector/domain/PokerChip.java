@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -205,5 +206,37 @@ public class PokerChip {
     @Override
     public String toString() {
         return this.tcrID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PokerChip pokerChip = (PokerChip) o;
+        return obsolete == pokerChip.obsolete &&
+                cancelled == pokerChip.cancelled &&
+                Objects.equals(id, pokerChip.id) &&
+                Objects.equals(casino, pokerChip.casino) &&
+                Objects.equals(denom, pokerChip.denom) &&
+                Objects.equals(year, pokerChip.year) &&
+                Objects.equals(color, pokerChip.color) &&
+                Objects.equals(inserts, pokerChip.inserts) &&
+                Objects.equals(mold, pokerChip.mold) &&
+                Objects.equals(tcrID, pokerChip.tcrID) &&
+                Objects.equals(issue, pokerChip.issue) &&
+                Objects.equals(inlay, pokerChip.inlay) &&
+                rarity == pokerChip.rarity &&
+                Objects.equals(condition, pokerChip.condition) &&
+                Objects.equals(category, pokerChip.category) &&
+                Objects.equals(acquisitionDate, pokerChip.acquisitionDate) &&
+                Objects.equals(notes, pokerChip.notes) &&
+                Objects.equals(amountValue, pokerChip.amountValue) &&
+                Objects.equals(amountPaid, pokerChip.amountPaid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, casino, denom, year, color, inserts, mold, tcrID, issue, inlay, rarity, condition,
+                category, acquisitionDate, notes, amountValue, amountPaid, obsolete, cancelled);
     }
 }

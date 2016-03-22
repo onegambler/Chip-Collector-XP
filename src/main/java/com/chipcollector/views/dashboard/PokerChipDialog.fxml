@@ -72,8 +72,8 @@
     <bottom>
         <ButtonBar id="buttonBar" VBox.vgrow="NEVER">
             <buttons>
-                <Button fx:id="okButton" onAction="#onOkAction" text="OK" ButtonBar.buttonData="RIGHT"/>
-                <Button fx:id="cancelButton" onAction="#onCancelAction" text="Cancel" ButtonBar.buttonData="RIGHT"/>
+                <Button fx:id="okButton" onAction="#onOkAction" text="%button.OK" ButtonBar.buttonData="RIGHT"/>
+                <Button fx:id="cancelButton" onAction="#onCancelAction" text="%button.cancel" ButtonBar.buttonData="RIGHT"/>
             </buttons>
         </ButtonBar>
     </bottom>
@@ -114,12 +114,12 @@
                 <RowConstraints maxHeight="92.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Label text="Casino" GridPane.valignment="BOTTOM"/>
-                <Label text="Denom" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.casino" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.denom" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <ComboBox id="denomComboBox" fx:id="denomComboBox" prefWidth="200.0" GridPane.rowIndex="3"
                           editable="true"/>
-                <Label text="Issue" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
-                <Label text="Year" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.issue" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.year" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
                 <TextField id="issueTextField" fx:id="issueTextField" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
                 <ValidatableTextField fx:id="yearTextField" GridPane.columnIndex="4" GridPane.rowIndex="3" >
                     <constraints>
@@ -151,34 +151,34 @@
                                 prefHeight="25.0" prefWidth="25.0" text="+"/>
                     </children>
                 </HBox>
-                <Label text="Color" GridPane.rowIndex="4" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.color" GridPane.rowIndex="4" GridPane.valignment="BOTTOM"/>
                 <ComboBox fx:id="colorComboBox" prefWidth="300.0" GridPane.rowIndex="5" editable="true"/>
                 <Label alignment="BOTTOM_LEFT" text="Mold" GridPane.columnIndex="2" GridPane.rowIndex="4"
                        GridPane.valignment="BOTTOM"/>
                 <ComboBox fx:id="moldComboBox" prefWidth="300.0" GridPane.columnIndex="2" GridPane.columnSpan="7"
                           GridPane.rowIndex="5" editable="true"/>
                 <ComboBox fx:id="inlayComboBox" prefWidth="200.0" GridPane.rowIndex="7" editable="true"/>
-                <Label text="Inlay" GridPane.rowIndex="6" GridPane.valignment="BOTTOM"/>
-                <Label text="Inserts" GridPane.columnIndex="2" GridPane.rowIndex="6" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.inlay" GridPane.rowIndex="6" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.inserts" GridPane.columnIndex="2" GridPane.rowIndex="6" GridPane.valignment="BOTTOM"/>
                 <TextField fx:id="insertsTextField" GridPane.columnIndex="2" GridPane.columnSpan="7"
                            GridPane.rowIndex="7"/>
-                <Label text="Condition" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.rowIndex="8"
+                <Label text="%dialog.poker.chip.input.condition" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.rowIndex="8"
                        GridPane.valignment="BOTTOM"/>
-                <Label text="Category" GridPane.rowIndex="8" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.category" GridPane.rowIndex="8" GridPane.valignment="BOTTOM"/>
                 <ComboBox fx:id="conditionComboBox" prefWidth="200.0" GridPane.columnIndex="6" GridPane.columnSpan="3"
                           GridPane.rowIndex="9"/>
                 <ComboBox fx:id="categoryComboBox" prefWidth="300.0" GridPane.rowIndex="9"/>
-                <Label text="Rarity" GridPane.columnIndex="2" GridPane.rowIndex="8" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.rarity" GridPane.columnIndex="2" GridPane.rowIndex="8" GridPane.valignment="BOTTOM"/>
                 <ComboBox fx:id="rarityComboBox" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="3"
                           GridPane.rowIndex="9"/>
-                <Label text="TCR #" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.rowIndex="2"
+                <Label text="%dialog.poker.chip.input.tcrId" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.rowIndex="2"
                        GridPane.valignment="BOTTOM"/>
                 <TextField fx:id="valueTextField" GridPane.columnIndex="2" GridPane.columnSpan="4"
                            GridPane.rowIndex="11"/>
-                <Label text="Date of Acquisition" GridPane.rowIndex="10" GridPane.valignment="BOTTOM"/>
-                <Label text="Notes" GridPane.rowIndex="12"/>
+                <Label text="%dialog.poker.chip.input.acquisitionDate" GridPane.rowIndex="10" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.notes" GridPane.rowIndex="12"/>
                 <DatePicker fx:id="dateOfAcquisitionDatePicker" GridPane.rowIndex="11"/>
-                <Label text="Value" GridPane.columnIndex="2" GridPane.rowIndex="10" GridPane.valignment="BOTTOM"/>
+                <Label text="%dialog.poker.chip.input.value" GridPane.columnIndex="2" GridPane.rowIndex="10" GridPane.valignment="BOTTOM"/>
                 <TextField fx:id="tcrTextField" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.rowIndex="3"/>
                 <TextArea fx:id="notesTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="8"
                           GridPane.rowIndex="13" GridPane.rowSpan="7"/>
@@ -193,7 +193,7 @@
                                       minWidth="-Infinity" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0"/>
                     </children>
                 </VBox>
-                <Label text="Paid" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="10"/>
+                <Label text="%dialog.poker.chip.input.paid" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="10"/>
                 <TextField fx:id="paidTextField" GridPane.columnIndex="7" GridPane.columnSpan="2"
                            editable="true" GridPane.rowIndex="11"/>
             </children>
