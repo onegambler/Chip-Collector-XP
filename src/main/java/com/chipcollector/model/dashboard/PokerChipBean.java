@@ -251,7 +251,7 @@ public class PokerChipBean {
 
     private void setImageThumbnailIfNotNull(byte[] imageByteArray, ImageView imageThumbnailView) {
         if (nonNull(imageByteArray)) {
-            imageThumbnailView.setImage(getImageFromByteArray(imageByteArray));
+            imageThumbnailView.setImage(getImageFromByteArray(imageByteArray, 90, 90));
         }
     }
 

@@ -1,7 +1,6 @@
 package com.chipcollector.util;
 
 import com.chipcollector.domain.BlobImage;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import org.imgscalr.Scalr;
@@ -36,7 +35,7 @@ public class ImageConverter {
     }
 
     public static BlobImage getBlobImageFromImage(Image image) throws IOException {
-        BufferedImage originalImage = ImageConverter.getBufferedImageFromImage(image);
+        BufferedImage originalImage = getBufferedImageFromImage(image);
         byte[] thumbnail = getRawBytesFromBufferedImage(getResizedImage(originalImage, 90), PNG_FORMAT);
         byte[] resizedImage = getRawBytesFromBufferedImage(getResizedImage(originalImage, 120), PNG_FORMAT);
         BlobImage blobImage = new BlobImage();
@@ -49,6 +48,12 @@ public class ImageConverter {
     public static Image getImageFromByteArray(byte[] imageByteArray) {
         InputStream byteArrayInputStream = new ByteArrayInputStream(imageByteArray);
         return new Image(byteArrayInputStream);
+    }
+
+    @NotNull
+    public static Image getImageFromByteArray(byte[] imageByteArray, double width, double height) {
+        InputStream byteArrayInputStream = new ByteArrayInputStream(imageByteArray);
+        return new Image(byteArrayInputStream, width, height, true, true);
     }
 
     public static final String PNG_FORMAT = "png";

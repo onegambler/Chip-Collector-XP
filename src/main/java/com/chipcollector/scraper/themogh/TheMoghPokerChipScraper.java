@@ -212,7 +212,4 @@ public class TheMoghPokerChipScraper {
     private static final String BR_HTML_TAG = "\\s*<br>\\s*";
     private static final String IMG_SRC_ATTRIBUTE = "src";
     private static final String HREF_ATTRIBUTE = "href";
-
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-    public static final String MM_DD_YYYY_DATE_MATCHING_REGEX = "^(0?[1-9]|1[012])[-/.](0?[1-9]|[12][0-9]|3[01])[-/.]\\d{4}$";
 }

@@ -86,6 +86,7 @@ public class PokerChipDialogController implements Initializable {
     private ImageView frontImageView;
     @FXML
     private ImageView backImageView;
+
     private PokerChipBean pokerChipBean;
     private PokerChipCollection pokerChipCollection;
 

@@ -5,6 +5,7 @@ import com.chipcollector.data.configuration.ApplicationProperties;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.model.dashboard.PokerChipBean;
 import com.chipcollector.spring.SpringFxmlLoader;
+import com.chipcollector.views.control.TableViewContextMenuCallback;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -73,7 +74,6 @@ public class MainWindowController implements Initializable {
         populateCasinoTreeView();
         setUpTablePagination();
         dashboardController.updateWindow();
-
     }
 
     private void setUpCasinoTreeView() {
@@ -94,6 +94,7 @@ public class MainWindowController implements Initializable {
         pokerChipsTable = loader.load(TABLE_VIEW_FX_FILE_LOCATION);
         pokerChipsTable.setItems(FXCollections.observableArrayList());
         pokerChipsTable.setOnMouseClicked(this::onPokerChipTableElementClicked);
+        pokerChipsTable.setRowFactory(new TableViewContextMenuCallback(pokerChipsTable, pokerChipCollection));
     }
 
     private void populateCasinoTreeView() {

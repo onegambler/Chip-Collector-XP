@@ -153,4 +153,7 @@ public class PokerChipCollection {
         updateListenersList.add(listener);
     }
 
+    public void delete(PokerChip pokerChip) {
+        pokerChipDAO.deletePokerChip(pokerChip);
+    }
 }
