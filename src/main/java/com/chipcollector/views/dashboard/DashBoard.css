@@ -56,8 +56,8 @@
     -fx-graphic: url("/images/dashboard/search.png");
 }
 
-.button#addNewButton {
-    -fx-graphic: url("/images/dashboard/add.png");
+.searchNewButton {
+    -fx-graphic: url("/images/dashboard/addSearch.png");
 }
 
 .menu-button#addNewMenuButton {

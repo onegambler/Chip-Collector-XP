@@ -1,7 +1,7 @@
 package com.chipcollector.acceptance.steps;
 
-import com.chipcollector.controllers.dashboard.PokerChipDialogController;
-import com.chipcollector.data.PokerChipCollection;
+import com.avaje.ebean.EbeanServer;
+import com.chipcollector.DatabaseTestUtil;
 import com.chipcollector.spring.SpringFxmlLoader;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -12,15 +12,24 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testfx.framework.junit.ApplicationTest;
 
-public class PokerChipDialogStepHelper extends ApplicationTest {
+public class JavaFXTestHelper extends ApplicationTest {
 
+    private DatabaseTestUtil databaseTestUtil;
     private final SpringFxmlLoader loader;
-    private final PokerChipCollection collection;
+    private boolean init;
 
-    private PokerChipDialogController controller;
+    @Autowired
+    private EbeanServer server;
 
     @Before
     public void setUp() throws Exception {
+        if (!init) {
+            databaseTestUtil = new DatabaseTestUtil(server, "acceptance-test-ebean.properties");
+            databaseTestUtil.deleteDatabaseFile();
+            databaseTestUtil.createSchema();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> databaseTestUtil.tearDownDatabase()));
+            init = true;
+        }
         super.internalBefore();
     }
 
@@ -30,20 +39,18 @@ public class PokerChipDialogStepHelper extends ApplicationTest {
     }
 
     @Autowired
-    public PokerChipDialogStepHelper(SpringFxmlLoader loader, PokerChipCollection collection) {
+    public JavaFXTestHelper(SpringFxmlLoader loader) {
         this.loader = loader;
-        this.collection = collection;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
         final FXMLLoader loader = this.loader.getLoader(NODE_FILE_NAME);
         Parent node = loader.load();
-        controller = loader.getController();
         Scene scene = new Scene(node);
         stage.setScene(scene);
         stage.show();
     }
 
-    private static final String NODE_FILE_NAME = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
+    private static final String NODE_FILE_NAME = "com/chipcollector/views/dashboard/MainWindow.fxml";
 }

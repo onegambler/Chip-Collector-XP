@@ -155,6 +155,7 @@ public class MainWindowController implements Initializable {
                 false, controller -> controller.setPokerChipBean(pokerChipBean));
     }
 
+    @FXML
     public void quitApplication() {
         System.exit(0);
     }

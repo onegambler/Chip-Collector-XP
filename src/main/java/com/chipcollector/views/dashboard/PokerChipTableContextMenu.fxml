@@ -2,8 +2,16 @@
 
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <ContextMenu>
     <items>
         <MenuItem mnemonicParsing="false" text="Delete Poker Chip">
+            <graphic>
+                <ImageView>
+                    <Image url="/images/table/delete.png"/>
+                </ImageView>
+            </graphic>
+        </MenuItem>
     </items>
 </ContextMenu>

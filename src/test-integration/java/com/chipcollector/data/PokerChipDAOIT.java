@@ -1,12 +1,10 @@
 package com.chipcollector.data;
 
+import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.Query;
-import com.chipcollector.DatabaseIntegrationTest;
+import com.chipcollector.DatabaseTestUtil;
 import com.chipcollector.domain.*;
-import com.chipcollector.util.DatabaseUtil;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,13 +14,21 @@ import java.util.Optional;
 import static com.chipcollector.test.util.PokerChipTestUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PokerChipDAOIT extends DatabaseIntegrationTest {
+public class PokerChipDAOIT {
 
-    private final PokerChipDAO pokerChipDAO = new PokerChipDAO(TEST_SERVER);
+    private static final DatabaseTestUtil DATABASE_UTIL = new DatabaseTestUtil("integration-test-ebean.properties");
+    private static final EbeanServer TEST_SERVER = DATABASE_UTIL.getTestServer();
+
+    private PokerChipDAO pokerChipDAO;
 
     @BeforeClass
     public static void setUpSchema() throws IOException {
-        new DatabaseUtil(TEST_SERVER).tryDatabaseUpdate();
+        DATABASE_UTIL.createSchema();
+    }
+
+    @Before
+    public void setUp() {
+        pokerChipDAO = new PokerChipDAO(TEST_SERVER);
     }
 
     @Test
@@ -320,5 +326,10 @@ public class PokerChipDAOIT extends DatabaseIntegrationTest {
         } finally {
             TEST_SERVER.endTransaction();
         }
+    }
+
+    @AfterClass
+    public static void deleteDatabase() {
+        DATABASE_UTIL.tearDownDatabase();
     }
 }

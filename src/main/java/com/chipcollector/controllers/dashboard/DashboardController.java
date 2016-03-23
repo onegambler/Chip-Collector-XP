@@ -1,12 +1,15 @@
 package com.chipcollector.controllers.dashboard;
 
-import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.data.PokerChipCollection;
+import com.chipcollector.spring.SpringFxmlLoader;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
 import javafx.scene.text.Text;
+import javafx.stage.Window;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -67,12 +70,27 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    public void onAddButtonPressed(Event event) throws IOException {
-        Button sourceButton = (Button) event.getSource();
-        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "All Poker Chips", true, sourceButton.getScene().getWindow());
+    public void onSearchAddButtonPressed(Event event) {
+        openSearchPokerChipDialog(((Node) event.getSource()).getScene().getWindow());
+    }
+
+    @FXML
+    public void onManualAddMenuItemPressed(ActionEvent actionEvent) {
+        final Window window = ((MenuItem) actionEvent.getSource()).getParentPopup().getOwnerWindow();
+        loader.showDialog(POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION, "All Poker Chips", true, window);
+    }
+
+    @FXML
+    public void onSearchAddMenuItemPressed(ActionEvent actionEvent) {
+        final MenuItem source = (MenuItem) actionEvent.getSource();
+        openSearchPokerChipDialog(source.getParentPopup().getOwnerWindow());
+    }
+
+    private void openSearchPokerChipDialog(Window window) {
+        loader.showDialog(POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION, "All Poker Chips", true, window);
     }
 
     public static final String DASHBOARD_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/Dashboard.fxml";
+    public static final String POKER_CHIP_ADD_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/PokerChipDialog.fxml";
     public static final String POKER_CHIP_SEARCH_DIALOG_FX_FILE_LOCATION = "com/chipcollector/views/dashboard/SearchPokerChipDialog.fxml";
-
 }

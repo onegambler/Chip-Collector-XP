@@ -5,8 +5,8 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane fx:id="searchPokerChipDialog" layoutX="-1.0" layoutY="-1.0" prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.chipcollector.controllers.dashboard.SearchPokerChipDialogController">
     <center>
         <SplitPane dividerPositions="0.2737430167597765" orientation="VERTICAL" prefHeight="200.0"
@@ -17,7 +17,8 @@
                         <TableView fx:id="casinosTableView" focusTraversable="false" layoutX="230.0" layoutY="-28.0"
                                    onMouseClicked="#onCasinoElementClicked" prefHeight="143.0" prefWidth="778.0"
                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" onKeyPressed="#onCasinoTableKeyPressed">
+                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                                   onKeyPressed="#onCasinoTableKeyPressed">
                             <columns>
                                 <TableColumn minWidth="-Infinity" prefWidth="300.0" text="Casino">
                                     <cellValueFactory>
