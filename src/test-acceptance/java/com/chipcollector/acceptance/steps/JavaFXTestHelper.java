@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.testfx.framework.junit.ApplicationTest;
 
 public class JavaFXTestHelper extends ApplicationTest {
@@ -36,6 +37,7 @@ public class JavaFXTestHelper extends ApplicationTest {
     @After
     public void tearDown() throws Exception {
         super.internalAfter();
+        databaseTestUtil.cleanDatabase();
     }
 
     @Autowired

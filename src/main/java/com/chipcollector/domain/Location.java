@@ -1,10 +1,11 @@
 package com.chipcollector.domain;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.NONE;
 
@@ -24,7 +25,7 @@ public class Location {
     @Column(nullable = false)
     private String state;
 
-    @ManyToOne(fetch = LAZY, cascade = ALL, optional = false)
+    @ManyToOne(fetch = LAZY, optional = false)
     @Column(name = "country_id")
     private Country country;
 

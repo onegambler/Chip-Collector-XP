@@ -37,7 +37,7 @@ public class ImageConverter {
     public static BlobImage getBlobImageFromImage(Image image) throws IOException {
         BufferedImage originalImage = getBufferedImageFromImage(image);
         byte[] thumbnail = getRawBytesFromBufferedImage(getResizedImage(originalImage, 90), PNG_FORMAT);
-        byte[] resizedImage = getRawBytesFromBufferedImage(getResizedImage(originalImage, 120), PNG_FORMAT);
+        byte[] resizedImage = getRawBytesFromBufferedImage(getResizedImage(originalImage, 200), PNG_FORMAT);
         BlobImage blobImage = new BlobImage();
         blobImage.setImage(resizedImage);
         blobImage.setThumbnail(thumbnail);

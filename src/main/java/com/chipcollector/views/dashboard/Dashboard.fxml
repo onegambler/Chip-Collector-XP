@@ -8,7 +8,7 @@
 <?import java.net.URL?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50"
       xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.chipcollector.controllers.dashboard.DashboardController">
+      fx:controller="com.chipcollector.controller.dashboard.DashboardController">
     <padding>
         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
     </padding>
@@ -95,8 +95,10 @@
                 <SplitMenuButton fx:id="addMenuButton" styleClass="searchNewButton" contentDisplay="TOP" popupSide="TOP"
                                  prefHeight="150.0" prefWidth="150.0" text="%dashboard.button.add"
                                  onMouseClicked="#onSearchAddButtonPressed">
+
                     <items>
-                        <MenuItem text="Manually add new Poker Chip" onAction="#onManualAddMenuItemPressed">
+                        <MenuItem fx:id="manualAddMenuItem" text="Manually add new Poker Chip"
+                                  onAction="#onManualAddMenuItemPressed">
                             <graphic>
                                 <ImageView>
                                     <Image url="/images/dashboard/add.36.png"/>

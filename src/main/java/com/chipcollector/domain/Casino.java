@@ -23,37 +23,26 @@ public class Casino {
     @Setter(NONE)
     protected int id;
 
-    @Setter(PROTECTED)
     @Column(nullable = false)
     private String name;
 
-    @Setter(PROTECTED)
     private String type;
 
-    @Setter(PROTECTED)
+    private String theme;
+
     @Column(name = "WEBSITE")
     private String website;
 
-    @Setter(PROTECTED)
     @Column(name = "OPEN_DATE")
     private String openDate;
 
-    @Setter(PROTECTED)
     @Column(name = "CLOSE_DATE")
     private String closeDate;
 
-    @Setter(PROTECTED)
     private String status;
 
-    @Setter(PROTECTED)
     private String oldName;
 
-    @Transient
-    @Setter(NONE)
-    private boolean dirty;
-
-
-    @Setter(PROTECTED)
     @ManyToOne(fetch = LAZY, cascade = ALL)
     private Location location;
 
@@ -83,4 +72,10 @@ public class Casino {
 
     static String UNKNOWN_COUNTRY_KEY = "domain.country.unknown";
     private static final String DASH_STRING = "-";
+
+    public Country getCountry() {
+        return getLocation()
+                .map(Location::getCountry)
+                .orElse(null);
+    }
 }

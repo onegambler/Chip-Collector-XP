@@ -48,6 +48,7 @@
         <moneta.version>1.0</moneta.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <testfx.version>4.0.2-alpha</testfx.version>
+        <cucumber.version>1.2.4</cucumber.version>
     </properties>
 
     <dependencies>
@@ -151,17 +152,17 @@
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>1.2.4</version>
+            <version>${cucumber.version}</version>
         </dependency>
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>1.2.4</version>
+            <version>${cucumber.version}</version>
         </dependency>
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-spring</artifactId>
-            <version>1.2.4</version>
+            <version>${cucumber.version}</version>
         </dependency>
     </dependencies>
     <build>

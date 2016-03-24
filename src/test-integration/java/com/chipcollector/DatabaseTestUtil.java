@@ -4,6 +4,10 @@ import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebeaninternal.server.core.DefaultServer;
+import com.chipcollector.domain.BlobImage;
+import com.chipcollector.domain.Casino;
+import com.chipcollector.domain.Location;
+import com.chipcollector.domain.PokerChip;
 import com.chipcollector.util.DatabaseUtil;
 import com.google.common.base.Throwables;
 import com.google.common.io.Resources;
@@ -36,7 +40,6 @@ public class DatabaseTestUtil {
         config.setName("sqlite");
 
         Properties properties = new Properties();
-        ;
         properties.load(Resources.getResource(databaseConfigFile).openStream());
 
         config.loadFromProperties(properties);
@@ -63,5 +66,18 @@ public class DatabaseTestUtil {
 
     public EbeanServer getTestServer() {
         return testServer;
+    }
+
+    public void cleanDatabase() {
+        try {
+            testServer.beginTransaction();
+            testServer.find(BlobImage.class).findEach(testServer::deletePermanent);
+            testServer.find(PokerChip.class).findEach(testServer::deletePermanent);
+            testServer.find(Casino.class).findEach(testServer::deletePermanent);
+            testServer.find(Location.class).findEach(testServer::deletePermanent);
+            testServer.commitTransaction();
+        } finally {
+            testServer.endTransaction();
+        }
     }
 }

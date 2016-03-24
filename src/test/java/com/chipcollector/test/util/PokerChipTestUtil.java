@@ -18,13 +18,21 @@ import static java.nio.file.Files.readAllBytes;
 public class PokerChipTestUtil {
 
     public static Country createTestCountry() {
-        return new Country(TEST_COUNTRY_NAME);
+        return new Country(227, TEST_COUNTRY_NAME, "US", "USA", "US.png");
     }
 
     public static Location createTestLocation() {
         return Location.builder()
                 .city(TEST_CITY)
                 .country(createTestCountry())
+                .state(TEST_STATE)
+                .build();
+    }
+
+    public static Location createTestLocation(Country country) {
+        return Location.builder()
+                .city(TEST_CITY)
+                .country(country)
                 .state(TEST_STATE)
                 .build();
     }
@@ -48,14 +56,18 @@ public class PokerChipTestUtil {
         return createTestCasino(TEST_CASINO_NAME);
     }
 
+    public static PokerChip createTestPokerChip(Casino casino, String tcrId) {
+        return createTestPokerChipBuilder(casino, tcrId).build();
+    }
+
     public static PokerChip.PokerChipBuilder createTestPokerChipBuilder(Casino casino, String tcrId) {
 
         return PokerChip.builder()
                 .acquisitionDate(TEST_ACQUISITION_DATE)
                 .amountPaid(TEST_POKER_CHIP_AMOUNT_PAID)
                 .amountValue(TEST_POKER_CHIP_AMOUNT_VALUE)
-                .backImage(createTestBlobImage())
-                .frontImage(createTestBlobImage())
+                .backImage(createTestBlobImage(TEST_FRONT_IMAGE))
+                .frontImage(createTestBlobImage(TEST_BACK_IMAGE))
                 .cancelled(TEST_POKER_CHIP_CANCELLED)
                 .category(TEST_POKER_CHIP_CATEGORY)
                 .color(TEST_POKER_CHIP_COLOR)
@@ -78,11 +90,16 @@ public class PokerChipTestUtil {
                 .build();
     }
 
-    public static BlobImage createTestBlobImage() {
+    public static PokerChip createTestPokerChip(String tcrId) {
+        return createTestPokerChipBuilder(createTestCasino(), tcrId)
+                .build();
+    }
+
+    public static BlobImage createTestBlobImage(String fileName) {
         BlobImage blobImage = new BlobImage();
         try {
-            blobImage.setImage(readAllBytes(Paths.get(getResource(TEST_IMAGE).toURI())));
-            blobImage.setThumbnail(readAllBytes(Paths.get(getResource(TEST_IMAGE).toURI())));
+            blobImage.setImage(readAllBytes(Paths.get(getResource(fileName).toURI())));
+            blobImage.setThumbnail(readAllBytes(Paths.get(getResource(fileName).toURI())));
         } catch (Exception e) {
             Throwables.propagate(e);
         }
@@ -92,7 +109,7 @@ public class PokerChipTestUtil {
 
     public static final String TEST_CITY = "Las Vegas";
     public static final String TEST_STATE = "Nevada";
-    public static final String TEST_COUNTRY_NAME = "USA";
+    public static final String TEST_COUNTRY_NAME = "United States";
 
     public static final String TEST_CASINO_NAME = "Bellagio";
     public static final LocalDate TEST_CASINO_OPEN_DATE = LocalDate.now();
@@ -117,5 +134,6 @@ public class PokerChipTestUtil {
     public static final String TEST_POKER_CHIP_YEAR = "1900";
     public static final LocalDate TEST_ACQUISITION_DATE = LocalDate.now();
 
-    public static final String TEST_IMAGE = "images/java_logo.png";
+    public static final String TEST_FRONT_IMAGE = "images/java_logo.png";
+    public static final String TEST_BACK_IMAGE = "images/java_logo2.png";
 }

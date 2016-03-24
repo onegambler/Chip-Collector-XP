@@ -53,5 +53,10 @@ public final class Country {
         }
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public static final String IMAGES_FLAGS_LOCATION = "images/flags/%s";
 }

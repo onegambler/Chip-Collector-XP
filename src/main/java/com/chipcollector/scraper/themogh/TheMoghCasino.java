@@ -16,7 +16,7 @@ public class TheMoghCasino extends CasinoBean {
         setWebsite(builder.websiteUrl);
         setCity(builder.city);
         setState(builder.state);
-        setCountry(builder.country);
+        setCountryName(builder.country);
     }
 
     public void setDetailPageUrl(String detailPageUrl) {
@@ -75,7 +75,7 @@ public class TheMoghCasino extends CasinoBean {
             requireNonNull(theMoghCasino.getDetailPageUrl());
             requireNonNull(theMoghCasino.getWebsite());
             requireNonNull(theMoghCasino.getCity());
-            requireNonNull(theMoghCasino.getCountry());
+            requireNonNull(theMoghCasino.getCountryName());
             return theMoghCasino;
         }
     }

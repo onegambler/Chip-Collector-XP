@@ -23,7 +23,7 @@ public class TheMoghCasinoScraperIT {
         bellagioCasinosList.stream().forEach(casinoBean ->
         {
             assertThat(casinoBean.getName()).containsIgnoringCase(TEST_CASINO_NAME);
-            assertThat(casinoBean.getCountry()).isNotNull();
+            assertThat(casinoBean.getCountryName()).isNotNull();
             System.out.println("casinoBean = " + casinoBean.getDetailPageUrl());
             assertThat(casinoBean.getDetailPageUrl()).isNotNull();
         });

@@ -1,0 +1,71 @@
+.root {
+    -fx-base: rgb(50, 50, 50);
+    -fx-background: rgb(50, 50, 50);
+    -fx-control-inner-background: rgb(50, 50, 50);
+}
+
+#buttonBar {
+    -fx-base: rgb(50, 50, 50);
+    -fx-background: rgb(50, 50, 50);
+    -fx-control-inner-background: rgb(50, 50, 50);
+}
+
+#casinoButton {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.image-view {
+    -fx-cursor: hand;
+}
+
+.image-border {
+    -fx-border-color: black;
+    -fx-border-width: 1;
+}
+
+.label {
+    -fx-font-size: 8pt;
+    -fx-font-weight: bold;
+}
+
+#casinoHBox {
+    -fx-border-color: grey;
+    -fx-border-radius: 3 3 3 3;
+    -fx-border-width: 1;
+}
+
+.toggle-button#cancelledToggleButton {
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+    -fx-graphic: url("/images/dialog/cancelled.unselected.png");
+}
+
+.toggle-button:selected#cancelledToggleButton {
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-graphic: url("/images/dialog/cancelled.selected.png");
+}
+
+.toggle-button#obsoleteToggleButton {
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-graphic: url("/images/dialog/obsolete.unselected.png");
+}
+
+.toggle-button:selected#obsoleteToggleButton {
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-graphic: url("/images/dialog/obsolete.selected.png");
+}
+
+.split-menu-button .arrow-button {
+    -fx-arc-width: 1;
+    -fx-border-width: 1;
+    -fx-fill-width: 1px;
+    -fx-max-width: 1;
+    -fx-spacing: 0;
+    -fx-tab-max-width: 1;
+}

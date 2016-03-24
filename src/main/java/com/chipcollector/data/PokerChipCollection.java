@@ -4,17 +4,15 @@ import com.avaje.ebean.Query;
 import com.chipcollector.data.listeners.Listener;
 import com.chipcollector.domain.Casino;
 import com.chipcollector.domain.Country;
-import com.chipcollector.domain.Location;
 import com.chipcollector.domain.PokerChip;
-import com.chipcollector.model.dashboard.CasinoBean;
 import com.chipcollector.model.dashboard.PokerChipBean;
 import com.chipcollector.spring.MainProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.now;
@@ -24,17 +22,23 @@ import static java.time.LocalDateTime.now;
 public class PokerChipCollection {
 
     private final PokerChipDAO pokerChipDAO;
+    private PokerChipHandler pokerChipHandler;
     private Query<PokerChip> currentFilter;
     private List<Listener> updateListenersList = new ArrayList<>();
 
     @Autowired
-    public PokerChipCollection(PokerChipDAO pokerChipDAO) {
+    public PokerChipCollection(PokerChipDAO pokerChipDAO, PokerChipHandler pokerChipHandler) {
+        this.pokerChipHandler = pokerChipHandler;
         this.pokerChipDAO = pokerChipDAO;
         this.currentFilter = pokerChipDAO.createPokerChipFilter();
     }
 
     public List<Casino> getAllCasinos() {
         return this.pokerChipDAO.getAllCasinos();
+    }
+
+    public List<Country> getAllCountries() {
+        return this.pokerChipDAO.getAllCountries();
     }
 
     public List<PokerChip> getPokerChipList() {
@@ -80,35 +84,16 @@ public class PokerChipCollection {
         currentFilter = pokerChipDAO.createPokerChipFilter();
     }
 
-    public void add(PokerChip pokerChip) {
+    public void add(PokerChipBean pokerChipBean) throws IOException {
+        PokerChip pokerChip = pokerChipHandler.getNewPokerChip(pokerChipBean);
         pokerChipDAO.savePokerChip(pokerChip);
         updateListenersList.forEach(Listener::action);
     }
 
     public void update(PokerChipBean pokerChipBean) {
-        pokerChipDAO.updatePokerChip(pokerChipBean.getPokerChip());
+        final PokerChip updatedPokerChip = pokerChipHandler.getUpdatedPokerChip(pokerChipBean);
+        pokerChipDAO.updatePokerChip(updatedPokerChip);
         updateListenersList.forEach(Listener::action);
-    }
-
-    public Optional<Casino> getCasinoFromCasinoBean(CasinoBean casinoBean) {
-        return pokerChipDAO.getCasinoFinder()
-                .withName(casinoBean.getName())
-                .withCity(casinoBean.getCity())
-                .withState(casinoBean.getState())
-                .withCountry(casinoBean.getCountry())
-                .findSingle();
-    }
-
-    public Optional<Location> getLocationFromCasinoBean(CasinoBean casinoBean) {
-        return pokerChipDAO.getLocationFinder()
-                .withCity(casinoBean.getCity())
-                .withState(casinoBean.getState())
-                .withCountry(casinoBean.getCountry())
-                .findSingle();
-    }
-
-    public Optional<Country> getCountryFromCasinoBean(CasinoBean casinoBean) {
-        return getCountryFromName(casinoBean.getCountry());
     }
 
     public List<String> getDenomAutocompleteValues() {
@@ -145,15 +130,11 @@ public class PokerChipCollection {
         this.currentFilter = currentFilter;
     }
 
-    public Optional<Country> getCountryFromName(String name) {
-        return pokerChipDAO.getCountry(name);
-    }
-
     public void addUpdateListener(Listener listener) {
         updateListenersList.add(listener);
     }
 
-    public void delete(PokerChip pokerChip) {
+    public void deletePokerChip(PokerChip pokerChip) {
         pokerChipDAO.deletePokerChip(pokerChip);
     }
 }

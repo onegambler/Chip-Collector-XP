@@ -27,7 +27,7 @@ public class PokerChip {
     private Long id;
 
     @JoinColumn(name = "CASINO_ID")
-    @ManyToOne(optional = false, cascade = {PERSIST, REFRESH, MERGE})
+    @ManyToOne(cascade = {PERSIST, REFRESH, MERGE})
     private Casino casino;
 
     @Column
@@ -72,6 +72,7 @@ public class PokerChip {
     @Embedded
     @EmbeddedColumns(columns = "currency=valueCurrency, amount=value")
     private MoneyAmount amountValue;
+
     @Embedded
     @EmbeddedColumns(columns = "currency=paidCurrency, amount=paid")
     private MoneyAmount amountPaid;

@@ -1,13 +1,13 @@
 CREATE TABLE countries (
-  id               INTEGER PRIMARY KEY AUTOINCREMENT,
-  name             VARCHAR(200),
-  iso_alpha2       VARCHAR(2),
-  iso_alpha3       VARCHAR(3),
-  iso_numeric      INTEGER(4),
-  currency_code    VARCHAR(3),
-  currency_name    VARCHAR(32),
-  currency_symbol  VARCHAR(3),
-  flag_image       VARCHAR(3)
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  name            VARCHAR(200),
+  iso_alpha2      VARCHAR(2),
+  iso_alpha3      VARCHAR(3),
+  iso_numeric     INTEGER(4),
+  currency_code   VARCHAR(3),
+  currency_name   VARCHAR(32),
+  currency_symbol VARCHAR(3),
+  flag_image      VARCHAR(3)
 );
 
 CREATE TABLE poker_chip_images (
@@ -34,13 +34,14 @@ CREATE TABLE casinos (
   close_date  VARCHAR(10),
   status      VARCHAR(255),
   old_name    VARCHAR(255),
+  theme       VARCHAR(255),
   location_id INTEGER      NOT NULL,
   FOREIGN KEY (location_id) REFERENCES countries (id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 CREATE TABLE poker_chips (
   id               INTEGER PRIMARY KEY AUTOINCREMENT,
-  casino_id        INTEGER NOT NULL,
+  casino_id        INTEGER,
   denom            VARCHAR(50),
   year             VARCHAR(4),
   color            VARCHAR(50),

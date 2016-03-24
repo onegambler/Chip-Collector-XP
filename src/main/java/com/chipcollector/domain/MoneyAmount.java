@@ -53,11 +53,9 @@ public class MoneyAmount {
         return String.format("%s %s", this.getCurrency().getSymbol(), FORMATTER.format(this.getAmount()));
     }
 
+    private static final Pattern CURRENCY_PATTERN = Pattern.compile("^\\W\\s*");
     private static final DecimalFormat FORMATTER = new DecimalFormat("###,###.###", DecimalFormatSymbols.getInstance());
-
     static {
         FORMATTER.setParseBigDecimal(true);
     }
-
-    private static final Pattern CURRENCY_PATTERN = Pattern.compile("^\\W\\s*");
 }

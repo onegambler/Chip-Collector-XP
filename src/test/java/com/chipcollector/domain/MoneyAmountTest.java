@@ -71,4 +71,10 @@ public class MoneyAmountTest {
                 .isInstanceOf(ParseException.class)
                 .hasMessage("Impossible to parse currency");
     }
+
+    @Test
+    public void toStringReturnsCorrectValue() {
+        final MoneyAmount moneyAmount = MoneyAmount.parse("£ 5678.22");
+        assertThat(moneyAmount.toString()).isEqualTo("£ 5,678.22");
+    }
 }

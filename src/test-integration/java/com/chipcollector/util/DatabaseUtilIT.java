@@ -3,6 +3,7 @@ package com.chipcollector.util;
 import com.avaje.ebean.EbeanServer;
 import com.chipcollector.DatabaseTestUtil;
 import com.chipcollector.domain.Property;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -45,5 +46,10 @@ public class DatabaseUtilIT {
         Property databaseVersion = TEST_SERVER.createQuery(Property.class).where().eq("key", "db.version").findUnique();
         assertThat(databaseVersion).isNotNull();
         assertThat(databaseVersion.getValue()).isEqualTo("1");
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        DATABASE_TEST_UTIL.tearDownDatabase();
     }
 }

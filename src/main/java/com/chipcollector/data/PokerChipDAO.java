@@ -30,8 +30,7 @@ public class PokerChipDAO {
     }
 
     public List<PokerChip> getPagedPokerChips(Query<PokerChip> currentFilter, int pagedIndex, int pageSize) {
-        return ebeanServer.
-                findPagedList(currentFilter, ebeanServer.currentTransaction(), pagedIndex, pageSize)
+        return ebeanServer.findPagedList(currentFilter, ebeanServer.currentTransaction(), pagedIndex, pageSize)
                 .getList();
     }
 
@@ -131,6 +130,10 @@ public class PokerChipDAO {
 
     public LocationFinder getLocationFinder() {
         return new LocationFinder();
+    }
+
+    public List<Country> getAllCountries() {
+        return ebeanServer.find(Country.class).findList();
     }
 
     public class CasinoFinder {

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+<BorderPane fx:id="casinoDialog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="195.0" prefWidth="560.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.chipcollector.controller.dialog.CasinoDialogController">
+    <top>
+        <GridPane BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0"
+                                   prefWidth="67.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="10.0" prefWidth="194.0"/>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="369.0" minWidth="1.0"
+                                   prefWidth="65.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="3.0" prefWidth="82.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="10.0" prefWidth="60.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="10.0" prefWidth="91.0"/>
+                <ColumnConstraints maxWidth="17.0" minWidth="5.0" prefWidth="17.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label text="Name" GridPane.rowIndex="1">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="casinoName" prefHeight="25.0" prefWidth="345.0" GridPane.columnIndex="1"
+                           GridPane.columnSpan="5" GridPane.rowIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Casino Details" textAlignment="CENTER"
+                      wrappingWidth="572.13671875" GridPane.columnSpan="7" GridPane.halignment="CENTER"
+                      GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Text>
+                <Label text="City" GridPane.rowIndex="2">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="casinoCity" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <Label text="State" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="casinoState" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <Label text="Country" GridPane.rowIndex="3">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <ComboBox fx:id="casinoCountry" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </ComboBox>
+                <Label text="Opened" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="opened" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Closed" GridPane.columnIndex="4"
+                       GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="closed" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <Label text="Theme" GridPane.rowIndex="4">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <ComboBox fx:id="casinoTheme" GridPane.columnIndex="1" GridPane.rowIndex="4" editable="true">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </ComboBox>
+                <Label text="Type" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </Label>
+                <ComboBox fx:id="casinoType" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="4"
+                          editable="true">
+                    <GridPane.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </GridPane.margin>
+                </ComboBox>
+            </children>
+        </GridPane>
+    </top>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="552.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" text="OK" onAction="#onOkClicked">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </Button>
+                <Button mnemonicParsing="false" text="Cancel" onAction="#onCancelClicked">
+                    <HBox.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </HBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </HBox>
+    </bottom>
+    <stylesheets>
+        <URL value="@CasinoDialog.css"/>
+    </stylesheets>
+</BorderPane>

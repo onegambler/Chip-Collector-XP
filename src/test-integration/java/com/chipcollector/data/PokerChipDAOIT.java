@@ -33,8 +33,9 @@ public class PokerChipDAOIT {
 
     @Test
     public void getPagedPokerChipsReturnsASubSetOfPokerChips() {
+        final Casino testCasino = createTestCasino();
         for (int i = 0; i < 20; i++) {
-            TEST_SERVER.save(createTestPokerChipBuilder(createTestCasino(), "tcr_" + i).build());
+            TEST_SERVER.save(createTestPokerChip(testCasino, "tcr_" + i));
         }
         int pageSize = 5;
         List<PokerChip> retrieved = new ArrayList<>();
@@ -73,7 +74,7 @@ public class PokerChipDAOIT {
         final PokerChip testPokerChip = createTestPokerChip();
         TEST_SERVER.save(testPokerChip);
 
-        final BlobImage testBlobImage = createTestBlobImage();
+        final BlobImage testBlobImage = createTestBlobImage(TEST_FRONT_IMAGE);
         testBlobImage.setImage(new byte[]{'9'});
         testPokerChip.setImagesChanged(false);
         testPokerChip.setFrontImage(testBlobImage);
@@ -178,12 +179,13 @@ public class PokerChipDAOIT {
 
     @Test
     public void getAllCasinosReturnsCorrectValues() {
-        final PokerChip testPokerChip = createTestPokerChip();
-        TEST_SERVER.save(testPokerChip);
-        final Casino otherCasino = createTestCasino("other");
+        Location testLocation = createTestLocation();
+        final Casino first = createTestCasino("casino", testLocation);
+        TEST_SERVER.save(first);
+        final Casino otherCasino = createTestCasino("other", testLocation);
         TEST_SERVER.save(otherCasino);
         final List<Casino> allCasinos = pokerChipDAO.getAllCasinos();
-        assertThat(allCasinos).containsOnly(otherCasino, testPokerChip.getCasino());
+        assertThat(allCasinos).containsOnly(otherCasino, first);
     }
 
     @Test
@@ -221,9 +223,10 @@ public class PokerChipDAOIT {
 
     @Test
     public void getPokerChipListWithQueryReturnCorrectValues() {
-        final PokerChip testPokerChip = createTestPokerChipBuilder(createTestCasino(), "1").build();
-        final PokerChip testPokerChip1 = createTestPokerChipBuilder(createTestCasino(), "2").build();
-        final PokerChip testPokerChip2 = createTestPokerChipBuilder(createTestCasino(), "3").build();
+        final Casino testCasino = createTestCasino();
+        final PokerChip testPokerChip = createTestPokerChip(testCasino, "1");
+        final PokerChip testPokerChip1 = createTestPokerChip(testCasino, "2");
+        final PokerChip testPokerChip2 = createTestPokerChip(testCasino, "3");
         testPokerChip.setColor("blue");
         testPokerChip1.setColor("blue");
         pokerChipDAO.savePokerChip(testPokerChip);
@@ -237,9 +240,10 @@ public class PokerChipDAOIT {
 
     @Test
     public void getPokerChipCountWithQueryReturnCorrectValue() {
-        final PokerChip testPokerChip = createTestPokerChipBuilder(createTestCasino(), "1").build();
-        final PokerChip testPokerChip1 = createTestPokerChipBuilder(createTestCasino(), "2").build();
-        final PokerChip testPokerChip2 = createTestPokerChipBuilder(createTestCasino(), "3").build();
+        final Casino testCasino = createTestCasino();
+        final PokerChip testPokerChip = createTestPokerChip(testCasino, "1");
+        final PokerChip testPokerChip1 = createTestPokerChip(testCasino, "2");
+        final PokerChip testPokerChip2 = createTestPokerChip(testCasino, "3");
         testPokerChip.setColor("blue");
         testPokerChip1.setColor("blue");
         pokerChipDAO.savePokerChip(testPokerChip);
@@ -251,11 +255,13 @@ public class PokerChipDAOIT {
         assertThat(pokerChipCount).isEqualTo(2);
     }
 
+
     @Test
     public void getAllPokerChipCountReturnsCorrectCount() {
-        pokerChipDAO.savePokerChip(createTestPokerChipBuilder(createTestCasino(), "1").build());
-        pokerChipDAO.savePokerChip(createTestPokerChipBuilder(createTestCasino(), "2").build());
-        pokerChipDAO.savePokerChip(createTestPokerChipBuilder(createTestCasino(), "3").build());
+        final Casino testCasino = createTestCasino();
+        pokerChipDAO.savePokerChip(createTestPokerChip(testCasino, "1"));
+        pokerChipDAO.savePokerChip(createTestPokerChip(testCasino, "2"));
+        pokerChipDAO.savePokerChip(createTestPokerChip(testCasino, "3"));
 
         int pokerChipList = pokerChipDAO.getAllPokerChipsCount();
         assertThat(pokerChipList).isEqualTo(3);
@@ -267,12 +273,11 @@ public class PokerChipDAOIT {
         TEST_SERVER.save(testLocation1);
         final Location testLocation2 = createTestLocation();
         testLocation2.setCity("filterCity");
-        testLocation2.setCountry(new Country("filterCountry"));
         testLocation2.setState("filterState");
         TEST_SERVER.save(testLocation2);
         Optional<Location> found = pokerChipDAO.getLocationFinder()
                 .withCity("filterCity")
-                .withCountry("filterCountry")
+                .withCountry(TEST_COUNTRY_NAME)
                 .withState("filterState")
                 .findSingle();
 
@@ -286,7 +291,6 @@ public class PokerChipDAOIT {
 
         Location locationToBeFound = createTestLocation();
         locationToBeFound.setCity("filterCity");
-        locationToBeFound.setCountry(new Country("filterCountry"));
         locationToBeFound.setState("filterState");
         Casino casinoToBeFound = createTestCasino("filterName", locationToBeFound);
 
@@ -294,7 +298,7 @@ public class PokerChipDAOIT {
         Optional<Casino> found = pokerChipDAO.getCasinoFinder()
                 .withCity("filterCity")
                 .withName("filterName")
-                .withCountry("filterCountry")
+                .withCountry(TEST_COUNTRY_NAME)
                 .withState("filterState")
                 .findSingle();
 
@@ -303,29 +307,20 @@ public class PokerChipDAOIT {
 
     @Test
     public void getDistinctValueSetWorksCorrectly() {
-        pokerChipDAO.savePokerChip(createTestPokerChip());
-        pokerChipDAO.savePokerChip(createTestPokerChip());
-        pokerChipDAO.savePokerChip(createTestPokerChip());
-        pokerChipDAO.savePokerChip(createTestPokerChip());
-        pokerChipDAO.savePokerChip(createTestPokerChipBuilder(createTestCasino(), "tcrd").color("GREY").build());
+        final Casino testCasino = createTestCasino();
+        pokerChipDAO.savePokerChip(createTestPokerChip(testCasino, "dist_1"));
+        pokerChipDAO.savePokerChip(createTestPokerChip(testCasino, "dist_2"));
+        pokerChipDAO.savePokerChip(createTestPokerChip(testCasino, "dist_3"));
+        pokerChipDAO.savePokerChip(createTestPokerChip(testCasino, "dist_4"));
+        pokerChipDAO.savePokerChip(createTestPokerChipBuilder(testCasino, "tcrd_5").color("GREY").build());
         final List<String> colorList = pokerChipDAO.getDistinctValueSet("color", PokerChip::getColor);
 
         assertThat(colorList).hasSize(2).containsOnly("GREY", "BLUE");
-
-
     }
 
     @After
     public void tearDown() {
-        try {
-            TEST_SERVER.beginTransaction();
-            TEST_SERVER.find(BlobImage.class).findEach(TEST_SERVER::deletePermanent);
-            TEST_SERVER.find(PokerChip.class).findEach(TEST_SERVER::deletePermanent);
-            TEST_SERVER.find(Casino.class).findEach(TEST_SERVER::deletePermanent);
-            TEST_SERVER.commitTransaction();
-        } finally {
-            TEST_SERVER.endTransaction();
-        }
+        DATABASE_UTIL.cleanDatabase();
     }
 
     @AfterClass
