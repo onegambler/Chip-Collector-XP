@@ -1,6 +1,5 @@
 package com.chipcollector.views.node;
 
-import com.chipcollector.data.PokerChipCollection;
 import com.chipcollector.model.dashboard.PokerChipBean;
 import com.chipcollector.util.MessagesHelper;
 import javafx.scene.control.ContextMenu;
@@ -9,17 +8,17 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+import java.util.function.Consumer;
+
 import static javafx.beans.binding.Bindings.isNotNull;
 import static javafx.beans.binding.Bindings.when;
 
 public class TableViewContextMenuCallback implements Callback<TableView<PokerChipBean>, TableRow<PokerChipBean>> {
 
-    private TableView<PokerChipBean> pokerChipsTable;
-    private PokerChipCollection collection;
+    private Consumer<PokerChipBean> deleteAction;
 
-    public TableViewContextMenuCallback(TableView<PokerChipBean> pokerChipsTable, PokerChipCollection collection) {
-        this.pokerChipsTable = pokerChipsTable;
-        this.collection = collection;
+    public TableViewContextMenuCallback(Consumer<PokerChipBean> deleteAction) {
+        this.deleteAction = deleteAction;
     }
 
     @Override
@@ -28,8 +27,7 @@ public class TableViewContextMenuCallback implements Callback<TableView<PokerChi
         final ContextMenu rowMenu = new ContextMenu();
         MenuItem removeItem = new MenuItem(MessagesHelper.getString(BUTTON_DELETE));
         removeItem.setOnAction(event -> {
-            collection.deletePokerChip(row.getItem().getPokerChip());
-            pokerChipsTable.getItems().remove(row.getItem());
+            deleteAction.accept(row.getItem());
         });
         rowMenu.getItems().addAll(removeItem);
 

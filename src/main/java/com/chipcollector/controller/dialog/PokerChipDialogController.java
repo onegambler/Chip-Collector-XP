@@ -8,6 +8,7 @@ import com.chipcollector.model.dashboard.PokerChipBean;
 import com.chipcollector.spring.SpringFxmlLoader;
 import com.chipcollector.util.MessagesHelper;
 import com.chipcollector.views.node.AutoCompleteComboBoxListener;
+import com.chipcollector.views.node.DatePickerFocusListener;
 import com.chipcollector.views.node.moneytextfield.MoneyTextField;
 import com.google.common.io.Resources;
 import javafx.event.ActionEvent;
@@ -166,11 +167,7 @@ public class PokerChipDialogController implements Initializable {
         categoryComboBox.valueProperty().bindBidirectional(pokerChipBean.categoryProperty());
         //JavaFX bug doesn't update value if the date is inserted manually, temporary workaround.
         acquisitionDatePicker.valueProperty().bindBidirectional(pokerChipBean.dateOfAcquisitionProperty());
-        acquisitionDatePicker.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                acquisitionDatePicker.setValue(acquisitionDatePicker.getConverter().fromString(acquisitionDatePicker.getEditor().getText()));
-            }
-        });
+        acquisitionDatePicker.focusedProperty().addListener(new DatePickerFocusListener(acquisitionDatePicker));
         tcrTextField.textProperty().bindBidirectional(pokerChipBean.tcrIdProperty());
         notesTextArea.textProperty().bindBidirectional(pokerChipBean.notesProperty());
         denomComboBox.getEditor().textProperty().bindBidirectional(pokerChipBean.denomProperty());
@@ -242,4 +239,11 @@ public class PokerChipDialogController implements Initializable {
     public static final String IMAGE_ERROR_ALERT_CONTENT = "dialog.poker.chip.image.error.alert.content";
 
 
+    public void onLinkCasino(ActionEvent actionEvent) {
+
+    }
+
+    public void onUnlinkCasino(ActionEvent actionEvent) {
+
+    }
 }

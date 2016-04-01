@@ -26,8 +26,8 @@ public class PokerChip {
     @Setter(NONE)
     private Long id;
 
+    @ManyToOne(cascade = {MERGE, PERSIST, REFRESH})
     @JoinColumn(name = "CASINO_ID")
-    @ManyToOne(cascade = {PERSIST, REFRESH, MERGE})
     private Casino casino;
 
     @Column

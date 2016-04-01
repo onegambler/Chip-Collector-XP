@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -20,15 +21,21 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.base.GeneralMatchers;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import static com.chipcollector.test.util.PokerChipTestUtil.createTestCountry;
 import static com.chipcollector.test.util.PokerChipTestUtil.createTestPokerChip;
+import static java.time.format.FormatStyle.SHORT;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.matcher.base.GeneralMatchers.baseMatcher;
 import static org.testfx.matcher.base.NodeMatchers.hasText;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,6 +50,11 @@ public class PokerChipDialogControllerIT extends ApplicationTest {
     private PokerChipCollection collection;
 
     private PokerChipDialogController controller;
+
+    @Before
+    public void setUp() {
+        when(collection.getAllCountries()).thenReturn(singletonList(createTestCountry()));
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -67,7 +79,6 @@ public class PokerChipDialogControllerIT extends ApplicationTest {
     @Test
     public void whenFieldsAreFilledAndOKIsClickedThenSavePokerChip() throws IOException {
         final PokerChip testPokerChip = createTestPokerChip();
-        testPokerChip.setCasino(null); //TODO: inserire il filling del casino
         final PokerChipBean pokerChipBean = new PokerChipBean();
 
         controller.setPokerChipBean(pokerChipBean);
@@ -89,6 +100,16 @@ public class PokerChipDialogControllerIT extends ApplicationTest {
     }
 
     private void fillDialogUp(PokerChip pokerChip) {
+        clickOn("#addMenuButton")
+                .clickOn("#casinoName").write(pokerChip.getCasino().getName())
+                .clickOn("#casinoCity").write(pokerChip.getCasino().getCity())
+                .clickOn("#casinoState").write(pokerChip.getCasino().getState())
+                .clickOn("#casinoCountry").clickOn(pokerChip.getCasino().getCountry().getName())
+                .clickOn("#opened").write(pokerChip.getCasino().getOpenDate())
+                .clickOn("#closed").write(pokerChip.getCasino().getCloseDate())
+                .clickOn("#casinoType").write(pokerChip.getCasino().getType())
+                .clickOn("#casinoTheme").write(pokerChip.getCasino().getTheme())
+                .clickOn("#okButton");
         clickOn(YEAR_TEXT_FIELD).write(pokerChip.getYear());
         clickOn("#denomComboBox").write(pokerChip.getDenom());
         clickOn("#issueTextField").write(pokerChip.getIssue());
@@ -100,7 +121,7 @@ public class PokerChipDialogControllerIT extends ApplicationTest {
         clickOn("#categoryComboBox").clickOn(pokerChip.getCategory());
         clickOn("#rarityComboBox").clickOn(pokerChip.getRarity().getDisplayName());
         clickOn("#valueTextField").write(pokerChip.getAmountValue().toString());
-        clickOn("#acquisitionDatePicker").write(pokerChip.getAcquisitionDate().toString());
+        clickOn("#acquisitionDatePicker").write(pokerChip.getAcquisitionDate().format(DateTimeFormatter.ofLocalizedDate(SHORT)));
         clickOn("#tcrTextField").write(pokerChip.getTcrID());
         clickOn("#notesTextArea").write(pokerChip.getNotes());
         clickOn("#paidTextField").write(pokerChip.getAmountPaid().toString());

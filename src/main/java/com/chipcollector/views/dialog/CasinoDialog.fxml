@@ -126,12 +126,12 @@
     <bottom>
         <HBox alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="552.0" BorderPane.alignment="CENTER">
             <children>
-                <Button mnemonicParsing="false" text="OK" onAction="#onOkClicked">
+                <Button fx:id="okButton" mnemonicParsing="false" text="OK" onAction="#onOkClicked">
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </HBox.margin>
                 </Button>
-                <Button mnemonicParsing="false" text="Cancel" onAction="#onCancelClicked">
+                <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" onAction="#onCancelClicked">
                     <HBox.margin>
                         <Insets left="5.0" right="5.0"/>
                     </HBox.margin>

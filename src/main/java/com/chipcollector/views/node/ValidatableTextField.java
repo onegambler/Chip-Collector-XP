@@ -3,11 +3,7 @@ package com.chipcollector.views.node;
 import com.chipcollector.util.MessagesHelper;
 import com.chipcollector.views.validation.Constraint;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
-import org.controlsfx.control.PopOver;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,19 +15,10 @@ public class ValidatableTextField extends TextField {
     @FXML
     private List<Constraint<String>> constraints;
 
-    private final PopOver popOver = new PopOver();
-    private final Label errorMessageLabel = new Label();
+    private final ValidationPopOver popOver = new ValidationPopOver();
 
     public ValidatableTextField() {
         super();
-        errorMessageLabel.setTextFill(Color.BLACK);
-        errorMessageLabel.setPadding(new Insets(0, 10, 0, 10));
-        popOver.setContentNode(errorMessageLabel);
-        popOver.setAutoHide(true);
-        popOver.setHideOnEscape(true);
-        popOver.setArrowSize(5);
-        popOver.setArrowIndent(2);
-        popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
     }
 
     public List<Constraint<String>> getConstraints() {
@@ -64,7 +51,7 @@ public class ValidatableTextField extends TextField {
                     .findFirst();
 
             if (notValidConstraint.isPresent()) {
-                errorMessageLabel.setText(MessagesHelper.getString(notValidConstraint.get().getValidationErrorMessageId()));
+                popOver.setValidationMessage(MessagesHelper.getString(notValidConstraint.get().getValidationErrorMessageId()));
                 popOver.show(this);
                 return false;
             }

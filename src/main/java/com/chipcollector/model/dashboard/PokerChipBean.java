@@ -24,7 +24,6 @@ import static java.util.Objects.*;
 public class PokerChipBean {
 
     private CasinoBean casinoBean;
-    private StringProperty cityNameProperty;
     private StringProperty denomProperty;
     private StringProperty moldProperty;
     private StringProperty colorProperty;
@@ -53,7 +52,8 @@ public class PokerChipBean {
     private boolean backImageChanged;
 
     private PokerChipBean(CasinoBean casinoBean) {
-        cityNameProperty = initialiseProperty(new SimpleStringProperty());
+        this.casinoBean = requireNonNull(casinoBean, "CasinoBean cannot be null");
+
         colorProperty = initialiseProperty(new SimpleStringProperty());
         denomProperty = initialiseProperty(new SimpleStringProperty());
         inlayProperty = initialiseProperty(new SimpleStringProperty());
@@ -76,7 +76,6 @@ public class PokerChipBean {
         frontImageThumbnailView = new ImageView();
         backImageThumbnailView = new ImageView();
 
-        this.casinoBean = casinoBean;
     }
 
     public PokerChipBean() {
@@ -88,7 +87,6 @@ public class PokerChipBean {
 
         this.pokerChip = pokerChip;
 
-        cityNameProperty.set(casinoBean.getCity());
         denomProperty.set(pokerChip.getDenom());
         moldProperty.set(pokerChip.getMold());
         colorProperty.set(pokerChip.getColor());
@@ -120,7 +118,6 @@ public class PokerChipBean {
 
     private PokerChipBean(PokerChipBeanBuilder builder) {
         this(builder.casinoBean);
-        cityNameProperty.set(casinoBean.getCity());
         colorProperty.set(builder.color);
         denomProperty.set(builder.denom);
         inlayProperty.set(builder.inlay);
@@ -151,7 +148,6 @@ public class PokerChipBean {
         updateProperty(dateOfAcquisitionProperty, other.dateOfAcquisitionProperty);
         updateProperty(frontImageProperty, other.frontImageProperty);
         updateProperty(backImageProperty, other.backImageProperty);
-        updateProperty(cityNameProperty, other.cityNameProperty);
         pokerChip = other.pokerChip;
         casinoBean = other.casinoBean;
     }
@@ -455,6 +451,11 @@ public class PokerChipBean {
         return casinoBean.getName();
     }
 
+    @FXML
+    public String getCasinoCity() {
+        return casinoBean.getCity();
+    }
+
     public boolean isNew() {
         return isNull(this.pokerChip);
     }
@@ -485,7 +486,6 @@ public class PokerChipBean {
         if (o == null || getClass() != o.getClass()) return false;
         PokerChipBean that = (PokerChipBean) o;
         return Objects.equals(casinoBean, that.casinoBean) &&
-                Objects.equals(cityNameProperty.get(), that.cityNameProperty.get()) &&
                 Objects.equals(denomProperty.get(), that.denomProperty.get()) &&
                 Objects.equals(moldProperty.get(), that.moldProperty.get()) &&
                 Objects.equals(colorProperty.get(), that.colorProperty.get()) &&
@@ -507,7 +507,7 @@ public class PokerChipBean {
 
     @Override
     public int hashCode() {
-        return Objects.hash(casinoBean, cityNameProperty.get(), denomProperty.get(), moldProperty.get(),
+        return Objects.hash(casinoBean, denomProperty.get(), moldProperty.get(),
                 colorProperty.get(), inlayProperty.get(), insertsProperty.get(), yearProperty.get(),
                 tcrIdProperty.get(), obsoleteProperty.get(), cancelledProperty.get(), rarityProperty.get(),
                 conditionProperty.get(), categoryProperty.get(), amountValueProperty.get(), amountPaidProperty.get(),

@@ -72,9 +72,9 @@ public class DatabaseTestUtil {
         try {
             testServer.beginTransaction();
             testServer.find(BlobImage.class).findEach(testServer::deletePermanent);
+            testServer.find(Location.class).findEach(testServer::deletePermanent);
             testServer.find(PokerChip.class).findEach(testServer::deletePermanent);
             testServer.find(Casino.class).findEach(testServer::deletePermanent);
-            testServer.find(Location.class).findEach(testServer::deletePermanent);
             testServer.commitTransaction();
         } finally {
             testServer.endTransaction();

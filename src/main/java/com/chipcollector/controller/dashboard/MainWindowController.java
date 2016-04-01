@@ -94,7 +94,12 @@ public class MainWindowController implements Initializable {
         pokerChipsTable = loader.load(TABLE_VIEW_FX_FILE_LOCATION);
         pokerChipsTable.setItems(FXCollections.observableArrayList());
         pokerChipsTable.setOnMouseClicked(this::onPokerChipTableElementClicked);
-        pokerChipsTable.setRowFactory(new TableViewContextMenuCallback(pokerChipsTable, pokerChipCollection));
+        pokerChipsTable.setRowFactory(new TableViewContextMenuCallback(pokerChipBean ->
+        {
+            pokerChipCollection.deletePokerChip(pokerChipBean.getPokerChip());
+            pokerChipsTable.getItems().remove(pokerChipBean);
+            populateCasinoTreeView();
+        }));
     }
 
     private void populateCasinoTreeView() {

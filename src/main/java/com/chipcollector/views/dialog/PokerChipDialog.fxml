@@ -156,21 +156,21 @@
                                          popupSide="BOTTOM" prefHeight="25" prefWidth="25"
                                          onMouseClicked="#onEditCasino">
                             <items>
-                                <MenuItem fx:id="editCasinoMenuItem" text="Edit casino">
+                                <MenuItem fx:id="editCasinoMenuItem" text="%dialog.poker.chip.casino.edit" onAction="#onEditCasino">
                                     <graphic>
                                         <ImageView>
                                             <Image url="/images/dialog/editCasino.png"/>
                                         </ImageView>
                                     </graphic>
                                 </MenuItem>
-                                <MenuItem text="Link casino">
+                                <MenuItem text="%dialog.poker.chip.casino.link" onAction="#onLinkCasino">
                                     <graphic>
                                         <ImageView>
                                             <Image url="/images/dialog/linkCasino.png"/>
                                         </ImageView>
                                     </graphic>
                                 </MenuItem>
-                                <MenuItem text="Unlink casino">
+                                <MenuItem text="%dialog.poker.chip.casino.unlink" onAction="#onUnlinkCasino">
                                     <graphic>
                                         <ImageView>
                                             <Image url="/images/dialog/delete-link.24.png"/>

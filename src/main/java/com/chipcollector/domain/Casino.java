@@ -11,7 +11,6 @@ import java.util.Optional;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.NONE;
-import static lombok.AccessLevel.PROTECTED;
 
 @Data
 @Entity

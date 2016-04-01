@@ -17,6 +17,7 @@ import static java.nio.file.Files.readAllBytes;
 
 public class PokerChipTestUtil {
 
+
     public static Country createTestCountry() {
         return new Country(227, TEST_COUNTRY_NAME, "US", "USA", "US.png");
     }
@@ -48,7 +49,8 @@ public class PokerChipTestUtil {
                 .name(casinoName)
                 .openDate(TEST_CASINO_OPEN_DATE.toString())
                 .type(TEST_CASINO_TYPE)
-                .website(TEST_CASINO_WEBSITE)
+                .theme(TEST_CASINO_THEME)
+                //.website(TEST_CASINO_WEBSITE)
                 .build();
     }
 
@@ -115,6 +117,7 @@ public class PokerChipTestUtil {
     public static final LocalDate TEST_CASINO_OPEN_DATE = LocalDate.now();
     public static final String TEST_CASINO_TYPE = "Land Based";
     public static final String TEST_CASINO_WEBSITE = "http://www.bellagio.com";
+    public static final String TEST_CASINO_THEME = "theme";
 
     public static final MoneyAmount TEST_POKER_CHIP_AMOUNT_PAID = new MoneyAmount(DOLLAR, ONE);
     public static final MoneyAmount TEST_POKER_CHIP_AMOUNT_VALUE = new MoneyAmount(EURO, TEN);

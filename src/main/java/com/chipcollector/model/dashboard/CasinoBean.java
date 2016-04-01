@@ -71,6 +71,10 @@ public class CasinoBean {
         }
     }
 
+    public StringProperty nameProperty() {
+        return name;
+    }
+
     public String getName() {
         return name.get();
     }
@@ -189,7 +193,7 @@ public class CasinoBean {
         return Objects.equals(name.get(), that.name.get()) &&
                 Objects.equals(city.get(), that.city.get()) &&
                 Objects.equals(state.get(), that.state.get()) &&
-                Objects.equals(countryName.get(), that.countryName.get()) &&
+                Objects.equals(country.get(), that.country.get()) &&
                 Objects.equals(website.get(), that.website.get()) &&
                 Objects.equals(oldName.get(), that.oldName.get()) &&
                 Objects.equals(status.get(), that.status.get()) &&
@@ -204,7 +208,7 @@ public class CasinoBean {
                 name.get(),
                 city.get(),
                 state.get(),
-                countryName.get(),
+                country.get(),
                 website.get(),
                 oldName.get(),
                 status.get(),
